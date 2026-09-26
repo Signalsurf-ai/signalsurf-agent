@@ -1,0 +1,18 @@
+interface:
+  display_name: "SignalSurf"
+  short_description: "Use your Agent, Projects, and CRM"
+  icon_small: "assets/icon.svg"
+  icon_large: "assets/icon.svg"
+  brand_color: "#1E1E1E"
+  default_prompt: "Use $signalsurf to show my connected Agent and current Project context."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "signalsurf"
+      description: "SignalSurf Agent, Project context, and product tools"
+      transport: "streamable_http"
+      url: "https://mcp.signalsurf.ai/mcp"
+
+policy:
+  allow_implicit_invocation: true

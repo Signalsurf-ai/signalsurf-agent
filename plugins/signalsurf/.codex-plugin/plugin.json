@@ -1,0 +1,35 @@
+{
+  "name": "signalsurf",
+  "version": "0.2.0",
+  "description": "Use your SignalSurf Agent, Projects, CRM, Tables, Workflows, and Campaigns from Codex and ChatGPT.",
+  "author": {
+    "name": "SignalSurf",
+    "url": "https://www.signalsurf.ai"
+  },
+  "homepage": "https://www.signalsurf.ai",
+  "repository": "https://github.com/Signalsurf-ai/agent-plugins",
+  "license": "MIT",
+  "keywords": ["crm", "gtm", "projects", "agents", "mcp"],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "SignalSurf",
+    "shortDescription": "Run your SignalSurf Agent from your AI",
+    "longDescription": "Connect your AI to the same SignalSurf Agent, Project context, CRM records, Tables, Workflows, and Campaigns your team uses. OAuth keeps every action inside the Workspaces and permissions you approve.",
+    "developerName": "SignalSurf",
+    "category": "Business & Operations",
+    "capabilities": ["Interactive", "Read", "Write"],
+    "websiteURL": "https://www.signalsurf.ai",
+    "privacyPolicyURL": "https://www.signalsurf.ai/privacy",
+    "termsOfServiceURL": "https://www.signalsurf.ai/terms",
+    "defaultPrompt": [
+      "Show my SignalSurf context and active Projects",
+      "Continue the most relevant Project Thread",
+      "Update my CRM from this conversation"
+    ],
+    "brandColor": "#1E1E1E",
+    "composerIcon": "./assets/icon.svg",
+    "logo": "./assets/icon.svg",
+    "screenshots": []
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "signalsurf",
+  "version": "0.2.0",
+  "description": "Use your SignalSurf Agent, Projects, CRM, Tables, Workflows, and Campaigns from Cursor.",
+  "author": {
+    "name": "SignalSurf"
+  },
+  "homepage": "https://www.signalsurf.ai",
+  "repository": "https://github.com/Signalsurf-ai/agent-plugins",
+  "license": "MIT",
+  "logo": "assets/icon.svg",
+  "skills": ["./skills"],
+  "mcpServers": "./mcp.json"
+}

@@ -1,0 +1,20 @@
+{
+  "name": "signalsurf",
+  "interface": {
+    "displayName": "SignalSurf"
+  },
+  "plugins": [
+    {
+      "name": "signalsurf",
+      "source": {
+        "source": "local",
+        "path": "./plugins/signalsurf"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Business & Operations"
+    }
+  ]
+}

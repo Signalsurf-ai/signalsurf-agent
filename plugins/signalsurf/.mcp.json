@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "signalsurf": {
+      "type": "http",
+      "url": "https://mcp.signalsurf.ai/mcp"
+    }
+  }
+}

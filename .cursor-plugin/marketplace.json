@@ -1,0 +1,16 @@
+{
+  "name": "signalsurf",
+  "owner": {
+    "name": "SignalSurf"
+  },
+  "metadata": {
+    "description": "Official SignalSurf plugins for Cursor"
+  },
+  "plugins": [
+    {
+      "name": "signalsurf",
+      "source": "./plugins/signalsurf",
+      "description": "Use your SignalSurf Agent, Project context, CRM, and product tools from Cursor."
+    }
+  ]
+}

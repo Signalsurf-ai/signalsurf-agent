@@ -1,0 +1,100 @@
+# Getting started with SignalSurf
+
+The SignalSurf Plugin connects your AI host to the same SignalSurf Agent,
+Workspace permissions, Project context, CRM, Tables, Workflows, and Campaigns
+your team uses. Install the Plugin once, authorize the Workspaces it may reach,
+then start a fresh chat so the Skill and MCP connection load together.
+
+## Claude Code
+
+Requires a Claude Code version with plugin marketplaces and remote HTTP MCP.
+
+```sh
+claude plugin marketplace add Signalsurf-ai/agent-plugins
+claude plugin install signalsurf@signalsurf --scope user
+```
+
+Restart Claude Code after installation. The first SignalSurf tool call opens
+the SignalSurf OAuth flow. Sign in, choose the allowed Workspaces, approve the
+requested grants, and return to Claude Code.
+
+To update later:
+
+```sh
+claude plugin marketplace update signalsurf
+claude plugin update signalsurf@signalsurf
+```
+
+## Codex
+
+```sh
+codex plugin marketplace add Signalsurf-ai/agent-plugins
+codex plugin add signalsurf@signalsurf
+```
+
+Start a new Codex thread after installation. The first SignalSurf tool call
+opens OAuth. If the connection needs to be authorized explicitly, run:
+
+```sh
+codex mcp login signalsurf
+```
+
+To refresh the marketplace and reinstall the current version:
+
+```sh
+codex plugin marketplace upgrade signalsurf
+codex plugin add signalsurf@signalsurf
+```
+
+## ChatGPT
+
+Workspace administrators can import the public GitHub marketplace
+`Signalsurf-ai/agent-plugins` from **Workspace settings → Plugins →
+Marketplaces**. Install SignalSurf from that source and authorize its connection.
+Availability depends on the workspace plan and plugin policy.
+
+The public ChatGPT Plugin Directory listing is a separate reviewed release. A
+GitHub marketplace install remains usable without waiting for directory
+featuring or search indexing.
+
+## Cursor
+
+Install SignalSurf from the Cursor Marketplace when the listing is available.
+For local verification before marketplace review:
+
+1. Clone `https://github.com/Signalsurf-ai/agent-plugins`.
+2. Copy `plugins/signalsurf` into `~/.cursor/plugins/local/signalsurf`.
+3. Restart Cursor or run **Developer: Reload Window**.
+4. Open **Customize** and verify that the SignalSurf Skill and MCP server appear.
+
+Teams and Enterprise administrators may need to enable local plugin imports.
+The marketplace-installed copy takes precedence over a local copy with the same
+name.
+
+## Verify without changing data
+
+Start a new chat and send:
+
+> Connect to SignalSurf without changing data. Call get_context, then
+> list_workspaces, and tell me which Agent, Workspaces, Project collaboration
+> tools, and product tools are available.
+
+A successful first run identifies the connected Agent and authorized
+Workspaces before offering any write. When entering a Project, ask the AI to
+call `resolve_project_context` before continuing the discussion.
+
+## Reconnect or revoke
+
+If a host cached an older authorization, disconnect or log out of SignalSurf in
+that host, then start OAuth again. Revoking the SignalSurf grant prevents new
+access tokens; already-issued access tokens expire within their short lifetime.
+
+Never paste a SignalSurf access or refresh token into chat, a shell command, an
+issue, or a support message.
+
+## Raw MCP
+
+Use raw MCP only for an agent host that cannot load the Plugin. Add
+`https://mcp.signalsurf.ai/mcp` as a remote Streamable HTTP server and complete
+the same OAuth flow. The server tools and permission checks are identical; the
+host simply will not receive the Plugin's routing Skill.
