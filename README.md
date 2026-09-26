@@ -19,14 +19,14 @@ and Cursor installation, OAuth, verification, updates, and troubleshooting.
 The short version for Claude Code is:
 
 ```sh
-claude plugin marketplace add Signalsurf-ai/agent-plugins
+claude plugin marketplace add Signalsurf-ai/signalsurf-agent
 claude plugin install signalsurf@signalsurf --scope user
 ```
 
 For Codex:
 
 ```sh
-codex plugin marketplace add Signalsurf-ai/agent-plugins
+codex plugin marketplace add Signalsurf-ai/signalsurf-agent
 codex plugin add signalsurf@signalsurf
 ```
 

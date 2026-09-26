@@ -10,7 +10,7 @@ then start a fresh chat so the Skill and MCP connection load together.
 Requires a Claude Code version with plugin marketplaces and remote HTTP MCP.
 
 ```sh
-claude plugin marketplace add Signalsurf-ai/agent-plugins
+claude plugin marketplace add Signalsurf-ai/signalsurf-agent
 claude plugin install signalsurf@signalsurf --scope user
 ```
 
@@ -28,7 +28,7 @@ claude plugin update signalsurf@signalsurf
 ## Codex
 
 ```sh
-codex plugin marketplace add Signalsurf-ai/agent-plugins
+codex plugin marketplace add Signalsurf-ai/signalsurf-agent
 codex plugin add signalsurf@signalsurf
 ```
 
@@ -49,7 +49,7 @@ codex plugin add signalsurf@signalsurf
 ## ChatGPT
 
 Workspace administrators can import the public GitHub marketplace
-`Signalsurf-ai/agent-plugins` from **Workspace settings → Plugins →
+`Signalsurf-ai/signalsurf-agent` from **Workspace settings → Plugins →
 Marketplaces**. Install SignalSurf from that source and authorize its connection.
 Availability depends on the workspace plan and plugin policy.
 
@@ -62,7 +62,7 @@ featuring or search indexing.
 Install SignalSurf from the Cursor Marketplace when the listing is available.
 For local verification before marketplace review:
 
-1. Clone `https://github.com/Signalsurf-ai/agent-plugins`.
+1. Clone `https://github.com/Signalsurf-ai/signalsurf-agent`.
 2. Copy `plugins/signalsurf` into `~/.cursor/plugins/local/signalsurf`.
 3. Restart Cursor or run **Developer: Reload Window**.
 4. Open **Customize** and verify that the SignalSurf Skill and MCP server appear.
