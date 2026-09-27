@@ -7,8 +7,10 @@ tools used in SignalSurf.
 The Plugin bundles two things:
 
 - the hosted SignalSurf MCP connection at `https://mcp.signalsurf.ai/mcp`;
-- one small routing Skill that loads Workspace and Project context and writes
-  durable conclusions back to the appropriate Project Thread.
+- one routing Skill that separates private exploration, bounded direct work,
+  and durable Project work; routes the same Agent into the right Project as the
+  Play's DRI; and uses Threads as shared state without pretending they schedule
+  a separate internal Agent.
 
 OAuth starts during installation or first use. Choose only the Workspaces the
 AI should reach. Tokens are exchanged directly between the host and SignalSurf;
@@ -16,7 +18,7 @@ do not paste a token into chat or a terminal command.
 
 After installing, start a new chat and ask:
 
-> Connect to SignalSurf without changing data. Call get_context, then
+> Connect to SignalSurf without changing data. Call get_workspace_context, then
 > list_workspaces, and tell me which Agent, Workspaces, Project collaboration
 > tools, and product tools are available.
 

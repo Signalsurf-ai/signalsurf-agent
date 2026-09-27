@@ -1,6 +1,6 @@
 {
   "name": "signalsurf",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "Use your SignalSurf Agent, Projects, CRM, Tables, Workflows, and Campaigns from Claude.",
   "author": {
     "name": "SignalSurf"
