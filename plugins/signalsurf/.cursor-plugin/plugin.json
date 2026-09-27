@@ -1,6 +1,6 @@
 {
   "name": "signalsurf",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Use your SignalSurf Agent, Projects, CRM, Tables, Workflows, and Campaigns from Cursor.",
   "author": {
     "name": "SignalSurf"

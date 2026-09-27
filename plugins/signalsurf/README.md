@@ -1,6 +1,6 @@
 # SignalSurf Plugin
 
-The official SignalSurf Plugin connects Claude, Codex, ChatGPT, or Cursor to
+The official SignalSurf Plugin connects Claude, Codex, or Cursor to
 the same SignalSurf Agent, Workspace permissions, Project context, and product
 tools used in SignalSurf.
 

@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <strong>Use your SignalSurf Agent from Claude, Codex, ChatGPT, and Cursor.</strong>
+  <strong>Use your SignalSurf Agent from Claude, Codex, and Cursor.</strong>
 </p>
 
 This is the official SignalSurf plugin marketplace. One versioned plugin
@@ -13,8 +13,9 @@ useful conclusions.
 
 ## Install
 
-See [Getting started](./GETTING_STARTED.md) for Claude Code, Codex, ChatGPT,
-and Cursor installation, OAuth, verification, updates, and troubleshooting.
+See [Getting started](./GETTING_STARTED.md) for Claude Code, Codex, and Cursor
+installation, plus the separate ChatGPT connector path, OAuth, verification,
+updates, and troubleshooting.
 
 The short version for Claude Code is:
 

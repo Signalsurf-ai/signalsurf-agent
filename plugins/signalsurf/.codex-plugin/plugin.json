@@ -1,7 +1,7 @@
 {
   "name": "signalsurf",
-  "version": "0.2.1",
-  "description": "Use your SignalSurf Agent, Projects, CRM, Tables, Workflows, and Campaigns from Codex and ChatGPT.",
+  "version": "0.2.2",
+  "description": "Use your SignalSurf Agent, Projects, CRM, Tables, Workflows, and Campaigns from Codex.",
   "author": {
     "name": "SignalSurf",
     "url": "https://www.signalsurf.ai"

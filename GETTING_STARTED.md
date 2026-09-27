@@ -48,14 +48,13 @@ codex plugin add signalsurf@signalsurf
 
 ## ChatGPT
 
-Workspace administrators can import the public GitHub marketplace
-`Signalsurf-ai/signalsurf-agent` from **Workspace settings → Plugins →
-Marketplaces**. Install SignalSurf from that source and authorize its connection.
-Availability depends on the workspace plan and plugin policy.
-
-The public ChatGPT Plugin Directory listing is a separate reviewed release. A
-GitHub marketplace install remains usable without waiting for directory
-featuring or search indexing.
+The GitHub package above installs in Codex; it does not configure ChatGPT web.
+In ChatGPT, install the reviewed SignalSurf connector when it appears in the
+Plugin Directory. Until that review is complete, eligible workspace
+administrators can add `https://mcp.signalsurf.ai/mcp` as a custom connector and
+complete OAuth. A custom connector exposes the same tools and permissions but
+does not bundle this repository's routing Skill, so begin with the read-only
+verification prompt below.
 
 ## Cursor
 
