@@ -7,9 +7,10 @@
 </p>
 
 This is the official SignalSurf plugin marketplace. One versioned plugin
-bundles the hosted SignalSurf MCP connection with the small routing Skill that
-teaches an external AI how to load Workspace and Project context and persist
-useful conclusions.
+bundles the hosted SignalSurf MCP connection with a small root router and
+focused product Skills. They teach an external AI how to load Workspace and
+Project context, distinguish Memory from shared Threads and resources, route
+across product surfaces, and preserve useful conclusions.
 
 ## Install
 

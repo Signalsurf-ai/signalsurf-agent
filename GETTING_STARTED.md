@@ -1,9 +1,10 @@
 # Getting started with SignalSurf
 
-The SignalSurf Plugin connects your AI host to the same SignalSurf Agent,
-Workspace permissions, Project context, CRM, Tables, Workflows, and Campaigns
-your team uses. Install the Plugin once, authorize the Workspaces it may reach,
-then start a fresh chat so the Skill and MCP connection load together.
+The SignalSurf Plugin connects your AI host to SignalSurf Workspace and Project
+context, Memory, reusable Skills, CRM, Signals, Workflows, Campaigns, and the
+rest of the product capability graph. Install the Plugin once, authorize the
+Workspaces it may reach, then start a fresh chat so the root router, focused
+Skills, and MCP connection load together.
 
 ## Claude Code
 

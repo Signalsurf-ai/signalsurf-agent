@@ -1,7 +1,7 @@
 {
   "name": "signalsurf",
-  "version": "0.3.0",
-  "description": "Use your SignalSurf Agent, Projects, CRM, Tables, Workflows, and Campaigns from Codex.",
+  "version": "0.5.0",
+  "description": "Use SignalSurf's complete Agent operating layer from Codex.",
   "author": {
     "name": "SignalSurf",
     "url": "https://www.signalsurf.ai"
@@ -15,7 +15,7 @@
   "interface": {
     "displayName": "SignalSurf",
     "shortDescription": "Run your SignalSurf Agent from your AI",
-    "longDescription": "Connect your AI to the same SignalSurf Agent, Project context, CRM records, Tables, Workflows, and Campaigns your team uses. OAuth keeps every action inside the Workspaces and permissions you approve.",
+    "longDescription": "Connect your AI to SignalSurf Workspace and Project context, Memory, reusable Skills, CRM Records, Tables, Signals, Listening, Workflows, Meetings, Content, Inbox, Campaigns, Knowledge, and Connections. OAuth keeps every action inside the Workspaces and permissions you approve.",
     "developerName": "SignalSurf",
     "category": "Business & Operations",
     "capabilities": ["Interactive", "Read", "Write"],

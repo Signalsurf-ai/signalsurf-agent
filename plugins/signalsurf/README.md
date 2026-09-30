@@ -1,16 +1,18 @@
 # SignalSurf Plugin
 
-The official SignalSurf Plugin connects Claude, Codex, or Cursor to
-the same SignalSurf Agent, Workspace permissions, Project context, and product
-tools used in SignalSurf.
+The official SignalSurf Plugin connects Claude, Codex, or Cursor to SignalSurf
+as the authenticated member's chief-of-staff interface, with the same Workspace
+permissions, Project context, and product tools used in SignalSurf.
 
 The Plugin bundles two things:
 
 - the hosted SignalSurf MCP connection at `https://mcp.signalsurf.ai/mcp`;
-- one routing Skill that separates private exploration, bounded direct work,
-  and durable Project work; routes the same Agent into the right Project as the
-  Play's DRI; and uses Threads as shared state without pretending they schedule
-  a separate internal Agent.
+- one root operating Skill plus focused Skills for Projects, Records, Tables,
+  Signals, Listening, Workflows, Meetings, Content, Inbox, Campaigns,
+  Knowledge, Connections, and custom Skills. Together they separate private
+  exploration, bounded direct work, and durable Project work; distinguish
+  Memory from Threads and resources; and use live capability schemas instead
+  of a copied tool catalogue.
 
 OAuth starts during installation or first use. Choose only the Workspaces the
 AI should reach. Tokens are exchanged directly between the host and SignalSurf;
