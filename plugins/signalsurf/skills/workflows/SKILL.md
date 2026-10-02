@@ -1,9 +1,9 @@
 ---
 name: workflows
-description: Use for SignalSurf Workflow templates, typed graphs, triggers/sources, nodes, variables, runs, jobs, pipeline status, action history, or recurring automation design.
+description: Use for Signalsurf Workflow templates, typed graphs, triggers/sources, nodes, variables, runs, jobs, pipeline status, action history, or recurring automation design.
 ---
 
-# SignalSurf Workflows
+# Signalsurf Workflows
 
 Use a Workflow for durable deterministic or agentic automation, not for a one-off direct tool call.
 

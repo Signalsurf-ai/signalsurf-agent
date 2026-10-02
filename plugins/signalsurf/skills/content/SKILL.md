@@ -1,9 +1,9 @@
 ---
 name: content
-description: Use for SignalSurf owned social accounts, content drafts, posts, calendar slots, publishing, retries, analytics, or audience capture from owned content.
+description: Use for Signalsurf owned social accounts, content drafts, posts, calendar slots, publishing, retries, analytics, or audience capture from owned content.
 ---
 
-# SignalSurf Content
+# Signalsurf Content
 
 1. Read publishable accounts, current posts, settings, or analytics with `content_query`; never invent a connected handle or schedule slot.
 2. Use `content_manage` for drafts, edits, unscheduling, deletion, settings, and explicit audience capture. Keep drafts reviewable before publication.

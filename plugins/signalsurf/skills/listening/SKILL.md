@@ -1,9 +1,9 @@
 ---
 name: listening
-description: Use for SignalSurf Listenings, durable social monitoring, collected posts, reply drafts, public replies, source quality, or audience capture from monitored content.
+description: Use for Signalsurf Listenings, durable social monitoring, collected posts, reply drafts, public replies, source quality, or audience capture from monitored content.
 ---
 
-# SignalSurf Listening
+# Signalsurf Listening
 
 A Listening is a durable monitor. One-off research belongs to Signals unless the user wants continuing collection.
 

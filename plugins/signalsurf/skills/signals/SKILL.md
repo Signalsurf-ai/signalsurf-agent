@@ -1,9 +1,9 @@
 ---
 name: signals
-description: Use for SignalSurf net-new company or people discovery, web/social research, enrichment, job-change checks, technology evidence, hiring signals, or engager collection.
+description: Use for Signalsurf net-new company or people discovery, web/social research, enrichment, job-change checks, technology evidence, hiring signals, or engager collection.
 ---
 
-# SignalSurf Signals
+# Signalsurf Signals
 
 Signals produce observed evidence. They do not automatically become CRM truth, a Listening, or a Campaign.
 

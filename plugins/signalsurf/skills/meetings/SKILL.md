@@ -1,9 +1,9 @@
 ---
 name: meetings
-description: Use for SignalSurf recorded meetings, transcripts, summaries, meeting instructions, connected meeting accounts, or syncing meeting outcomes into CRM Records.
+description: Use for Signalsurf recorded meetings, transcripts, summaries, meeting instructions, connected meeting accounts, or syncing meeting outcomes into CRM Records.
 ---
 
-# SignalSurf Meetings
+# Signalsurf Meetings
 
 1. Resolve meetings with `meeting_query`; distinguish recording/transcript availability from an empty result.
 2. Use `meeting_preferences` only for explicit summary-instruction or Records-sync configuration changes.

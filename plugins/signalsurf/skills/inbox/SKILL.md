@@ -1,9 +1,9 @@
 ---
 name: inbox
-description: Use for SignalSurf connected Inbox conversations, email drafts, replies, new sends, follow-ups, Autopilots, engagement tests, or Inbox-to-CRM sync.
+description: Use for Signalsurf connected Inbox conversations, email drafts, replies, new sends, follow-ups, Autopilots, engagement tests, or Inbox-to-CRM sync.
 ---
 
-# SignalSurf Inbox
+# Signalsurf Inbox
 
 1. Resolve the conversation/contact with `inbox_query`, Records, or `engagement_query`; never infer a recipient or sender account.
 2. Draft with `message_draft`. Drafting and sending are separate actions.

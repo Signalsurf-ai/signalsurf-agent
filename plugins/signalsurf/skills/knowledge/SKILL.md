@@ -1,9 +1,9 @@
 ---
 name: knowledge
-description: Use for SignalSurf Knowledge bases, documents, semantic search, saving explicit source material, SOPs, research artifacts, or reusable playbooks.
+description: Use for Signalsurf Knowledge bases, documents, semantic search, saving explicit source material, SOPs, research artifacts, or reusable playbooks.
 ---
 
-# SignalSurf Knowledge
+# Signalsurf Knowledge
 
 Knowledge is explicit durable reference content. It is not conversational Memory.
 

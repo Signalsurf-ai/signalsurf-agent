@@ -1,7 +1,7 @@
 {
   "name": "signalsurf",
   "interface": {
-    "displayName": "SignalSurf"
+    "displayName": "Signalsurf"
   },
   "plugins": [
     {

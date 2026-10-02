@@ -1,16 +1,16 @@
 {
   "name": "signalsurf",
   "owner": {
-    "name": "SignalSurf"
+    "name": "Signalsurf"
   },
   "metadata": {
-    "description": "Official SignalSurf plugins for Claude"
+    "description": "Official Signalsurf plugins for Claude"
   },
   "plugins": [
     {
       "name": "signalsurf",
       "source": "./plugins/signalsurf",
-      "description": "Use your SignalSurf Agent, Project context, CRM, and product tools from Claude."
+      "description": "Use your Signalsurf, Project context, CRM, and product tools from Claude."
     }
   ]
 }

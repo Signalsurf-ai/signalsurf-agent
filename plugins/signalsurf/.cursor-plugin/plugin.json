@@ -1,14 +1,14 @@
 {
   "name": "signalsurf",
-  "version": "0.5.0",
-  "description": "Use SignalSurf's complete Agent operating layer from Cursor.",
+  "version": "0.5.2",
+  "description": "Use Signalsurf's complete operating layer from Cursor.",
   "author": {
-    "name": "SignalSurf"
+    "name": "Signalsurf"
   },
   "homepage": "https://www.signalsurf.ai",
   "repository": "https://github.com/Signalsurf-ai/signalsurf-agent",
   "license": "MIT",
-  "logo": "assets/icon.svg",
+  "logo": "assets/icon.png",
   "skills": ["./skills"],
   "mcpServers": "./mcp.json"
 }

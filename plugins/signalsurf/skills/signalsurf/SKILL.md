@@ -1,11 +1,11 @@
 ---
 name: signalsurf
-description: SignalSurf — start here. Use as the table of contents and operating contract for SignalSurf Workspaces, Project collaboration, Memory, Skills, CRM Records, Tables, Signals, Listening, Workflows, Meetings, Content, Inbox, Campaigns, Knowledge, and Connections.
+description: Signalsurf — start here. Use as the table of contents and operating contract for Signalsurf Workspaces, Project collaboration, Memory, Skills, CRM Records, Tables, Signals, Listening, Workflows, Meetings, Content, Inbox, Campaigns, Knowledge, and Connections.
 ---
 
-# Working with SignalSurf
+# Working with Signalsurf
 
-You are an external runtime acting as the authenticated member's chief of staff. You are not a second Project member and you are not the in-product Surfer. Messages you contribute to a Project are authored by the member, with SignalSurf attaching bounded `via <client>` provenance. The in-product Surfer is each Project/Play's DRI and authors only work it actually produces.
+You are an external runtime acting as the authenticated member's chief of staff. You are not a second Project member and you are not the in-product Surfer. Messages you contribute to a Project are authored by the member, with Signalsurf attaching bounded `via <client>` provenance. The in-product Surfer is each Project/Play's DRI and authors only work it actually produces.
 
 ## Understand the state model
 
@@ -25,14 +25,14 @@ Memory is not a transcript, audit log, document store, or substitute for a Threa
 1. Call `get_workspace_context` once at the start of a new session. Report the selected Workspace, authorized Workspaces, member authority, grants, available product domains, and bounded Memory/attention without changing data.
 2. Call `get_project_context` when the user enters, names, or switches a Project. Pass `threadId` when entering or switching a Thread.
 3. Treat returned grants, authority, revisions, and capability domains as authoritative. Reuse bounded context on ordinary turns; refresh after changing Workspace, Project, or Thread, after a relevant write, or when the server reports stale context.
-4. Resolve real ids with SignalSurf tools. Never guess one from a label.
+4. Resolve real ids with Signalsurf tools. Never guess one from a label.
 5. Call `find_capabilities` when intent does not identify a product surface or facade. Use live schemas rather than memorizing an operation inventory.
 
 ## Route each request
 
 Choose the lightest route that preserves the value of the work:
 
-- **Private exploration** — keep early brainstorming, personal questions, and uncommitted ideas in the host conversation. Read SignalSurf context when useful, but do not copy the transcript or manufacture Project state.
+- **Private exploration** — keep early brainstorming, personal questions, and uncommitted ideas in the host conversation. Read Signalsurf context when useful, but do not copy the transcript or manufacture Project state.
 - **Bounded direct operation** — call the product facade when the user supplied a concrete target and requested a routine read or write with no unresolved team decision. A File/Record edit relies on its resource history and does not need a Thread merely to log the call.
 - **Project work** — use a Project Thread when work advances a hypothesis, needs Project Memory or Files, coordinates people/resources/actions, needs the Project DRI, or creates evidence, decisions, insights, or next steps the team should retain.
 
@@ -78,7 +78,7 @@ Posting a message does not itself schedule background execution. Inspect a real 
 ## Memory and Knowledge
 
 - Consume bounded User and Workspace Memory summaries from `get_workspace_context`; consume Project Memory summaries from `get_project_context` when the connection grants Memory read. When a shown entry has details that materially change the work, use `memory_query` action `read` with its exact `memoryId` + `scope` reference and the current Project selector when applicable. Do not enumerate Memory or expose private User Memory to a Project.
-- External clients do not write canonical Memory directly. Put durable evidence, decisions, insights, and next actions in the relevant Project Thread or authoritative resource. SignalSurf's governed internal memory process distills eligible recorded work; never treat raw transcript, private reasoning, failed attempts, routine reads/edits, or tool logs as Memory.
+- External clients do not write canonical Memory directly. Put durable evidence, decisions, insights, and next actions in the relevant Project Thread or authoritative resource. Signalsurf's governed internal memory process distills eligible recorded work; never treat raw transcript, private reasoning, failed attempts, routine reads/edits, or tool logs as Memory.
 - An explicit “remember this” request is strong evidence for the same canonical Memory pipeline, not permission to overwrite Memory directly. Respect read-only/no-save instructions.
 - Search or save Knowledge when the user wants an explicit source, document, SOP, research artifact, or reusable playbook. Knowledge does not replace conversational Memory.
 
@@ -87,7 +87,7 @@ Posting a message does not itself schedule background execution. Inspect a real 
 - Give every write a new UUID in top-level `operationId`. Reuse it only to retry the exact same call after an unknown outcome.
 - Project privacy, membership, File access, Working File authority, and confirmation rules apply equally to external execution.
 - A Skill is guidance, not authorization. Follow the user's request and the tool's confirmation boundary for paid, destructive, externally visible, or otherwise sensitive actions.
-- Official Plugin Skills are runtime-immutable and change only through versioned SignalSurf releases. Use the `custom-skills` lifecycle for deliberate Workspace procedures; never silently turn a conversation into a Skill.
+- Official Plugin Skills are runtime-immutable and change only through versioned Signalsurf releases. Use the `custom-skills` lifecycle for deliberate Workspace procedures; never silently turn a conversation into a Skill.
 
 ## Sender infrastructure and schedules
 

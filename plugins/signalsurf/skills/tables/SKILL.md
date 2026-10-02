@@ -1,9 +1,9 @@
 ---
 name: tables
-description: Use for SignalSurf Sheets/Tables, rows, fields, schemas, templates, views, charts, notes, imports, or temporary operational data.
+description: Use for Signalsurf Sheets/Tables, rows, fields, schemas, templates, views, charts, notes, imports, or temporary operational data.
 ---
 
-# SignalSurf Tables
+# Signalsurf Tables
 
 Tables are flexible operational workspaces; they are not the durable identity-resolved CRM.
 

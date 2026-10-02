@@ -1,9 +1,9 @@
 {
   "name": "signalsurf",
-  "version": "0.5.0",
-  "description": "Use SignalSurf's complete Agent operating layer from Claude.",
+  "version": "0.5.2",
+  "description": "Use Signalsurf's complete operating layer from Claude.",
   "author": {
-    "name": "SignalSurf"
+    "name": "Signalsurf"
   },
   "homepage": "https://www.signalsurf.ai",
   "repository": "https://github.com/Signalsurf-ai/signalsurf-agent",

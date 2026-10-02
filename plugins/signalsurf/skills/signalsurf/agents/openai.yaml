@@ -1,8 +1,8 @@
 interface:
-  display_name: "SignalSurf"
+  display_name: "Signalsurf"
   short_description: "Use your Agent and GTM workspace"
-  icon_small: "assets/icon.svg"
-  icon_large: "assets/icon.svg"
+  icon_small: "assets/icon.png"
+  icon_large: "assets/icon.png"
   brand_color: "#1E1E1E"
   default_prompt: "Use $signalsurf to show my Workspace context, Memory summary, active Projects, and available product routes without changing data."
 
@@ -10,7 +10,7 @@ dependencies:
   tools:
     - type: "mcp"
       value: "signalsurf"
-      description: "SignalSurf Workspace and Project context, Memory, Skills, and product tools"
+      description: "Signalsurf Workspace and Project context, Memory, Skills, and product tools"
       transport: "streamable_http"
       url: "https://mcp.signalsurf.ai/mcp"
 

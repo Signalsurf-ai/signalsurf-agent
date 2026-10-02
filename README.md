@@ -1,13 +1,9 @@
 <p align="center">
-  <img src="./plugins/signalsurf/assets/icon.svg" alt="SignalSurf" height="64">
+  <strong>Use your Signalsurf from Claude, Codex, and Cursor.</strong>
 </p>
 
-<p align="center">
-  <strong>Use your SignalSurf Agent from Claude, Codex, and Cursor.</strong>
-</p>
-
-This is the official SignalSurf plugin marketplace. One versioned plugin
-bundles the hosted SignalSurf MCP connection with a small root router and
+This is the official Signalsurf plugin marketplace. One versioned plugin
+bundles the hosted Signalsurf MCP connection with a small root router and
 focused product Skills. They teach an external AI how to load Workspace and
 Project context, distinguish Memory from shared Threads and resources, route
 across product surfaces, and preserve useful conclusions.
@@ -32,7 +28,7 @@ codex plugin marketplace add Signalsurf-ai/signalsurf-agent
 codex plugin add signalsurf@signalsurf
 ```
 
-Installing the Plugin does not bypass SignalSurf permissions. OAuth asks the
+Installing the Plugin does not bypass Signalsurf permissions. OAuth asks the
 member which Workspaces and grants the AI may use, and the server revalidates
 authorization on every tool call.
 
@@ -45,8 +41,8 @@ https://mcp.signalsurf.ai/mcp
 ```
 
 Raw MCP exposes the same tools and authorization model. It does not include the
-Plugin's interaction guidance and is not a separate SignalSurf mode.
+Plugin's interaction guidance and is not a separate Signalsurf mode.
 
-[SignalSurf](https://www.signalsurf.ai) ·
+[Signalsurf](https://www.signalsurf.ai) ·
 [Privacy](https://www.signalsurf.ai/privacy) ·
 [Terms](https://www.signalsurf.ai/terms)

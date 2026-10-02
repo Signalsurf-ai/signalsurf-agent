@@ -1,9 +1,9 @@
 ---
 name: records
-description: Use for SignalSurf CRM Objects, People or Company Records, Lists, audiences, identity-resolved data, qualification, selection, or membership.
+description: Use for Signalsurf CRM Objects, People or Company Records, Lists, audiences, identity-resolved data, qualification, selection, or membership.
 ---
 
-# SignalSurf Records
+# Signalsurf Records
 
 Use Records for durable CRM truth; use Tables for flexible temporary operational rows.
 

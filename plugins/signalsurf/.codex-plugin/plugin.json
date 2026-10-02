@@ -1,9 +1,9 @@
 {
   "name": "signalsurf",
-  "version": "0.5.0",
-  "description": "Use SignalSurf's complete Agent operating layer from Codex.",
+  "version": "0.5.2",
+  "description": "Use Signalsurf's complete operating layer from Codex.",
   "author": {
-    "name": "SignalSurf",
+    "name": "Signalsurf",
     "url": "https://www.signalsurf.ai"
   },
   "homepage": "https://www.signalsurf.ai",
@@ -13,23 +13,23 @@
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "interface": {
-    "displayName": "SignalSurf",
-    "shortDescription": "Run your SignalSurf Agent from your AI",
-    "longDescription": "Connect your AI to SignalSurf Workspace and Project context, Memory, reusable Skills, CRM Records, Tables, Signals, Listening, Workflows, Meetings, Content, Inbox, Campaigns, Knowledge, and Connections. OAuth keeps every action inside the Workspaces and permissions you approve.",
-    "developerName": "SignalSurf",
+    "displayName": "Signalsurf",
+    "shortDescription": "Your GTM operating layer",
+    "longDescription": "Connect your AI to Signalsurf Workspace and Project context, Memory, reusable Skills, CRM Records, Tables, Signals, Listening, Workflows, Meetings, Content, Inbox, Campaigns, Knowledge, and Connections. OAuth keeps every action inside the Workspaces and permissions you approve.",
+    "developerName": "Signalsurf",
     "category": "Business & Operations",
     "capabilities": ["Interactive", "Read", "Write"],
     "websiteURL": "https://www.signalsurf.ai",
     "privacyPolicyURL": "https://www.signalsurf.ai/privacy",
     "termsOfServiceURL": "https://www.signalsurf.ai/terms",
     "defaultPrompt": [
-      "Show my SignalSurf context and active Projects",
+      "Show my Signalsurf context and active Projects",
       "Continue the most relevant Project Thread",
       "Update my CRM from this conversation"
     ],
     "brandColor": "#1E1E1E",
-    "composerIcon": "./assets/icon.svg",
-    "logo": "./assets/icon.svg",
+    "composerIcon": "./assets/icon.png",
+    "logo": "./assets/icon.png",
     "screenshots": []
   }
 }

@@ -1,9 +1,9 @@
 ---
 name: projects
-description: Use for SignalSurf Project discovery, Project Context, Channels, Threads, decisions, activity, members, delegations, or Working File authority.
+description: Use for Signalsurf Project discovery, Project Context, Channels, Threads, decisions, activity, members, delegations, or Working File authority.
 ---
 
-# SignalSurf Projects
+# Signalsurf Projects
 
 Follow the `signalsurf` operating contract. A Project is one durable Play, its in-product Surfer is the DRI, and each Thread is the coordination ledger for one piece of work.
 
@@ -14,4 +14,4 @@ Follow the `signalsurf` operating contract. A Project is one durable Play, its i
 5. Use `commander_query` only for real delegated/background work. Posting a message does not create a delegation.
 6. Use `project_file_authority` only for explicit Working File ownership or conflict work. Routine reads do not require a lease.
 
-Project messages are member-authored with SignalSurf client provenance. Do not speak as Surfer or paste the private host transcript.
+Project messages are member-authored with Signalsurf client provenance. Do not speak as Surfer or paste the private host transcript.
