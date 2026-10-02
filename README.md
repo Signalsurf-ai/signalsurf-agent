@@ -1,12 +1,12 @@
 <p align="center">
-  <strong>Bring your Signalsurf workspace into Claude, Codex, and Cursor.</strong>
+  <strong>Bring Signalsurf into Claude, Codex, and Cursor.</strong>
 </p>
 
-Access your Workspace context, collaborate in Projects, and run CRM, signals,
+Access your Workspace context, collaborate in Projects, and use CRM, signals,
 workflows, campaigns, and the rest of Signalsurf from the AI tools where you
-already work. The plugin uses your existing permissions and helps each
-conversation read the right context, take action, and save useful outcomes back
-to the right Project.
+already work. Signalsurf follows your existing permissions, loads the right
+context for each conversation, and saves useful outcomes back to the right
+Project.
 
 ## Install
 

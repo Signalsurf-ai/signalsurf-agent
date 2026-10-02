@@ -4,13 +4,13 @@
     "name": "Signalsurf"
   },
   "metadata": {
-    "description": "Official Signalsurf plugins for Claude"
+    "description": "Access Signalsurf from Claude"
   },
   "plugins": [
     {
       "name": "signalsurf",
       "source": "./plugins/signalsurf",
-      "description": "Use your Signalsurf, Project context, CRM, and product tools from Claude."
+      "description": "Access your Signalsurf workspace, Projects, and product tools from Claude."
     }
   ]
 }

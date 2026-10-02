@@ -4,13 +4,13 @@
     "name": "Signalsurf"
   },
   "metadata": {
-    "description": "Official Signalsurf plugins for Cursor"
+    "description": "Access Signalsurf from Cursor"
   },
   "plugins": [
     {
       "name": "signalsurf",
       "source": "./plugins/signalsurf",
-      "description": "Use your Signalsurf, Project context, CRM, and product tools from Cursor."
+      "description": "Access your Signalsurf workspace, Projects, and product tools from Cursor."
     }
   ]
 }

@@ -1,7 +1,7 @@
 {
   "name": "signalsurf",
-  "version": "0.5.3",
-  "description": "Use Signalsurf's complete operating layer from Codex.",
+  "version": "0.5.4",
+  "description": "Access your Signalsurf workspace, Projects, and product tools from Codex.",
   "author": {
     "name": "Signalsurf",
     "url": "https://www.signalsurf.ai"
@@ -14,8 +14,8 @@
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "Signalsurf",
-    "shortDescription": "Your GTM operating layer",
-    "longDescription": "Connect your AI to Signalsurf Workspace and Project context, Memory, reusable Skills, CRM Records, Tables, Signals, Listening, Workflows, Meetings, Content, Inbox, Campaigns, Knowledge, and Connections. OAuth keeps every action inside the Workspaces and permissions you approve.",
+    "shortDescription": "Signalsurf in your AI tools",
+    "longDescription": "Access your Workspace context, collaborate in Projects, and use CRM, signals, workflows, campaigns, and the rest of Signalsurf from Codex. Signalsurf follows your existing permissions and saves useful outcomes back to the right Project.",
     "developerName": "Signalsurf",
     "category": "Business & Operations",
     "capabilities": ["Interactive", "Read", "Write"],

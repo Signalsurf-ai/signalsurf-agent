@@ -1,6 +1,6 @@
 interface:
   display_name: "Signalsurf"
-  short_description: "Use your Agent and GTM workspace"
+  short_description: "Signalsurf in your AI tools"
   icon_small: "assets/icon.png"
   icon_large: "assets/icon.png"
   brand_color: "#1E1E1E"
