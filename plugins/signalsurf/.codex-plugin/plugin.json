@@ -1,6 +1,6 @@
 {
   "name": "signalsurf",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "Use Signalsurf's complete operating layer from Codex.",
   "author": {
     "name": "Signalsurf",

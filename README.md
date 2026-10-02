@@ -1,12 +1,12 @@
 <p align="center">
-  <strong>Use your Signalsurf from Claude, Codex, and Cursor.</strong>
+  <strong>Bring your Signalsurf workspace into Claude, Codex, and Cursor.</strong>
 </p>
 
-This is the official Signalsurf plugin marketplace. One versioned plugin
-bundles the hosted Signalsurf MCP connection with a small root router and
-focused product Skills. They teach an external AI how to load Workspace and
-Project context, distinguish Memory from shared Threads and resources, route
-across product surfaces, and preserve useful conclusions.
+Access your Workspace context, collaborate in Projects, and run CRM, signals,
+workflows, campaigns, and the rest of Signalsurf from the AI tools where you
+already work. The plugin uses your existing permissions and helps each
+conversation read the right context, take action, and save useful outcomes back
+to the right Project.
 
 ## Install
 
