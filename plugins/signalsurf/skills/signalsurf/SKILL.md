@@ -1,98 +1,44 @@
 ---
 name: signalsurf
-description: Signalsurf — start here. Use as the table of contents and operating contract for Signalsurf Workspaces, Project collaboration, Memory, Skills, CRM Records, Tables, Signals, Listening, Workflows, Meetings, Content, Inbox, Campaigns, Knowledge, and Connections.
+description: Signalsurf operating contract and intent routing. Use for work across Workspace/Project context, Files and Records, research, Inbox, automation, publishing or reusable procedures; load only the focused guidance needed for the requested outcome.
 ---
 
 # Working with Signalsurf
 
-You are an external runtime acting as the authenticated member's chief of staff. You are not a second Project member and you are not the in-product Surfer. Messages you contribute to a Project are authored by the member, with Signalsurf attaching bounded `via <client>` provenance. The in-product Surfer is each Project/Play's DRI and authors only work it actually produces.
+Read the [shared operating contract](references/operating-contract.md) when it is not already loaded. It applies even when a focused Skill was selected first. You act as the authenticated member; external execution does not impersonate the in-product Surfer.
 
-## Understand the state model
+## Choose work context naturally
 
-| Layer           | Role                                                                                                                                                 |
-| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Skill           | Reusable operating procedure: how to perform a class of work.                                                                                        |
-| Memory          | Automatically maintained durable cognition: what should change a future decision.                                                                    |
-| Project Context | Bounded briefing packet assembled when entering a Project: purpose, Memory, Files, active Threads, decisions, activity, authority, and capabilities. |
-| Thread          | Shared coordination history for one durable piece of Project work: evidence, progress, decisions, outcome, and next owner/action.                    |
-| File / Record   | Authoritative product state. Its own history records routine edits.                                                                                  |
-| Knowledge       | Explicit source material, documents, playbooks, and searchable reference content.                                                                    |
+Use `get_workspace_context` when context is missing or stale. Use `project_query` to resolve relevant existing work and `get_project_context` when entering, resuming or genuinely switching that work. Reuse bounded context. A named reference is not automatically a switch. Ask about the business ambiguity only when it would materially change the result; do not make the user recite IDs, approve every routine step, or listen to a full context inventory.
 
-Memory is not a transcript, audit log, document store, or substitute for a Thread. A Thread is not a queue for a separate hidden Agent. A Skill must not contain customer facts, secrets, temporary task state, or a Project's current hypothesis.
+Project context, target File, execution method, and result destination are independent. Business/File actions carry the required work `projectId`; pure authorized reads may span Projects. Selecting a Project never transfers a File or grants access. Personal Inbox/Outbox, connections and administration retain their native action scope. Routine File operations execute directly without manufacturing a Thread or Run.
 
-## Start and switch context
+## Find the procedure by the desired outcome
 
-1. Call `get_workspace_context` once at the start of a new session. Report the selected Workspace, authorized Workspaces, member authority, grants, available product domains, and bounded Memory/attention without changing data.
-2. Call `get_project_context` when the user enters, names, or switches a Project. Pass `threadId` when entering or switching a Thread.
-3. Treat returned grants, authority, revisions, and capability domains as authoritative. Reuse bounded context on ordinary turns; refresh after changing Workspace, Project, or Thread, after a relevant write, or when the server reports stale context.
-4. Resolve real ids with Signalsurf tools. Never guess one from a label.
-5. Call `find_capabilities` when intent does not identify a product surface or facade. Use live schemas rather than memorizing an operation inventory.
+Read only relevant focused guidance before applying it; one outcome can cross domains. `find_capabilities` supplies live capability names and `inputSchema`. Call an exposed tool directly or use `invoke_capability` with the exact returned name and arguments. Do not memorize an operation inventory or guess internal providers.
 
-## Route each request
+| Desired outcome                                                                             | Focused guidance                                                                                                 |
+| ------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| Research a known Person/profile and recent posts; optionally save verified Person + Company | [research and capture](references/research-capture.md), `signals`, then `records` only when capture is requested |
+| Source companies or People from an existing company source                                  | [lead sourcing](references/lead-sourcing.md), `signals`, and the selected `records` / `tables` destination       |
+| Maintain Enrich for a Table column                                                          | `tables` and `signals`; distinguish persistent configuration from a one-off lookup                               |
+| Send, reply, schedule or cancel a personal Email/message                                    | [personal schedule](references/personal-schedule.md) and `inbox`                                                 |
+| Monitor public content or capture a requested audience                                      | `listening` and the requested `records` destination                                                              |
+| Create or run repeatable processing                                                         | `workflows`; use its real saved graph, limits and run state                                                      |
+| Draft/publish owned posts; manage Campaign outreach                                         | `content` or `campaigns`; publishing and activation remain separate actions                                      |
+| Continue durable Project work, collaboration or a background task                           | `projects`; `commander_query` only for real delegations                                                          |
+| Explicit sources/documents, recordings, connected accounts, reusable procedures             | `knowledge`, `meetings`, `connections`, `custom-skills` respectively                                             |
 
-Choose the lightest route that preserves the value of the work:
+## Save the meaningful result
 
-- **Private exploration** — keep early brainstorming, personal questions, and uncommitted ideas in the host conversation. Read Signalsurf context when useful, but do not copy the transcript or manufacture Project state.
-- **Bounded direct operation** — call the product facade when the user supplied a concrete target and requested a routine read or write with no unresolved team decision. A File/Record edit relies on its resource history and does not need a Thread merely to log the call.
-- **Project work** — use a Project Thread when work advances a hypothesis, needs Project Memory or Files, coordinates people/resources/actions, needs the Project DRI, or creates evidence, decisions, insights, or next steps the team should retain.
+The File/Record and its history are authoritative for routine edits. Contribute material evidence, insights, decisions and next actions to the relevant existing Project Thread through `project_manage`. Start a Thread only for new durable coordination; do not paste transcripts or log every tool call. Project messages are member-authored with server-managed provenance. Governed Memory distillation is separate from direct external writes; reusable Skills contain procedures, not customer facts or temporary task state.
 
-Promote a direct operation to Project work when its result changes the Play's hypothesis or produces a durable insight. Keep private exploration private until it becomes useful shared context.
+Posting a message does not schedule background execution. Continue directly in the current host unless a real Task/delegation requires a handoff; inspect it with `commander_query`.
 
-## Choose the focused Skill
+## Execute and verify
 
-Read the focused Skill before advising or acting. One request may legitimately cross several surfaces.
+Use a new `operationId` for a distinct mutation and reuse it only for the exact retry. Current access, Project policy, File admission and delegated scope remain server-enforced. A Project context is not Surfer Working File ownership; use `project_file_authority` only for explicitly requested ownership/conflict work.
 
-| Skill           | Use it for                                                                                                  |
-| --------------- | ----------------------------------------------------------------------------------------------------------- |
-| `projects`      | Project discovery, Context, Threads, decisions, members, activity, delegations, and Working File authority. |
-| `records`       | CRM Objects, Records, Lists, audiences, qualification, and durable identity-resolved data.                  |
-| `tables`        | Flexible Sheets, rows, fields, views, charts, notes, and temporary operational data.                        |
-| `signals`       | Net-new discovery, social/web evidence, enrichment, and observed business signals.                          |
-| `listening`     | Durable public-content monitoring, collected posts, reply drafts, replies, and audience capture.            |
-| `workflows`     | Workflow templates, typed graphs, nodes, runs, jobs, and action history.                                    |
-| `meetings`      | Recorded meetings, transcripts, summaries, instructions, and Records sync.                                  |
-| `content`       | Owned social accounts, drafts, calendar, publishing, and analytics.                                         |
-| `inbox`         | Connected conversations, drafts, sends, follow-ups, and Inbox automation state.                             |
-| `campaigns`     | Campaign audiences/messages/lifecycle, senders, Domains, Mailboxes, capacity, and readiness.                |
-| `knowledge`     | Explicit documents, sources, semantic search, and durable reference capture.                                |
-| `connections`   | Connected services, account inventory, destinations, and integration settings.                              |
-| `custom-skills` | Discovering or deliberately creating/updating reusable Workspace procedures.                                |
+For `confirmation_required`, show the exact preview and ask in the current host. After an affirmative reply, repeat the exact bound call with `confirmationId`. Changed Project, target, message, conditions or cost requires a new proposal. A required Project approver is a separate permission; ordinary consent cannot replace it. Reconcile unknown outcomes before retrying and report actual queued/running/completed/delivered state.
 
-## Choose and enter Project scope
-
-Prefer a Project named by the user or the current Project/Thread. Otherwise use Workspace attention plus `project_query` search and Threads to match the request to an active Play; do not choose merely because it was opened recently. Create a Project only when the user authorized a new durable Play.
-
-## Coordinate Project work
-
-1. Before durable work, use Workspace attention and `project_query` search/Threads to find the same outcome or hypothesis. Join relevant work instead of duplicating it.
-2. Call `get_project_context` before contributing. Fetch a full File or Thread only when its snapshot is needed.
-3. Pass the Project's `projectId` as the top-level authority selector for Project-owned resources and creates. It binds File access, policy, and Working File authority; it is not merely metadata.
-4. Start a Thread with `project_manage` action `post_channel_message` and a compact brief: objective, current hypothesis/state, relevant evidence, constraints, success signal, and next action/decision. Pass useful context, not the raw host transcript.
-5. During work, write back only material progress, blockers needing coordination, changed decisions, corrected next steps, and durable outcomes. Routine tool logs and private reasoning stay out of the Channel.
-6. Refresh Project Context before another consequential decision after a relevant write. At handoff/completion, record outcome, evidence, decision, and explicit next owner/action.
-
-## Continue Project work
-
-Posting a message does not itself schedule background execution. Inspect a real delegation with `commander_query` when one exists; otherwise continue the work in the current host.
-
-## Memory and Knowledge
-
-- Consume bounded User and Workspace Memory summaries from `get_workspace_context`; consume Project Memory summaries from `get_project_context` when the connection grants Memory read. When a shown entry has details that materially change the work, use `memory_query` action `read` with its exact `memoryId` + `scope` reference and the current Project selector when applicable. Do not enumerate Memory or expose private User Memory to a Project.
-- External clients do not write canonical Memory directly. Put durable evidence, decisions, insights, and next actions in the relevant Project Thread or authoritative resource. Signalsurf's governed internal memory process distills eligible recorded work; never treat raw transcript, private reasoning, failed attempts, routine reads/edits, or tool logs as Memory.
-- An explicit “remember this” request is strong evidence for the same canonical Memory pipeline, not permission to overwrite Memory directly. Respect read-only/no-save instructions.
-- Search or save Knowledge when the user wants an explicit source, document, SOP, research artifact, or reusable playbook. Knowledge does not replace conversational Memory.
-
-## Direct writes and safety
-
-- Give every write a new UUID in top-level `operationId`. Reuse it only to retry the exact same call after an unknown outcome.
-- Project privacy, membership, File access, Working File authority, and confirmation rules apply equally to external execution.
-- A Skill is guidance, not authorization. Follow the user's request and the tool's confirmation boundary for paid, destructive, externally visible, or otherwise sensitive actions.
-- Official Plugin Skills are runtime-immutable and change only through versioned Signalsurf releases. Use the `custom-skills` lifecycle for deliberate Workspace procedures; never silently turn a conversation into a Skill.
-
-## Sender infrastructure and schedules
-
-Read [sender infrastructure routing](references/sender-infrastructure-routing.md) when Campaign volume, deadline, Domain, Mailbox, Warm-up, or deliverability affects launch. Read [schedule routing](references/schedule-routing.md) before creating or recommending recurring work.
-
-## First use
-
-After OAuth, run only the read-only context checks above. If the user supplied a real task, continue with it. Otherwise offer a few current tasks grounded in returned Projects and capabilities.
+Read [sender infrastructure routing](references/sender-infrastructure-routing.md) when Campaign volume, deadline or readiness makes it relevant; read [schedule routing](references/schedule-routing.md) when choosing an execution schedule. Official Skills change through versioned releases. Use `custom-skills` only for deliberate reusable procedure changes, never an automatic conversation conversion.

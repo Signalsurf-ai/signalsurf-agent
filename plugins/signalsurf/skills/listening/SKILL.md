@@ -5,6 +5,8 @@ description: Use for Signalsurf Listenings, durable social monitoring, collected
 
 # Signalsurf Listening
 
+Read the [shared operating contract](../signalsurf/references/operating-contract.md) unless already loaded; a focused Skill uses the same context, actor, confirmation and result rules.
+
 A Listening is a durable monitor. One-off research belongs to Signals unless the user wants continuing collection.
 
 1. Resolve existing monitors with `listening_query`; do not use Sheet tools for Listening ids or collected posts.

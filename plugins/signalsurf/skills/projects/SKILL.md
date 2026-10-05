@@ -5,6 +5,8 @@ description: Use for Signalsurf Project discovery, Project Context, Channels, Th
 
 # Signalsurf Projects
 
+Read the [shared operating contract](../signalsurf/references/operating-contract.md) unless already loaded; a focused Skill uses the same context, actor, confirmation and result rules.
+
 Follow the `signalsurf` operating contract. A Project is one durable Play, its in-product Surfer is the DRI, and each Thread is the coordination ledger for one piece of work.
 
 1. Use `get_workspace_context` if Workspace context is absent or stale.

@@ -5,6 +5,8 @@ description: Use when discovering, loading, creating, or improving a reusable Si
 
 # Signalsurf Custom Skills
 
+Read the [shared operating contract](../signalsurf/references/operating-contract.md) unless already loaded; a focused Skill uses the same context, actor, confirmation and result rules.
+
 A Skill is a reusable procedure: how to perform a repeatable class of work. It is not authorization and must not hold customer facts, secrets, raw transcripts, temporary state, or one Project's current hypothesis.
 
 ## Discover and load
@@ -15,10 +17,10 @@ A Skill is a reusable procedure: how to perform a repeatable class of work. It i
 
 ## Create
 
-Create only when the user wants to preserve a repeatable Workspace procedure. Draft sections named **Name**, **When to use**, and **Instructions**, show them to the user, and require explicit approval before calling `skill_manage` action `create`. Signalsurf Web then requires a Workspace admin to approve that exact write. One conversation never silently becomes a Skill.
+Create only when the user wants to preserve a repeatable Workspace procedure. Draft sections named **Name**, **When to use**, and **Instructions**, then call `skill_manage` action `create`. If the tool returns `confirmation_required`, show that exact preview and follow the root Skill's same-conversation confirmation flow. One conversation never silently becomes a Skill.
 
 ## Update
 
-Load the current custom Skill and `revision`, show the proposed change, and require explicit approval. Call `skill_manage` action `update` with that exact `expectedRevision` so concurrent changes fail closed; Signalsurf Web requires a Workspace admin to approve the write. Official Plugin Skills are immutable and cannot be shadowed or edited through this lifecycle.
+Load the current custom Skill and `revision`, show the proposed change, and call `skill_manage` action `update` with that exact `expectedRevision` so concurrent changes fail closed. If the tool returns `confirmation_required`, follow the root Skill's same-conversation confirmation flow. Official Plugin Skills are immutable and cannot be shadowed or edited through this lifecycle.
 
 If custom Skill query/manage capabilities are unavailable, say so and keep the draft in the conversation; do not claim it was installed or modify Plugin files as a substitute.

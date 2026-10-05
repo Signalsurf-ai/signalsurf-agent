@@ -5,6 +5,8 @@ description: Use for Signalsurf Workflow templates, typed graphs, triggers/sourc
 
 # Signalsurf Workflows
 
+Read the [shared operating contract](../signalsurf/references/operating-contract.md) unless already loaded; a focused Skill uses the same context, actor, confirmation and result rules.
+
 Use a Workflow for durable deterministic or agentic automation, not for a one-off direct tool call.
 
 1. Inspect existing state with `workflow_query`. Prefer `workflow_templates` when a maintained pattern fits.

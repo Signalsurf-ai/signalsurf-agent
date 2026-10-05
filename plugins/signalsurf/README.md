@@ -9,10 +9,11 @@ The Plugin bundles two things:
 - the hosted Signalsurf MCP connection at `https://mcp.signalsurf.ai/mcp`;
 - one root operating Skill plus focused Skills for Projects, Records, Tables,
   Signals, Listening, Workflows, Meetings, Content, Inbox, Campaigns,
-  Knowledge, Connections, and custom Skills. Together they separate private
-  exploration, bounded direct work, and durable Project work; distinguish
-  Memory from Threads and resources; and use live capability schemas instead
-  of a copied tool catalogue.
+  Knowledge, Connections, and custom Skills. They choose work context, resource targets, execution and result persistence
+  independently. A direct File operation can use Project context without a
+  Thread or ownership transfer. Portable references share the maintained core
+  and composed research, lead-sourcing and personal Outbox procedures; live
+  capability schemas supply the callable contract.
 
 OAuth starts during installation or first use. Choose only the Workspaces the
 AI should reach. Tokens are exchanged directly between the host and Signalsurf;
