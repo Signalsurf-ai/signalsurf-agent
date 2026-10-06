@@ -1,6 +1,6 @@
 {
   "name": "signalsurf",
-  "version": "0.5.8",
+  "version": "0.5.11",
   "description": "Access your Signalsurf workspace, Projects, and product tools from Cursor.",
   "author": {
     "name": "Signalsurf"

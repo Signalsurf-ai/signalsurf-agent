@@ -76,7 +76,7 @@ name.
 Start a new chat and send:
 
 > Connect to Signalsurf without changing data. Call get_workspace_context, then
-> list_workspaces, and tell me which Agent, Workspaces, Project collaboration
+> find_capabilities, and tell me which Agent, Workspaces, Project collaboration
 > tools, and product tools are available.
 
 A successful first run identifies the connected Agent and authorized
