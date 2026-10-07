@@ -22,7 +22,7 @@ do not paste a token into chat or a terminal command.
 After installing, start a new chat and ask:
 
 > Connect to Signalsurf without changing data. Call get_workspace_context, then
-> list_workspaces, and tell me which Agent, Workspaces, Project collaboration
+> find_capabilities, and tell me which Agent, Workspaces, Project collaboration
 > tools, and product tools are available.
 
 See the repository [getting started guide](../../GETTING_STARTED.md) for

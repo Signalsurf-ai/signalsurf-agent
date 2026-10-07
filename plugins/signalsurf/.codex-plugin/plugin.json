@@ -1,6 +1,6 @@
 {
   "name": "signalsurf",
-  "version": "0.5.8",
+  "version": "0.5.12",
   "description": "Access your Signalsurf workspace, Projects, and product tools from Codex.",
   "author": {
     "name": "Signalsurf",

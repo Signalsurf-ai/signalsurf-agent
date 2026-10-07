@@ -7,11 +7,13 @@ description: Use for Signalsurf connected Inbox conversations, email drafts, rep
 
 Read the [shared operating contract](../signalsurf/references/operating-contract.md) unless already loaded; a focused Skill uses the same context, actor, confirmation and result rules.
 
+Business work uses a selected Project with Messages enabled in File Access. Personal sends/schedules follow the same Messages gate. Pure Workspace reads may omit Project; reads within an explicit Project check its selection. Inspect current approvals and actual account/resource permissions before effects.
+
 1. Resolve the conversation/contact with `inbox_query`, Records, or `engagement_query`; never infer a recipient or sender account.
 2. Draft with `message_draft`. Drafting and sending are separate actions.
 3. Use `message_send` only on an explicit target and under the required confirmation. Sends are externally visible and not automatically retryable after an ambiguous outcome.
 4. Use `engagement_manage` for follow-up/Autopilot state and `inbox_preferences` for explicit Records-sync settings.
-5. Keep routine correspondence in Inbox history. Write Project-relevant commitments, objections, evidence, decisions, and next steps to the matching Thread without copying the full conversation.
+5. Keep routine correspondence in Inbox history. Write material shared Project-relevant commitments, objections, evidence, decisions, and next steps to the matching Thread without copying the full conversation.
 
 Read [personal schedule](../signalsurf/references/personal-schedule.md) for the composed sender → recipient → preview → native Outbox → verified status procedure.
 
