@@ -9,6 +9,8 @@ Read the [shared operating contract](../signalsurf/references/operating-contract
 
 A Listening is a durable monitor. One-off research belongs to Signals unless the user wants continuing collection.
 
+When writing, reviewing or rewriting copy, read [Writing](../writing/SKILL.md) and only the matching purpose/channel references. Use the native procedure below to read, save or send; a writing request does not expand permissions.
+
 1. Resolve existing monitors with `listening_query`; do not use Sheet tools for Listening ids or collected posts.
 2. Use `listening_manage` for configuration, activation, imported posts, and explicit audience capture.
 3. Draft with `listening_reply` action `draft`. A public reply is externally visible: use action `send` only with the required confirmation and current account/post evidence.

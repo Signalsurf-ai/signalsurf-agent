@@ -7,6 +7,8 @@ description: Use for Signalsurf owned social accounts, content drafts, posts, ca
 
 Read the [shared operating contract](../signalsurf/references/operating-contract.md) unless already loaded; a focused Skill uses the same context, actor, confirmation and result rules.
 
+When writing, reviewing or rewriting copy, read [Writing](../writing/SKILL.md) and only the matching purpose/channel references. Use the native procedure below to read, save or send; a writing request does not expand permissions.
+
 Business work uses a selected Project with Content enabled in File Access. Personal sends/schedules follow the same Messages gate. Pure Workspace reads may omit Project; reads within an explicit Project check its selection. Inspect current approvals and actual account/resource permissions before effects.
 
 1. Read publishable accounts, current posts, settings, or analytics with `content_query`; never invent a connected handle or schedule slot.

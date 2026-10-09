@@ -9,6 +9,8 @@ Read the [shared operating contract](../signalsurf/references/operating-contract
 
 Business work uses a selected Project with Messages enabled in File Access. Personal sends/schedules follow the same Messages gate. Pure Workspace reads may omit Project; reads within an explicit Project check its selection. Inspect current approvals and actual account/resource permissions before effects.
 
+When writing, reviewing or rewriting copy, read [Writing](../writing/SKILL.md) and only the matching purpose/channel references. Use the native procedure below to read, save or send; a writing request does not expand permissions.
+
 1. Resolve the conversation/contact with `inbox_query`, Records, or `engagement_query`; never infer a recipient or sender account.
 2. Draft with `message_draft`. Drafting and sending are separate actions.
 3. Use `message_send` only on an explicit target and under the required confirmation. Sends are externally visible and not automatically retryable after an ambiguous outcome.

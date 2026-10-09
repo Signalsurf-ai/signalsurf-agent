@@ -27,7 +27,8 @@ Read only relevant focused guidance before applying it; one outcome can cross do
 | Send, reply, schedule or cancel a personal Email/message                                    | [personal schedule](references/personal-schedule.md) and `inbox`                                                             |
 | Monitor public content or capture a requested audience                                      | `listening` and the requested `records` destination                                                                          |
 | Create or run repeatable processing                                                         | `workflows`; use its real saved graph, limits and run state                                                                  |
-| Draft/publish owned posts; manage Campaign outreach                                         | `content` or `campaigns`; publishing and activation remain separate actions                                                  |
+| Write, review or rewrite standalone prose, email, posts or replies                          | [writing](../writing/SKILL.md); load only the relevant purpose and channel                                                   |
+| Draft/publish owned posts; manage Campaign outreach                                         | `content` or `campaigns` plus [writing](../writing/SKILL.md) for copy; publishing and activation remain separate actions     |
 | Continue durable Project work, collaboration or a background task                           | `projects`; `commander_query` only for real delegations                                                                      |
 | Explicit sources/documents, recordings, connected accounts, reusable procedures             | `knowledge`, `meetings`, `connections`, `custom-skills` respectively                                                         |
 

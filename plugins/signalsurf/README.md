@@ -30,3 +30,7 @@ host-specific installation and update commands.
 
 Raw MCP remains available for custom agents that cannot load plugins. It is a
 developer transport fallback, not a separate Signalsurf mode.
+
+## Writing guidance
+
+The packaged [Writing Skill](skills/writing/SKILL.md) supports standalone writing, review and rewrite as well as Content, Campaigns, Listening and Inbox copy. It selects email outreach, follow-up, conversation reply, LinkedIn post, X post, public reply, DM or connection-note guidance while preserving author voice and Chinese usage. The guidance is authored for SignalSurf. Product generation uses the same compiled references; `pnpm writing:sync` regenerates them and `pnpm check:plugin` verifies parity.

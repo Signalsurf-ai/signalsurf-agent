@@ -7,6 +7,8 @@ description: Use for Signalsurf Campaign creation or lifecycle, audiences, messa
 
 Read the [shared operating contract](../signalsurf/references/operating-contract.md) unless already loaded; a focused Skill uses the same context, actor, confirmation and result rules.
 
+When writing, reviewing or rewriting copy, read [Writing](../writing/SKILL.md) and only the matching purpose/channel references. Use the native procedure below to read, save or send; a writing request does not expand permissions.
+
 1. Resolve the audience and Campaign with Records/Lists plus `campaign_query`; inspect before editing.
 2. Use `campaign_manage` for the Campaign's supported create/change actions. Treat draft, preparation, launch, and observed results as distinct states.
 3. Use `sender_query` and `sender_infrastructure_query` for account settings, capacity, live inventory, Domains, Mailboxes, and readiness. Read the root Skill's sender-infrastructure reference before recommending setup.

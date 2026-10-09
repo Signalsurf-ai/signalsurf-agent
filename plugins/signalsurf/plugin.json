@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "signalsurf",
-  "version": "0.5.12",
+  "version": "0.6.0",
   "description": "Access your Signalsurf Workspace context, Projects, CRM, signals, workflows, campaigns, and more from an external AI.",
   "author": {
     "name": "Signalsurf",
