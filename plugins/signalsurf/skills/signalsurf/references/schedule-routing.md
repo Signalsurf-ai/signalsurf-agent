@@ -1,9 +1,26 @@
 # Schedule routing
 
-Choose by the requested outcome, not by the word “schedule.”
+When the member explicitly requests recurring or autonomous SignalSurf work, such as "every day", "keep monitoring", "run automatically", 定期執行 or 自動處理, configure supported native durable execution in the same task. Do not require the member to ask the external AI again for each run. A capability question, a one-off read, or repeated similar requests alone does not authorize new recurring execution.
 
-- Personal Email/message delivery uses native personal Outbox scheduling; read [personal schedule](personal-schedule.md). Time-only delivery still sends after a reply. It does not become a host reminder, Campaign, Workflow or CRM Record.
-- Shared ongoing Project/team work uses a supported native Project Trigger or Workflow with real saved context, runtime principal, targets and limits.
-- Personal reminders use the host scheduler when reminding is the actual outcome. A host reminder is not evidence that an Email will be dispatched.
+Resolve the existing Project and target resources; inspect matching saved Routines, Workflows or Listenings before creating another. Through MCP, use routine_query to inspect Project Routines and routine_manage action configure for both one-time and recurring Surfer work. Set input.timing.type to once with fireAt (an absolute ISO timestamp with offset) and timezone, or recurring with cron and timezone plus optional repeatEvery. Never mix the two timing types or create a Thread Timer. Use Listening for supported ongoing public-content monitoring, and Workflow for supported event-driven or deterministic processing. Enable Surfer participation for requested AI work; a human reminder alone does not execute that work. The saved instruction must describe the complete task, stable resource references, current File/Operation access, timing and timezone or event condition, limits, and the intended durable result destination. Each internal Surfer run owns completing its task and publishing the meaningful result in the relevant Project Thread; waking another Surfer is not the default completion step.
 
-Background work does not inherit later conversation switches or unrestricted member authority. Keep native permission, approval, run/result and cancellation semantics; report queue acceptance separately from actual execution or delivery.
+Reuse or update matching execution. Ask only for unresolved timing, targets, conditions, cost or authority that materially affects configuration; preserve known preferences and exact native confirmations. Use the live capability and schema to prepare and apply the real native change. Read back its saved ID, active state, timing/timezone or trigger, Surfer participation and next run when available. Creating a Project message, writing a proposal or scheduling a host reminder does not establish native recurring execution. If the required configuration capability is unavailable, report the specific missing operation and unfinished state without claiming setup succeeded or making external re-prompting the execution plan. Durable execution retains its own native permissions, approvals, limits and cancellation semantics.
+
+## Routine configuration through MCP
+
+Use `routine_manage` with outer `action: "configure"`. Within `input`, set `action` to `create`, `update` or `delete`. Creation needs the resolved `projectId`, `name`, complete `instruction`, `timing` and explicit `wakeSurfer: true` for AI execution. Use `wakeSurfer: false` only when the member wants a human reminder. Read IDs through `routine_query` action `list`; updates and deletion need the exact `triggerId`. Pause with `input.action: "update"` and `active: false`; resume an eligible Routine with `active: true`. Preserve fields outside the requested edit and follow the live schema and native confirmation before applying changes. The UI manages existing Routines; creation is performed through AI.
+
+Both timing types use this same operation:
+
+| Requested work                   | `input.timing`                                                                  |
+| -------------------------------- | ------------------------------------------------------------------------------- |
+| Once at an agreed future instant | `{"type":"once","fireAt":"2026-12-01T09:00:00+08:00","timezone":"Asia/Taipei"}` |
+| Every day at 09:00 in Taipei     | `{"type":"recurring","cron":"0 9 * * *","timezone":"Asia/Taipei"}`              |
+
+The timestamps above illustrate the shape; calculate the actual future instant from the member's request. Resolve timezone and ambiguous local dates before saving. Timing type cannot be changed after creation. A one-time Routine that already fired is retained as schedule history and cannot be resumed or rescheduled; a new authorized occurrence requires a new Routine. An exhausted schedule reports Fired, not successful completion; inspect Routine run history to distinguish pending, completed and failed execution. Do not create a duplicate simply to change an existing task's cadence.
+
+For Related members, read `project_query` action `members` for the resolved Project, then set `input.audienceUserIds` to the selected current human Project member IDs. Use `[]` to remove the audience; omit the field to preserve it during an unrelated update. This configures Activity notifications and ordinary mentions in the resulting Thread. It does not add Project members or delegate execution to them.
+
+After mutation, read back the saved Routine and verify its ID, instruction, timing, active/completed state, `wakeSurfer`, audience and next run when available. Report configuration as saved only after this readback. A saved Routine does not prove a run succeeded: execution proof needs the recorded occurrence, run outcome and intended durable result. Do not invent an MCP test action or run paid/provider work merely to validate configuration; use only an available native test operation within authorized scope.
+
+For personal Email/message delivery, read [personal schedule](personal-schedule.md) and use native Outbox scheduling. For an actual personal reminder, the host scheduler remains appropriate. A reminder does not execute SignalSurf work or dispatch an Email.

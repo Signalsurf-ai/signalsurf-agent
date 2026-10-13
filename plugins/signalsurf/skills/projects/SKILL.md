@@ -1,6 +1,6 @@
 ---
 name: projects
-description: Use for Signalsurf Project discovery, Project Context, Channels, Threads, decisions, activity, members, delegations, or Working File authority.
+description: Use for Signalsurf Project discovery, Project Context, Channels, Threads, decisions, Activity, Routines, members, delegations, or Working File authority.
 ---
 
 # Signalsurf Projects
@@ -18,6 +18,10 @@ Follow the `signalsurf` operating contract. A Project is one durable Play, its i
 
 Project messages are member-authored with Signalsurf client provenance. Do not speak as Surfer or paste the private host transcript.
 
-Inspect Project Operation access and effective approval policy before business work. Messages, Meeting and Content selection is separate from Workspace entitlement, OAuth and actual account/resource access; always_allow still follows native confirmations. The context snapshot is bounded; inspect additional Files/Threads only when needed and refresh after relevant settings change.
+Inspect Project Operation access and effective approval policy before business work. Inbox, Meetings and Content selection is separate from Workspace entitlement, OAuth and actual account/resource access; always_allow still follows native confirmations. The context snapshot is bounded; inspect additional Files/Threads only when needed and refresh after relevant settings change.
 
 Read Project File Access with project_query action access when selection is missing or unclear. A new Project starts without selected Operations or Records collections. Change an explicitly requested Inbox/messages, Meetings/meeting, Content/content or Records collection selection with project_manage action access and its exact confirmation; Project manager authority is required, and Records selection also requires Workspace Admin. Do not claim MCP cannot change these settings or send the user to the UI when this capability is available. An attached List exposes its backing Records dependency for that List's members; it does not select the whole collection or unrelated Records. Removing a List preserves independently selected Records. Collection-wide edits require explicit collection access; List enrichment bindings, reads and exact member runs use their validated List scope.
+
+For requested one-time, recurring or autonomous Project work, read [schedule routing](../signalsurf/references/schedule-routing.md), inspect matching Routines, and use routine_query to list existing work and routine_manage action configure to create, update, pause, resume or delete. Its timing.type is once with fireAt and timezone, or recurring with cron and timezone plus optional repeatEvery. Both types use this same tool. Enable Surfer participation for AI work and save the complete instruction, resource scope, cadence/timezone, limits and durable result destination. Verify persistence; posting a Thread alone does not configure recurring work. Each scheduled Surfer run completes its own task and records meaningful results without requiring the external AI to be prompted again.
+
+For a Routine's Related members, read project_query action members and configure audienceUserIds using current human Project member IDs. The schedule routing reference covers exact mutation fields, one-time tasks that already fired and the distinction between saved configuration and execution proof.
