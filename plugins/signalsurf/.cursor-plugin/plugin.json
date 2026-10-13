@@ -1,14 +1,16 @@
 {
   "name": "signalsurf",
-  "version": "0.6.1",
-  "description": "Access your Signalsurf workspace, Projects, and product tools from Cursor.",
+  "version": "0.6.2",
+  "description": "Research prospects, manage CRM and Lists, and prepare outreach with Signalsurf in Cursor and Grok Bot.",
   "author": {
-    "name": "Signalsurf"
+    "name": "Signalsurf",
+    "url": "https://www.signalsurf.ai"
   },
   "homepage": "https://www.signalsurf.ai",
   "repository": "https://github.com/Signalsurf-ai/signalsurf-agent",
   "license": "MIT",
   "logo": "assets/icon.png",
   "skills": ["./skills"],
-  "mcpServers": "./mcp.json"
+  "mcpServers": "./mcp.json",
+  "keywords": ["signalsurf", "crm", "prospect-research", "outreach"]
 }

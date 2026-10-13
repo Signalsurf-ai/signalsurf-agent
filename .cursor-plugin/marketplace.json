@@ -4,13 +4,13 @@
     "name": "Signalsurf"
   },
   "metadata": {
-    "description": "Access Signalsurf from Cursor"
+    "description": "Signalsurf skills and MCP tools for Cursor and Grok Bot"
   },
   "plugins": [
     {
       "name": "signalsurf",
       "source": "./plugins/signalsurf",
-      "description": "Access your Signalsurf workspace, Projects, and product tools from Cursor."
+      "description": "Research prospects, manage CRM and Lists, and prepare outreach with Signalsurf."
     }
   ]
 }

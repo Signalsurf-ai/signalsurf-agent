@@ -11,8 +11,13 @@ Project.
 ## Install
 
 See [Getting started](./GETTING_STARTED.md) for Claude Code, Codex, and Cursor
-installation, plus the separate ChatGPT connector path, OAuth, verification,
+installation, Grok Bot marketplace availability, the separate ChatGPT connector path, OAuth, verification,
 updates, and troubleshooting.
+
+This repository also contains the Cursor-compatible package intended for Grok
+Bot's **Connect apps** directory. Publishing this repository does not create a
+marketplace listing: availability requires a separate Cursor marketplace review
+and host verification. No approved Grok Bot listing is claimed here.
 
 The short version for Claude Code is:
 
