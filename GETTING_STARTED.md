@@ -71,6 +71,33 @@ Teams and Enterprise administrators may need to enable local plugin imports.
 The marketplace-installed copy takes precedence over a local copy with the same
 name.
 
+## Grok Bot
+
+Grok Bot uses Cursor marketplace connectors. The Signalsurf package contains a
+remote MCP server and portable Skills; it does not need a local MCP process.
+Public listing approval and a verified Grok Bot installation are separate from
+publishing this repository. Until a listing is approved, do not assume that
+Signalsurf will appear in **Connect apps**.
+
+Once the Signalsurf listing is available for Grok Bot:
+
+1. Open **Connect apps** and search for **Signalsurf**.
+2. Verify the publisher and source are Signalsurf and this repository, then add
+   the plugin.
+3. Complete Signalsurf OAuth in the browser, selecting the Workspaces and grants
+   the Bot may use.
+4. Confirm the plugin appears under **Installed**, start a new chat, and attach
+   Signalsurf with `@`.
+5. Run the read-only verification prompt below before requesting changes.
+
+If the plugin is marked **Disabled by team admin**, the team's Cursor connector
+policy must allow it. An empty search result is not an OAuth failure; check
+listing availability first. A raw MCP connection does not install these Skills,
+and local Cursor installation does not prove Grok Bot compatibility.
+
+See the official [Grok Bot connection guide](https://cursor.com/help/grok-bot/connect-plugins)
+and [plugin format reference](https://cursor.com/docs/reference/plugins).
+
 ## Verify without changing data
 
 Start a new chat and send:
