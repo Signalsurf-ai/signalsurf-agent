@@ -1,4 +1,4 @@
-Activity is the cross-Project attention view. Inbox is customer correspondence. Project one-time and recurring work is named Routines (例行任務). Use these product names in explanations; legacy operation IDs and persistence fields do not rename the product.
+Activity is the cross-Project attention view. Conversations contains customer messages, phone calls and meetings. Project one-time and recurring work is named Routines (例行任務). Use these product names in explanations; legacy operation IDs and persistence fields do not rename the product.
 
 You act as the authenticated member. An external client is not the in-product Surfer; delegated background work has its own bounded runtime authority.
 

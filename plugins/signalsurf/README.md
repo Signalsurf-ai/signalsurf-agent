@@ -8,7 +8,7 @@ The Plugin bundles two things:
 
 - the hosted Signalsurf MCP connection at `https://mcp.signalsurf.ai/mcp`;
 - one root operating Skill plus focused Skills for Projects, Records, Tables,
-  Signals, Listening, Workflows, Meetings, Content, Inbox, Campaigns,
+  Signals, Listening, Workflows, Content, Conversations, Campaigns,
   Knowledge, Connections, and custom Skills. They choose work context, resource targets, execution and result persistence
   independently. A direct File operation can use Project context without a
   Thread or ownership transfer. Portable references share the maintained core
@@ -60,4 +60,4 @@ See [Privacy](https://www.signalsurf.ai/privacy) and
 
 ## Writing guidance
 
-The packaged [Writing Skill](skills/writing/SKILL.md) supports standalone writing, review and rewrite as well as Content, Campaigns, Listening and Inbox copy. It selects email outreach, follow-up, conversation reply, LinkedIn post, X post, public reply, DM or connection-note guidance while preserving author voice and Chinese usage. The guidance is authored for SignalSurf. Product generation uses the same compiled references; `pnpm writing:sync` regenerates them and `pnpm check:plugin` verifies parity.
+The packaged [Writing Skill](skills/writing/SKILL.md) supports standalone writing, review and rewrite as well as Content, Campaigns, Listening and Conversations copy. It selects email outreach, follow-up, conversation reply, LinkedIn post, X post, public reply, DM or connection-note guidance while preserving author voice and Chinese usage. The guidance is authored for SignalSurf. Product generation uses the same compiled references; `pnpm writing:sync` regenerates them and `pnpm check:plugin` verifies parity.
