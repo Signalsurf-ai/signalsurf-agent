@@ -23,6 +23,8 @@ Read only relevant focused guidance before applying it; one outcome can cross do
 
 | Desired outcome                                                                                | Focused guidance                                                                                                             |
 | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| Search public posts by keywords once, including LinkedIn                                       | `signals`; follow its search and retained-result recipe                                                                      |
+| Read more rows or text from a previous research result                                         | `signals`; inspect the retained result before considering any persistence                                                    |
 | Research a known Person/profile and recent posts; optionally save verified Person + Company    | [research and capture](references/research-capture.md), `signals`, then `records` only when capture is requested             |
 | Source companies or People from an existing company source                                     | [lead sourcing](references/lead-sourcing.md), `signals`, and the selected `records` / `sheets` destination                   |
 | Fill supported existing Sheet columns, Records fields or List members with researched facts    | `sheets` / `records` and `signals`; inspect and reuse native Enrich bindings and preserve the requested Record or List scope |
