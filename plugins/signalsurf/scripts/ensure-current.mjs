@@ -1,4 +1,4 @@
-import { createHash } from "node:crypto"
+import { createHash, randomUUID } from "node:crypto"
 import {
   existsSync,
   lstatSync,
@@ -8,8 +8,10 @@ import {
   readdirSync,
   renameSync,
   rmSync,
+  rmdirSync,
   writeFileSync,
 } from "node:fs"
+import { hostname } from "node:os"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 
@@ -110,10 +112,100 @@ function releaseFiles(tree) {
   return files
 }
 
+function removeGeneration(lock, token) {
+  for (const name of readdirSync(lock)) {
+    if (name === `previous-${token}` || name.startsWith(`release-${token}-`))
+      rmSync(path.join(lock, name), { recursive: true, force: true })
+  }
+  rmSync(path.join(lock, `owner-${token}.json`), { force: true })
+  try {
+    rmdirSync(lock)
+  } catch (error) {
+    if (!["ENOENT", "ENOTEMPTY", "EEXIST"].includes(error.code)) throw error
+  }
+}
+
+function reclaimAbandonedLock(lock) {
+  if (!existsSync(lock)) return null
+  const owners = readdirSync(lock).filter((name) =>
+    /^owner-[a-zA-Z0-9-]+\.json$/.test(name)
+  )
+  if (owners.length !== 1) return null
+  let owner
+  try {
+    owner = JSON.parse(readFileSync(path.join(lock, owners[0]), "utf8"))
+  } catch {
+    return null
+  }
+  if (
+    owner.host !== hostname() ||
+    !Number.isSafeInteger(owner.pid) ||
+    owner.pid <= 0 ||
+    owners[0] !== `owner-${owner.token}.json` ||
+    !Number.isFinite(Date.parse(owner.created_at))
+  )
+    return null
+  try {
+    process.kill(owner.pid, 0)
+    return null
+  } catch (error) {
+    if (error.code !== "ESRCH") return null
+  }
+  const recovery = mkdtempSync(`${lock}.recovered-`)
+  const previous = `previous-${owner.token}`
+  const children = readdirSync(lock).filter(
+    (name) => name === previous || name.startsWith(`release-${owner.token}-`)
+  )
+  for (const name of [...children, owners[0]]) {
+    try {
+      renameSync(path.join(lock, name), path.join(recovery, name))
+    } catch (error) {
+      if (error.code !== "ENOENT") throw error
+    }
+  }
+  try {
+    rmdirSync(lock)
+  } catch (error) {
+    if (!["ENOENT", "ENOTEMPTY", "EEXIST"].includes(error.code)) throw error
+  }
+  if (existsSync(path.join(recovery, previous)))
+    return path.join(recovery, previous)
+  rmSync(recovery, { recursive: true, force: true })
+  return null
+}
+
+function acquireLock(lock, token) {
+  if (existsSync(lock)) return false
+  const prepared = mkdtempSync(`${lock}.prepared-`)
+  try {
+    writeFileSync(
+      path.join(prepared, `owner-${token}.json`),
+      JSON.stringify({
+        pid: process.pid,
+        host: hostname(),
+        token,
+        created_at: new Date().toISOString(),
+      }),
+      { flag: "wx" }
+    )
+    try {
+      renameSync(prepared, lock)
+      return true
+    } catch (error) {
+      if (["EEXIST", "ENOTEMPTY"].includes(error.code)) return false
+      throw error
+    }
+  } finally {
+    rmSync(prepared, { recursive: true, force: true })
+  }
+}
+
 export async function ensureCurrent({
   root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), ".."),
   fetchImpl = fetch,
 } = {}) {
+  const token = randomUUID()
+  let recoveredPrevious
   let currentVersion
   let latestVersion
   let lock
@@ -128,6 +220,9 @@ export async function ensureCurrent({
       currentVersion && latestVersion
         ? newer(latestVersion, currentVersion)
         : null,
+    ...(recoveredPrevious
+      ? { recovered_previous_installation: recoveredPrevious }
+      : {}),
     ...extra,
   })
   const signal = AbortSignal.timeout(20000)
@@ -159,6 +254,12 @@ export async function ensureCurrent({
   }
   try {
     root = path.resolve(root)
+    lock = path.join(path.dirname(root), `.${path.basename(root)}.update-lock`)
+    recoveredPrevious = reclaimAbandonedLock(lock)
+    if (!existsSync(root) && recoveredPrevious)
+      return result("recovery_required", {
+        previous_installation: recoveredPrevious,
+      })
     if (lstatSync(root).isSymbolicLink())
       throw new Error("symlink_install_root")
     currentVersion = manifestVersion(
@@ -187,14 +288,8 @@ export async function ensureCurrent({
     latestVersion = manifestVersion(manifest)
     if (!newer(latestVersion, currentVersion))
       return result("current", { release_commit: commit })
-    lock = path.join(path.dirname(root), `.${path.basename(root)}.update-lock`)
-    try {
-      mkdirSync(lock)
-      ownedLock = true
-    } catch (error) {
-      if (error.code === "EEXIST") return result("update_in_progress")
-      throw error
-    }
+    ownedLock = acquireLock(lock, token)
+    if (!ownedLock) return result("update_in_progress")
     const original = fingerprint(root)
     currentVersion = manifestVersion(
       readFileSync(path.join(root, "plugin.json"))
@@ -208,7 +303,7 @@ export async function ensureCurrent({
       )
     )
     const files = releaseFiles(tree)
-    staging = mkdtempSync(path.join(lock, "release-"))
+    staging = mkdtempSync(path.join(lock, `release-${token}-`))
     for (let start = 0; start < files.length; start += 5) {
       const downloaded = await Promise.allSettled(
         files.slice(start, start + 5).map(async (file) => {
@@ -236,7 +331,7 @@ export async function ensureCurrent({
     }
     if (fingerprint(root) !== original)
       throw new Error("installation_changed_during_update")
-    backup = path.join(lock, "previous")
+    backup = path.join(lock, `previous-${token}`)
     renameSync(root, backup)
     renameSync(staging, root)
     return result("updated", {
@@ -262,7 +357,7 @@ export async function ensureCurrent({
       : "update_unavailable"
     return result("unavailable", { reason })
   } finally {
-    if (ownedLock) rmSync(lock, { recursive: true, force: true })
+    if (ownedLock) removeGeneration(lock, token)
   }
 }
 
