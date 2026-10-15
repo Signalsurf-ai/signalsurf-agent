@@ -1,6 +1,6 @@
 ---
 name: signals
-description: Use for Signalsurf net-new company or people discovery, web/social research, enrichment, job-change checks, technology evidence, hiring signals, or engager collection.
+description: Use for Signalsurf company or people discovery, one-off web/social research, retained research results, enrichment, job changes, technology or hiring evidence, and engager collection.
 ---
 
 # Signalsurf Signals
@@ -10,6 +10,8 @@ Before every request using this Skill, follow [version check and automatic updat
 Read the [shared operating contract](../signalsurf/references/operating-contract.md) unless already loaded; a focused Skill uses the same context, actor, confirmation and result rules.
 
 Signals produce observed evidence. They do not automatically become CRM truth, a Listening, or a Campaign.
+
+For one-off keyword post research, including LinkedIn, or continuing a temporary search result, read [search and retained results](references/search-and-results.md). Stay in this research procedure when a returned reader belongs to the Tables tool family; saving into a Sheet is a separate requested outcome.
 
 1. Start with `find_capabilities` when the source is ambiguous. Use search capabilities for net-new discovery. For research-only questions about known profiles/recent posts, follow [research and capture](../signalsurf/references/research-capture.md) using native `social_get`; `people_enrich` is for supported identity/Email enrichment, not a substitute for profile/posts research.
 2. For TAM mapping, follow [lead sourcing](../signalsurf/references/lead-sourcing.md). Discover the live schema before choosing parameters: prefer native Company/People Lists when company_search/people_search expose listId/sourceListId. If the connected version lacks them, report that capability gap instead of silently duplicating Company Records into a Sheet. Reuse existing Records and retained results before spending on rediscovery. Distinguish observed evidence from inference and preserve source/time fields.
