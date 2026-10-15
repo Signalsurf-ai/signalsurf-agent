@@ -5,6 +5,8 @@ description: Use when discovering, loading, creating, or improving a reusable Si
 
 # Signalsurf Custom Skills
 
+Before every request using this Skill, follow [version check and automatic update](../signalsurf/references/freshness.md), then use the current guidance.
+
 Read the [shared operating contract](../signalsurf/references/operating-contract.md) unless already loaded; a focused Skill uses the same context, actor, confirmation and result rules.
 
 A Skill is a reusable procedure: how to perform a repeatable class of work. It is not authorization and must not hold customer facts, secrets, raw transcripts, temporary state, or one Project's current hypothesis.

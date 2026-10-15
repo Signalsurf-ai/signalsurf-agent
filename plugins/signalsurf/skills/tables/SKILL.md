@@ -5,6 +5,8 @@ description: Use for Signalsurf Sheets/Tables, rows, fields, schemas, templates,
 
 # Signalsurf Tables
 
+Before every request using this Skill, follow [version check and automatic update](../signalsurf/references/freshness.md), then use the current guidance.
+
 Read the [shared operating contract](../signalsurf/references/operating-contract.md) unless already loaded; a focused Skill uses the same context, actor, confirmation and result rules.
 
 Tables are flexible operational workspaces; they are not the durable identity-resolved CRM.

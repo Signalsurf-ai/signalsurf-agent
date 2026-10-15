@@ -5,6 +5,8 @@ description: Use for Signalsurf CRM Objects, People or Company Records, Lists, a
 
 # Signalsurf Records
 
+Before every request using this Skill, follow [version check and automatic update](../signalsurf/references/freshness.md), then use the current guidance.
+
 Read the [shared operating contract](../signalsurf/references/operating-contract.md) unless already loaded; a focused Skill uses the same context, actor, confirmation and result rules.
 
 Use Records for durable CRM truth; use Tables for flexible temporary operational rows.

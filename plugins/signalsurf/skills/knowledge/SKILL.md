@@ -5,6 +5,8 @@ description: Use for Signalsurf Knowledge bases, documents, semantic search, sav
 
 # Signalsurf Knowledge
 
+Before every request using this Skill, follow [version check and automatic update](../signalsurf/references/freshness.md), then use the current guidance.
+
 Read the [shared operating contract](../signalsurf/references/operating-contract.md) unless already loaded; a focused Skill uses the same context, actor, confirmation and result rules.
 
 Knowledge is explicit durable reference content. It is not conversational Memory.

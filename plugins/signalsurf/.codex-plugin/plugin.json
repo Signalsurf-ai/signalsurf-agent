@@ -31,5 +31,5 @@
   "name": "signalsurf",
   "repository": "https://github.com/Signalsurf-ai/signalsurf-agent",
   "skills": "./skills/",
-  "version": "0.7.0"
+  "version": "0.7.1"
 }

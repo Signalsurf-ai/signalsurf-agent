@@ -5,6 +5,8 @@ description: Signalsurf operating contract and intent routing. Use for work acro
 
 # Working with Signalsurf
 
+Before every request using this Skill, follow [version check and automatic update](references/freshness.md), then use the current guidance.
+
 Read the [shared operating contract](references/operating-contract.md) when it is not already loaded. It applies even when a focused Skill was selected first. You act as the authenticated member; external execution does not impersonate the in-product Surfer.
 
 ## Choose work context naturally
