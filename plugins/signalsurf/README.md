@@ -7,7 +7,7 @@ permissions, Project context, and product tools used in Signalsurf.
 The Plugin bundles two things:
 
 - the hosted Signalsurf MCP connection at `https://mcp.signalsurf.ai/mcp`;
-- one root operating Skill plus focused Skills for Projects, Records, Tables,
+- one root operating Skill plus focused Skills for Projects, Records, Sheets,
   Signals, Listening, Workflows, Content, Conversations, Campaigns,
   Knowledge, Connections, and custom Skills. They choose work context, resource targets, execution and result persistence
   independently. A direct File operation can use Project context without a

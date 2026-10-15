@@ -9,7 +9,7 @@ Before every request using this Skill, follow [version check and automatic updat
 
 Read the [shared operating contract](../signalsurf/references/operating-contract.md) unless already loaded; a focused Skill uses the same context, actor, confirmation and result rules.
 
-Use Records for durable CRM truth; use Tables for flexible temporary operational rows.
+Use Records for durable CRM truth; use Sheets for flexible temporary operational rows.
 
 1. Resolve the collection with `object_query` and the target with `record_query` or `list_query`. Never guess ids.
 2. Use `object_manage` only for collection/schema work, `record_manage` for durable entity changes, and `list_manage` or `list_membership` for audience configuration/membership.
