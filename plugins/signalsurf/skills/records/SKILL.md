@@ -5,13 +5,15 @@ description: Use for Signalsurf CRM Objects, People or Company Records, Lists, a
 
 # Signalsurf Records
 
+Before every request using this Skill, follow [version check and automatic update](../signalsurf/references/freshness.md), then use the current guidance.
+
 Read the [shared operating contract](../signalsurf/references/operating-contract.md) unless already loaded; a focused Skill uses the same context, actor, confirmation and result rules.
 
 Use Records for durable CRM truth; use Tables for flexible temporary operational rows.
 
 1. Resolve the collection with `object_query` and the target with `record_query` or `list_query`. Never guess ids.
 2. Use `object_manage` only for collection/schema work, `record_manage` for durable entity changes, and `list_manage` or `list_membership` for audience configuration/membership.
-3. Read current state immediately before a consequential update. Preserve fields outside the requested change and use field history only when provenance or a conflict matters.
+3. Read current state immediately before a consequential update. Preserve fields outside the requested change. For requested Record history or provenance, use `record_query` action `field_history` with the exact `objectId` and `recordId`. Filter stored changes by field, source, dates or literal text; continue `nextCursor` until null, even when a text-search page has no matches. `events` are stored rows; `changes` contains old/new field values. For a current Record and recent overall context, use `record_query` action `activity` with the exact IDs. Its `recordChanges` and `conversations` groups remain separate, and reply counts cover only the returned preview. For communications with that Record, use `conversations_query` action `search` with `record: { objectId, recordId }`, then `get` with a returned thread ID for full messages, call or meeting content. Paginate search results and narrow dates when its bounded search window is incomplete. Activity is an overview, not complete communication evidence. Company scope includes only its exact binding, not inferred employees. Sheet history uses its Item reader. Do not claim historical actors, edits or deleted Records that the stored history cannot establish.
 4. Routine edits rely on Record history. Write to a Project Thread only when the result changes a hypothesis, creates reusable evidence/insight, or needs coordination.
 5. Business Record mutations carry the selected work Project as top-level `projectId`, independently of Commons placement or Thread writeback. CRM schema administration follows its native action scope. Read [research and capture](../signalsurf/references/research-capture.md) when saving researched identities or Person + verified Company relations; email and Company-first are not generic Person prerequisites.
 

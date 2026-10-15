@@ -1,15 +1,10 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
-  "name": "signalsurf",
-  "version": "0.6.2",
-  "description": "Access your Signalsurf Workspace context, Projects, CRM, signals, workflows, campaigns, and more from an external AI.",
   "author": {
     "name": "Signalsurf",
     "url": "https://www.signalsurf.ai"
   },
-  "homepage": "https://www.signalsurf.ai",
-  "repository": "https://github.com/Signalsurf-ai/signalsurf-agent",
-  "license": "MIT",
+  "description": "Access your Signalsurf Workspace context, Projects, CRM, signals, workflows, campaigns, and more from an external AI.",
   "extensions": {
     "com.openai": {
       "interface": {
@@ -29,5 +24,10 @@
         "logo": "./assets/icon.png"
       }
     }
-  }
+  },
+  "homepage": "https://www.signalsurf.ai",
+  "license": "MIT",
+  "name": "signalsurf",
+  "repository": "https://github.com/Signalsurf-ai/signalsurf-agent",
+  "version": "0.7.2"
 }

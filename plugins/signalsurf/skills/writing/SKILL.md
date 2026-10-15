@@ -5,6 +5,8 @@ description: Write, review or rewrite grounded email, LinkedIn, X and other soci
 
 # Signalsurf Writing
 
+Before every request using this Skill, follow [version check and automatic update](../signalsurf/references/freshness.md), then use the current guidance.
+
 Read the [shared operating contract](../signalsurf/references/operating-contract.md) before accessing Signalsurf resources unless already loaded. Writing guidance grants no data access, paid research, send or publication authority. Standalone prose with supplied context needs no Workspace or Project mutation.
 
 1. Resolve the requested operation: write new copy, review without editing, or rewrite the supplied text. Respect selected passages and exact-copy requests. Use known purpose, audience, channel, language and context; ask only for a missing choice that materially changes the result.

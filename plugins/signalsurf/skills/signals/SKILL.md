@@ -5,6 +5,8 @@ description: Use for Signalsurf net-new company or people discovery, web/social 
 
 # Signalsurf Signals
 
+Before every request using this Skill, follow [version check and automatic update](../signalsurf/references/freshness.md), then use the current guidance.
+
 Read the [shared operating contract](../signalsurf/references/operating-contract.md) unless already loaded; a focused Skill uses the same context, actor, confirmation and result rules.
 
 Signals produce observed evidence. They do not automatically become CRM truth, a Listening, or a Campaign.

@@ -6,6 +6,25 @@ rest of the product capability graph. Install the Plugin once, authorize the
 Workspaces it may reach, then start a fresh chat so the root router, focused
 Skills, and MCP connection load together.
 
+## Updates on use
+
+From version 0.7.1, every request using a root or focused SignalSurf Skill starts
+with a public release check. With Node.js 18+ and a writable installed plugin,
+the bundled updater automatically installs the complete newer package from one
+verified commit. The agent then reloads the root, shared and relevant focused
+guidance before continuing. Failed checks keep the installed package; source
+Git checkouts are preserved. Hosts with web reads but no writable installation
+load current guidance directly from the pinned public release and report that
+the local installation was not changed.
+
+An installation older than 0.7.1 needs one marketplace update using the host
+commands below to receive this entry check. Start a fresh chat after that initial
+update. Later per-request refreshes reload the relevant guidance in the current
+conversation; host version labels may remain cached until a new session.
+Raw MCP connections receive live tools and adapter instructions, without an
+installed plugin package to update. OAuth grants and hosted MCP deployment are
+independent of Skill updates.
+
 ## Claude Code
 
 Requires a Claude Code version with plugin marketplaces and remote HTTP MCP.
@@ -19,7 +38,7 @@ Restart Claude Code after installation. The first Signalsurf tool call opens
 the Signalsurf OAuth flow. Sign in, choose the allowed Workspaces, approve the
 requested grants, and return to Claude Code.
 
-To update later:
+For the initial update from an older version, or manual recovery:
 
 ```sh
 claude plugin marketplace update signalsurf
@@ -40,7 +59,7 @@ opens OAuth. If the connection needs to be authorized explicitly, run:
 codex mcp login signalsurf
 ```
 
-To refresh the marketplace and reinstall the current version:
+For the initial update from an older version, or manual recovery:
 
 ```sh
 codex plugin marketplace upgrade signalsurf

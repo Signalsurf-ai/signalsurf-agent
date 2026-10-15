@@ -1,9 +1,11 @@
 ---
 name: signalsurf
-description: Signalsurf context and intent routing, including native recurring or autonomous work. Use for Project work, research, Inbox and publishing; load focused guidance for the requested outcome.
+description: Signalsurf operating contract and intent routing. Use for work across Workspace/Project context, Files and Records, research, Conversations, automation, publishing or reusable procedures; load only the focused guidance needed for the requested outcome.
 ---
 
 # Working with Signalsurf
+
+Before every request using this Skill, follow [version check and automatic update](references/freshness.md), then use the current guidance.
 
 Read the [shared operating contract](references/operating-contract.md) when it is not already loaded. It applies even when a focused Skill was selected first. You act as the authenticated member; external execution does not impersonate the in-product Surfer.
 
@@ -19,19 +21,20 @@ Read `project_query` action `access` for configured Files, Operations and List d
 
 Read only relevant focused guidance before applying it; one outcome can cross domains. `find_capabilities` supplies live capability names and `inputSchema`. Call an exposed tool directly or use `invoke_capability` with the exact returned name and arguments. Do not memorize an operation inventory or guess internal providers.
 
-| Desired outcome                                                                             | Focused guidance                                                                                                             |
-| ------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| Research a known Person/profile and recent posts; optionally save verified Person + Company | [research and capture](references/research-capture.md), `signals`, then `records` only when capture is requested             |
-| Source companies or People from an existing company source                                  | [lead sourcing](references/lead-sourcing.md), `signals`, and the selected `records` / `tables` destination                   |
-| Fill supported existing Table columns, Records fields or List members with researched facts | `tables` / `records` and `signals`; inspect and reuse native Enrich bindings and preserve the requested Record or List scope |
-| Send, reply, schedule or cancel a personal Email/message                                    | [personal schedule](references/personal-schedule.md) and `inbox`                                                             |
-| Monitor public content or capture a requested audience                                      | `listening` and the requested `records` destination                                                                          |
-| Configure recurring or autonomous SignalSurf work                                           | [schedule routing](references/schedule-routing.md), then `projects`, `listening` or `workflows` for the native owner         |
-| Create or run repeatable processing                                                         | `workflows`; use its real saved graph, limits and run state                                                                  |
-| Write, review or rewrite standalone prose, email, posts or replies                          | [writing](../writing/SKILL.md); load only the relevant purpose and channel                                                   |
-| Draft/publish owned posts; manage Campaign outreach                                         | `content` or `campaigns` plus [writing](../writing/SKILL.md) for copy; publishing and activation remain separate actions     |
-| Continue durable Project work, collaboration or a background task                           | `projects`; `commander_query` only for real delegations                                                                      |
-| Explicit sources/documents, recordings, connected accounts, reusable procedures             | `knowledge`, `meetings`, `connections`, `custom-skills` respectively                                                         |
+| Desired outcome                                                                                | Focused guidance                                                                                                             |
+| ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| Research a known Person/profile and recent posts; optionally save verified Person + Company    | [research and capture](references/research-capture.md), `signals`, then `records` only when capture is requested             |
+| Source companies or People from an existing company source                                     | [lead sourcing](references/lead-sourcing.md), `signals`, and the selected `records` / `tables` destination                   |
+| Fill supported existing Table columns, Records fields or List members with researched facts    | `tables` / `records` and `signals`; inspect and reuse native Enrich bindings and preserve the requested Record or List scope |
+| Send, reply, schedule or cancel a personal Email/message                                       | [personal schedule](references/personal-schedule.md) and `conversations`                                                     |
+| Find email, DM, phone or meeting history; read transcripts/summaries; place a human or AI call | `conversations`; Phone preparation and execution follow its conditional recipe                                               |
+| Monitor public content or capture a requested audience                                         | `listening` and the requested `records` destination                                                                          |
+| Configure recurring or autonomous SignalSurf work                                              | [schedule routing](references/schedule-routing.md), then `projects`, `listening` or `workflows` for the native owner         |
+| Create or run repeatable processing                                                            | `workflows`; use its real saved graph, limits and run state                                                                  |
+| Write, review or rewrite standalone prose, email, posts or replies                             | [writing](../writing/SKILL.md); load only the relevant purpose and channel                                                   |
+| Draft/publish owned posts; manage Campaign outreach                                            | `content` or `campaigns` plus [writing](../writing/SKILL.md) for copy; publishing and activation remain separate actions     |
+| Continue durable Project work, collaboration or a background task                              | `projects`; `commander_query` only for real delegations                                                                      |
+| Explicit sources/documents, recordings, connected accounts, reusable procedures                | `knowledge`, `conversations`, `connections`, `custom-skills` respectively                                                    |
 
 For lookup-based completion of existing persisted fields, inspect the destination schema and saved Enrich bindings before separate row-by-row research. Reuse native Enrich; configure only a missing binding or requested settings change. Records and Lists independently use their own Enrich bindings and exact selections. Record requests need no List; do not create one. A List request keeps listId and its exact active-member selection. List-owned fields use membership IDs; supported shared profile fields use canonical Record IDs and update basic data shared across Lists through native manual Enrich. A List attachment grants no generic Record write or collection-wide authority. Inspect live capabilities; if this native List route is unavailable, report the release gap instead of researching and manually writing Records. Pure research creates no Records or persistent Enrich configuration. Supplied facts, deterministic edits, primary/protected fields and unsupported fields do not mandate Enrich.
 

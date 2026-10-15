@@ -1,17 +1,10 @@
 {
-  "name": "signalsurf",
-  "version": "0.6.2",
-  "description": "Access your Signalsurf workspace, Projects, and product tools from Codex.",
   "author": {
     "name": "Signalsurf",
     "url": "https://www.signalsurf.ai"
   },
+  "description": "Access your Signalsurf workspace, Projects, and product tools from Codex.",
   "homepage": "https://www.signalsurf.ai",
-  "repository": "https://github.com/Signalsurf-ai/signalsurf-agent",
-  "license": "MIT",
-  "keywords": ["crm", "gtm", "projects", "agents", "mcp"],
-  "skills": "./skills/",
-  "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "Signalsurf",
     "shortDescription": "Signalsurf in your AI tools",
@@ -31,5 +24,12 @@
     "composerIcon": "./assets/icon.png",
     "logo": "./assets/icon.png",
     "screenshots": []
-  }
+  },
+  "keywords": ["crm", "gtm", "projects", "agents", "mcp"],
+  "license": "MIT",
+  "mcpServers": "./.mcp.json",
+  "name": "signalsurf",
+  "repository": "https://github.com/Signalsurf-ai/signalsurf-agent",
+  "skills": "./skills/",
+  "version": "0.7.2"
 }

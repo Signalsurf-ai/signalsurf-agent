@@ -5,6 +5,8 @@ description: Use for Signalsurf owned social accounts, content drafts, posts, ca
 
 # Signalsurf Content
 
+Before every request using this Skill, follow [version check and automatic update](../signalsurf/references/freshness.md), then use the current guidance.
+
 Read the [shared operating contract](../signalsurf/references/operating-contract.md) unless already loaded; a focused Skill uses the same context, actor, confirmation and result rules.
 
 When writing, reviewing or rewriting copy, read [Writing](../writing/SKILL.md) and only the matching purpose/channel references. Use the native procedure below to read, save or send; a writing request does not expand permissions.

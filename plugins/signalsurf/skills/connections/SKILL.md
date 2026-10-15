@@ -5,6 +5,8 @@ description: Use for Signalsurf connected services or accounts, integration dest
 
 # Signalsurf Connections
 
+Before every request using this Skill, follow [version check and automatic update](../signalsurf/references/freshness.md), then use the current guidance.
+
 Read the [shared operating contract](../signalsurf/references/operating-contract.md) unless already loaded; a focused Skill uses the same context, actor, confirmation and result rules.
 
 1. Use `connection_query` to inspect actual connected services/accounts; do not infer a connection from a remembered name.

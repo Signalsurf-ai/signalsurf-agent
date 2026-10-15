@@ -1,13 +1,13 @@
 {
-  "name": "signalsurf",
-  "version": "0.6.2",
-  "description": "Access your Signalsurf workspace, Projects, and product tools from Claude.",
   "author": {
     "name": "Signalsurf"
   },
+  "description": "Access your Signalsurf workspace, Projects, and product tools from Claude.",
   "homepage": "https://www.signalsurf.ai",
-  "repository": "https://github.com/Signalsurf-ai/signalsurf-agent",
   "license": "MIT",
+  "mcpServers": "./.mcp.json",
+  "name": "signalsurf",
+  "repository": "https://github.com/Signalsurf-ai/signalsurf-agent",
   "skills": "./skills/",
-  "mcpServers": "./.mcp.json"
+  "version": "0.7.2"
 }
