@@ -225,10 +225,9 @@ export async function ensureCurrent({
       : {}),
     ...extra,
   })
-  const signal = AbortSignal.timeout(20000)
   const request = async (url, limit) => {
     const response = await fetchImpl(url, {
-      signal,
+      signal: AbortSignal.timeout(20000),
       redirect: "error",
       headers: {
         Accept: "application/vnd.github+json",
