@@ -196,6 +196,11 @@ export async function ensureCurrent({
       throw error
     }
     const original = fingerprint(root)
+    currentVersion = manifestVersion(
+      readFileSync(path.join(root, "plugin.json"))
+    )
+    if (!newer(latestVersion, currentVersion))
+      return result("current", { release_commit: commit })
     const tree = JSON.parse(
       await request(
         `https://api.github.com/repos/${REPOSITORY}/git/trees/${commit}?recursive=1`,
