@@ -117,6 +117,32 @@ and local Cursor installation does not prove Grok Bot compatibility.
 See the official [Grok Bot connection guide](https://cursor.com/help/grok-bot/connect-plugins)
 and [plugin format reference](https://cursor.com/docs/reference/plugins).
 
+### Grok Bot still loads an older Skill
+
+If reinstalling keeps returning an old version such as 0.2.2, that package
+predates the per-request freshness entrypoint. Reinstalling alone does not prove
+that the marketplace has published a newer package. The public GitHub release,
+the marketplace package, the installed manifest and the guidance already loaded
+in a chat are separate observations. Report the evidence for each; do not infer
+that Cursor's catalog is stale solely from the Bot's response.
+
+Start a fresh Grok Bot chat, attach Signalsurf with `@`, and send:
+
+> Before using Signalsurf tools, read
+> https://raw.githubusercontent.com/Signalsurf-ai/signalsurf-agent/main/plugins/signalsurf/skills/signalsurf/references/freshness.md
+> and follow its pinned public guidance fallback. Load the root Skill, shared
+> operating contract and relevant focused guidance from the verified commit.
+> Report the public version and commit, and the installed version only if you
+> can inspect its manifest. Keep checking freshness on every Signalsurf request.
+> Loading guidance is not an installation update. Do not modify Workspace data.
+
+This fallback works when the Bot can read the public web even if it cannot
+replace its managed plugin. If those reads fail, freshness remains unverified;
+the Bot must not claim it updated the installation. A local Cursor plugin
+installation does not update the cloud Bot. New MCP connections also receive
+the freshness reminder from the hosted server after that server change is
+deployed; this does not publish a new marketplace package.
+
 ## Verify without changing data
 
 Start a new chat and send:
