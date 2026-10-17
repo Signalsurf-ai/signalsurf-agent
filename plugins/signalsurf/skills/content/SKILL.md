@@ -18,3 +18,5 @@ Business work uses a selected Project with Content enabled in File Access. Perso
 3. Publishing is externally visible. Use `content_publish` only when requested and after its confirmation boundary; never retry an ambiguous publish automatically.
 4. Adapt copy to the actual account/platform while preserving the user's voice and saved targeting.
 5. Record material experiments and results in the relevant Project Thread; ordinary draft revisions remain in Content history.
+
+For performance trends, inspect `content.performance_history` through dashboard source discovery. Its rows are actual cumulative observations, not daily new engagement. Scope reads by observation period or exact publication ID. For line charts use `period.field: observedAt`, a daily `timeBucket` and its alias as the sole group; missing days are gaps. X automatically uses bounded paid checks at day 1/3/7, while Reddit score is signed. Never invent past readings or imply that a dashboard enables collection. Eligible published Content posts are tracked automatically; Content Analyze shows readings and status. Paid audience capture is a separate operation.
