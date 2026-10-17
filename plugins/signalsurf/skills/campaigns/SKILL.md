@@ -14,7 +14,7 @@ When writing, reviewing or rewriting copy, read [Writing](../writing/SKILL.md) a
 1. Resolve the audience and Campaign with Records/Lists plus `campaign_query`; inspect before editing.
 2. Use `campaign_manage` for the Campaign's supported create/change actions. Treat draft, preparation, launch, and observed results as distinct states.
 3. Use `sender_query` and `sender_infrastructure_query` for account settings, capacity, live inventory, Domains, Mailboxes, and readiness. Read the root Skill's sender-infrastructure reference before recommending setup.
-4. Use `sender_manage` only for supported account connection/settings. Protected purchase, credentials, provider provisioning, and readiness remain inside Signalsurf's secure flow.
+4. Use the live `sender_manage` schema for supported account connection/settings, approved inbox creation across one or multiple owned Domains, and future Domain auto-renew preferences. For one combined Web review link, use `sender_infrastructure_query` action `setup` with `intent: mailbox_batch`. Domain registration, billing details and credentials retain their protected flow; read the sender-infrastructure reference for exact scope and result handling.
 5. External sends, paid setup, and consequential lifecycle actions obey their confirmation boundary. Never claim payment, provisioning, readiness, or delivery from an earlier planning result.
 6. Keep Campaign configuration/history in the resource; write hypotheses, experiment design, evidence, conclusions, and next action to the Project Thread.
 
