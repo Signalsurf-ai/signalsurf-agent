@@ -11,6 +11,6 @@ Read the [shared operating contract](../signalsurf/references/operating-contract
 
 1. Use `connection_query` to inspect actual connected services/accounts; do not infer a connection from a remembered name.
 2. Use `integration_browse` to resolve real destinations inside a connected provider.
-3. Use `integration_manage` only for explicit destination/settings changes. OAuth, secrets, credentials, and protected setup stay in Signalsurf's secure UI/continuation flow.
+3. For a requested Email or Social account connection, discover `integration_manage` action `connect_account` and its current input schema. Show the returned `authorizationUrl`; the member signs in and approves in the secure browser, then returns to the current host. Reconcile with the supported sync action and read `connection_query` again. A generated link is not proof of connection. Never request passwords or tokens. Other explicit destination/settings changes use `integration_manage`; protected setup follows its secure continuation flow.
 4. Connection inventory is Workspace Commons. Do not bind it to a Project unless a Project action actually consumes the connection.
 5. A connection change relies on its operation/resource history; post to a Project only when it changes that Play's ability, decision, or next action.

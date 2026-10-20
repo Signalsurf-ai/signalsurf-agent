@@ -1,0 +1,53 @@
+---
+name: onboarding
+description: Start or resume Signalsurf setup from an external AI, introduce relevant capabilities, interview the member, research their website, connect accounts and finish without a dashboard visit.
+---
+
+# Signalsurf Onboarding
+
+Before every request using this Skill, follow [version check and automatic update](../signalsurf/references/freshness.md), then use the current guidance.
+
+Read the [shared operating contract](../signalsurf/references/operating-contract.md) unless already loaded. The external AI conducts this interview; it does not create another Surfer conversation for the same interview.
+
+## Start where the member is
+
+Use the conversation's language throughout the interview and explanations. Introduce only the relevant outcomes: research companies and people, listen for public signals, organize qualified leads, prepare outreach, or create content. Ask what they want to achieve and for their website if unknown. A missing website does not prevent an interview. Reuse supplied answers and loaded Memory; ask one focused question at a time about the audience, offer, target market, current approach or definition of success. Distinguish the member's statements, verified website evidence and hypotheses.
+
+The first conversation can begin before authentication. Keep its draft context in the host until a Signalsurf connection is authorized. If Signalsurf tools are unavailable, help the member install the official Plugin using [Getting started](../../../../GETTING_STARTED.md), or add `https://mcp.signalsurf.ai/mcp` in a host that supports remote MCP. Use that host's actual connection facilities; a pasted prompt cannot install a connector in every host. Never ask for passwords, tokens or provider credentials.
+
+SignalSurf sign-in and each provider's authorization require the member's secure browser approval. Open only the returned authorization link; the member returns here to continue. Signup restrictions and consent remain in effect. Do not treat a login page, a generated link or a grant request as an authorized connection. If consent cannot create the first Workspace in the deployed release, report that specific bootstrap gap and preserve the interview draft; do not claim setup is finished or invent an anonymous Workspace.
+
+## Reuse or create the intended Workspace
+
+After authorization, call `get_workspace_context`. Resolve the intended Workspace naturally and pass its exact `workspaceId` on subsequent scoped calls. Discover the current onboarding actions and schemas before using them; releases and OAuth grants can differ. Use `onboarding_query` action `status` when available and current Memory context before repeating setup questions. An already completed account can still configure another Workspace; do not reset onboarding or overwrite existing context.
+
+For a new Workspace, discover `workspace_query` action `organizations`, inspect the returned creation authority, then use `workspace_manage` action `create` with the intended Organization and name. Explain and complete its exact confirmation. Reuse a stable `operationId` only for the same retry. Read the returned Workspace and refreshed context before continuing. Workspace creation is separate from website research, Project creation and account connection; do not duplicate any of them after an unknown result.
+
+## Learn the business and save useful context
+
+Website research is optional. When requested, use `onboarding_run` action `research_website` after its credit/confirmation preview is accepted. Reuse the returned `runId` with `onboarding_query` action `research_progress`. A queued, running or retrying run is unfinished. The completed review is in `lifecycle.result.researchReview`; preserve its sources and ask only about material uncertainty or corrections. Research failure does not turn a model guess into a verified fact.
+
+The canonical research pipeline already saves its Workspace profile. Do not copy its entire output into duplicate Memory. Summarize useful interview additions and corrections for the member. Handle one proposed durable Memory item at a time: show its exact resulting content and audience through the canonical confirmation, obtain an affirmative reply, then persist and verify that item before proposing another. Use the live governed `memory_manage` capability, with the current content/revision when updating an existing block, preserving unrelated facts. Personal preferences belong to User Memory; company identity, audience and positioning belong to Workspace Memory; a rule limited to one Project stays in that Project. Explain who can read the chosen audience. A shared save must not include private personal context, secrets, raw host transcripts, tool receipts, guesses or uncompleted OAuth outcomes. The member may keep the conversation private or decline any proposed item; declining does not prevent setup.
+
+Discover the available Memory actions and exact input schemas before writing. If the release or grant has no governed Memory write, state what remains unsaved and retain the proposed summary in the host; a Project post is not a substitute for private Memory. On another host or in the App, load the same Workspace/Project context and Memory references before asking the same questions again. Cross-host continuity covers saved business context, not an automatic copy of private chat history.
+
+## Connect only what the chosen outcome needs
+
+Read `connection_query` before offering another account connection. For Gmail or another Email account, discover `integration_manage` action `connect_account`, use its current schema for the Email channel, and show its returned `authorizationUrl`. Read [Connections](../connections/SKILL.md) for provider and integration settings. The member signs in and approves in the secure browser; then reconcile using the supported sync action and read the connection inventory again. Report the actual account and stored/verified status. Generating a link is not connection success, and connecting a mailbox does not authorize a send.
+
+## Build the first outreach outcome
+
+If the member has not chosen another outcome, recommend a small Signal-based outbound or TAM mapping pilot based on their goal. Explain the path before execution: a bounded relevant audience, the chosen Email or LinkedIn sender, prepared Campaign messages, then separately approved activation and sending. Reuse an existing audience, sender or Campaign when appropriate. Select an authorized work Project only when the chosen business operation requires one, following [Projects](../projects/SKILL.md); Workspace profile and account setup do not require a fabricated Project.
+
+- For Signal-based outbound, use [Signals](../signals/SKILL.md) for a one-off investigation or [Listening](../listening/SKILL.md) / [Workflows](../workflows/SKILL.md) for requested recurring collection. Keep collected evidence and source links in their native result or Sheet. Use [Records](../records/SKILL.md) for explicit identity resolution and admission into canonical People Records, optionally grouped in a List. Raw Sheet rows are not Campaign recipients. Collection, Enrich and recurring activation retain their own scope and credit confirmations.
+- For TAM mapping, use [Signals](../signals/SKILL.md) and its lead-sourcing guidance to define a bounded Company universe, then find relevant People within that universe when outreach is intended. Preserve canonical Company relations and save the accepted People audience through [Records](../records/SKILL.md). Enrich only the selected missing fields and rows after the native preview is accepted; do not promise complete market coverage or contact availability.
+
+After the member accepts the intended audience, connect only the Email or LinkedIn account needed for their chosen channel through [Connections](../connections/SKILL.md). Follow [Campaigns](../campaigns/SKILL.md) for actual sender inventory/readiness, Campaign creation, audience selection, message preparation, review and enrollment. Readiness may require more setup; do not infer it from OAuth success. Show the intended recipients, sender, content, conditions, schedule and any cost through the existing native previews. Obtain the required exact confirmation for consequential activation and sending. Accepting onboarding, saving Memory, importing Records or connecting an account never supplies send approval. After an approved launch, inspect actual queued, held, running or sent state; report delivery only from its verified delivery evidence. If the member stops before launch or readiness is blocked, preserve the saved preparation and identify the next step.
+
+## Finish one accepted setup
+
+Follow the member's accepted outcome and enabled capabilities, loading the relevant focused Skill and any enabled official strategy instructions before building resources. The outreach path above is a recommendation; a member may accept a smaller saved setup or choose another outcome. Keep publication, paid work, activation and external sends behind their native boundaries.
+
+When the member accepts the saved initial setup, use the discovered `onboarding_manage` action `complete` with outcome `ready`. If they explicitly choose to skip, use outcome `skipped`. Show and resolve the exact confirmation, including that this Workspace will open on the next App visit; use a stable `operationId`. This marks only the authenticated member's onboarding complete and does not start another interview, connect an account, create a Project or activate automation. Read `onboarding_query` action `status` to verify completion. If these actions are absent, report that App onboarding completion is unavailable in this deployed connection and preserve the completed setup; do not claim the App will skip its interview. A queued job or an unsaved proposal is not a saved setup; keep its unfinished state explicit.
+
+Finish with a short account of what is saved, what is connected, the first result and any pending authorization or work. Give the actual native links returned by completed resource operations. The member can continue here or enter the App later using the same saved context.

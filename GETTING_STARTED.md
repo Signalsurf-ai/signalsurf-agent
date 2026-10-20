@@ -35,8 +35,9 @@ claude plugin install signalsurf@signalsurf --scope user
 ```
 
 Restart Claude Code after installation. The first Signalsurf tool call opens
-the Signalsurf OAuth flow. Sign in, choose the allowed Workspaces, approve the
-requested grants, and return to Claude Code.
+the Signalsurf OAuth flow. Sign in, approve the requested grants for current and
+future accessible Workspaces, and return to Claude Code. The server rechecks
+current membership and permissions on every call.
 
 For the initial update from an older version, or manual recovery:
 
@@ -103,8 +104,8 @@ Once the Signalsurf listing is available for Grok Bot:
 1. Open **Connect apps** and search for **Signalsurf**.
 2. Verify the publisher and source are Signalsurf and this repository, then add
    the plugin.
-3. Complete Signalsurf OAuth in the browser, selecting the Workspaces and grants
-   the Bot may use.
+3. Complete Signalsurf OAuth in the browser, approving the requested grants for
+   current and future accessible Workspaces.
 4. Confirm the plugin appears under **Installed**, start a new chat, and attach
    Signalsurf with `@`.
 5. Run the read-only verification prompt below before requesting changes.
@@ -142,6 +143,41 @@ the Bot must not claim it updated the installation. A local Cursor plugin
 installation does not update the cloud Bot. New MCP connections also receive
 the freshness reminder from the hosted server after that server change is
 deployed; this does not publish a new marketplace package.
+
+## Start setup in your AI
+
+You can begin in your AI without visiting the Signalsurf dashboard first.
+Install or connect the Plugin using the host instructions above, then paste:
+
+> Help me get started with Signalsurf here. Use the onboarding Skill if
+> available and follow our conversation's language. Ask for my website and the
+> outcome I want, explain the relevant
+> capabilities, and interview me one question at a time. Reuse any saved
+> Workspace and Memory context before asking again. Guide me through secure
+> Signalsurf and provider authorization links when needed, then return here.
+> Propose useful long-term Memory items one at a time, show each item's exact
+> content and who can read it, and save only after I confirm that item. Keep
+> private chat history private. Unless I choose another outcome, guide me from
+> Signal-based outbound or TAM mapping to a bounded People audience, connect
+> Email or LinkedIn, and prepare a Campaign. Obtain separate explicit approval
+> before activation or sending, and complete one accepted initial setup. Show the
+> exact confirmation before paid work, account changes or finishing onboarding.
+> Verify what was saved and connected; keep pending steps explicit.
+
+The prompt begins the conversation; your host must still support and authorize
+an MCP connection. Sign-in, Workspace consent, signup eligibility and Gmail or
+other provider OAuth remain secure browser steps. New-account bootstrap depends
+on the deployed consent flow. A copied prompt, authorization link or queued
+research job is not completed onboarding.
+
+The default outreach path can pause at a saved audience or prepared Campaign.
+Connecting an account does not establish sender readiness, and accepting setup
+does not approve sending. The AI reports the actual saved, connected, prepared,
+queued or delivered state and any remaining authorization.
+
+When switching between Claude, Codex and the App, select the same Workspace and
+load its context. Confirmed Memory and saved resources continue across hosts;
+private host transcripts are not automatically imported.
 
 ## Verify without changing data
 

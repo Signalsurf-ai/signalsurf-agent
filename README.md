@@ -34,8 +34,9 @@ codex plugin add signalsurf@signalsurf
 ```
 
 Installing the Plugin does not bypass Signalsurf permissions. OAuth asks the
-member which Workspaces and grants the AI may use, and the server revalidates
-authorization on every tool call.
+member to approve the requested grants for all Workspaces they can access,
+including future Workspaces. The server revalidates current membership and
+permissions on every tool call.
 
 ## Developer fallback
 

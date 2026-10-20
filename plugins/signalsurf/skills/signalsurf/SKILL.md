@@ -23,6 +23,7 @@ Read only relevant focused guidance before applying it; one outcome can cross do
 
 | Desired outcome                                                                                | Focused guidance                                                                                                             |
 | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| Start or resume setup, interview the member and build an initial audience-to-Campaign outcome  | [onboarding](../onboarding/SKILL.md)                                                                                         |
 | Search public posts by keywords once, including LinkedIn                                       | `signals`; follow its search and retained-result recipe                                                                      |
 | Read more rows or text from a previous research result                                         | `signals`; inspect the retained result before considering any persistence                                                    |
 | Research a known Person/profile and recent posts; optionally save verified Person + Company    | [research and capture](references/research-capture.md), `signals`, then `records` only when capture is requested             |
