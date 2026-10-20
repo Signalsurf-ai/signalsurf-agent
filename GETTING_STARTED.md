@@ -155,9 +155,11 @@ Install or connect the Plugin using the host instructions above, then paste:
 > capabilities, and interview me one question at a time. Reuse any saved
 > Workspace and Memory context before asking again. Guide me through secure
 > Signalsurf and provider authorization links when needed, then return here.
-> Propose useful long-term Memory items one at a time, show each item's exact
-> content and who can read it, and save only after I confirm that item. Keep
-> private chat history private. Unless I choose another outcome, guide me from
+> Automatically save and update useful durable context in the correct authorized
+> User, Workspace or Project Memory, without asking me to approve each save. Read
+> existing blocks first, preserve unrelated facts and verify the saved result.
+> Keep private personal context and private chat history out of shared Memory.
+> Unless I choose another outcome, guide me from
 > Signal-based outbound or TAM mapping to a bounded People audience, connect
 > Email or LinkedIn, and prepare a Campaign. Obtain separate explicit approval
 > before activation or sending, and complete one accepted initial setup. Show the
@@ -176,7 +178,7 @@ does not approve sending. The AI reports the actual saved, connected, prepared,
 queued or delivered state and any remaining authorization.
 
 When switching between Claude, Codex and the App, select the same Workspace and
-load its context. Confirmed Memory and saved resources continue across hosts;
+load its context. Saved Memory and business resources continue across hosts;
 private host transcripts are not automatically imported.
 
 ## Verify without changing data
