@@ -153,8 +153,11 @@ Install or connect the Plugin using the host instructions above, then paste:
 > available and follow our conversation's language. Ask for my website and the
 > outcome I want, explain the relevant
 > capabilities, and interview me one question at a time. Reuse any saved
-> Workspace and Memory context before asking again. Guide me through secure
-> Signalsurf and provider authorization links when needed, then return here.
+> Workspace and Memory context before asking again. At each new request, recall
+> Memory for the current task before product reads or writes and apply relevant
+> saved facts and preferences without asking me to initiate the read. Guide me
+> through secure Signalsurf and provider authorization links when needed, then
+> return here.
 > Automatically save and update useful durable context in the correct authorized
 > User, Workspace or Project Memory, without asking me to approve each save. Read
 > existing blocks first, preserve unrelated facts and verify the saved result.
@@ -177,9 +180,16 @@ Connecting an account does not establish sender readiness, and accepting setup
 does not approve sending. The AI reports the actual saved, connected, prepared,
 queued or delivered state and any remaining authorization.
 
-When switching between Claude, Codex and the App, select the same Workspace and
-load its context. Saved Memory and business resources continue across hosts;
-private host transcripts are not automatically imported.
+When switching between Claude, Codex and the App, select the same Workspace.
+Connected external agents with Memory read authority receive bounded Memory at
+initialization and refreshed `memoryContext` in successful product responses. The Skill recalls Memory for
+each new task with `memory_query` action `recall`, so older relevant facts can be
+found beyond the recent context window and applied without repeated interview
+questions. Project recall uses the exact selected authorized `projectId`; the
+App uses its native Memory context pipeline. Fresh revisions replace corrected
+or forgotten facts. The server cannot continuously poll an idle host or force
+a foreign model to use a response. Saved Memory and business resources continue
+across hosts; private host transcripts are not automatically imported.
 
 ## Verify without changing data
 
