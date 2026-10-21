@@ -15,7 +15,15 @@ The Plugin bundles two things:
   and composed research, lead-sourcing and personal Outbox procedures; live
   capability schemas supply the callable contract.
 
-OAuth starts during installation or first use. Choose only the Workspaces the
+Use the [HTTPS catalog and ZIP path](../../GETTING_STARTED.md#claude-code-without-git)
+in Claude Code to avoid its Git-backed marketplace clone. Other apps have their
+own interface paths; customers should not need to clone this repository. See [Getting started](../../GETTING_STARTED.md) for
+Claude / Cowork, Codex / ChatGPT, Cursor, and Grok Bot, including availability
+and administrator requirements. Reading a repository URL in chat does not
+itself install the plugin.
+
+Connect the bundled Signalsurf service after installation if the app lists it
+as disconnected. OAuth starts during connection or first use. Choose only the Workspaces the
 AI should reach. Tokens are exchanged directly between the host and Signalsurf;
 do not paste a token into chat or a terminal command.
 
@@ -25,18 +33,18 @@ After installing, start a new chat and ask:
 > find_capabilities, and tell me which Agent, Workspaces, Project collaboration
 > tools, and product tools are available.
 
-See the repository [getting started guide](../../GETTING_STARTED.md) for
-host-specific installation and update commands.
-
-Raw MCP remains available for custom agents that cannot load plugins. It is a
-developer transport fallback, not a separate Signalsurf mode.
+For apps supporting custom remote MCP, the connection URL is
+`https://mcp.signalsurf.ai/mcp`. It supplies the same tools and permission checks
+without installing these Skills. Follow the [MCP setup guide](../../GETTING_STARTED.md#raw-mcp).
 
 ## Cursor and Grok Bot review
 
 The package ships both the portable Agent Plugins manifest and a Cursor manifest.
 Cursor discovers this directory through the repository's marketplace catalog.
 Both use the root `mcp.json`, which connects to the existing hosted server over
-Streamable HTTP. There are no local executables, install hooks, or embedded
+Streamable HTTP. The MCP server is hosted; no local server process or install
+hook is required. The package includes a Node.js updater for compatible local
+hosts, with web guidance fallback for managed hosts. It contains no embedded
 credentials. A Signalsurf account and access to an authorized Workspace are
 required; provider connections and usage limits follow the member's account.
 

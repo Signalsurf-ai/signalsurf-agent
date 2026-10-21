@@ -1,0 +1,20 @@
+{
+  "name": "signalsurf",
+  "owner": {
+    "name": "Signalsurf"
+  },
+  "metadata": {
+    "description": "Access Signalsurf from Claude"
+  },
+  "plugins": [
+    {
+      "name": "signalsurf",
+      "source": {
+        "source": "archive",
+        "url": "https://github.com/Signalsurf-ai/signalsurf-agent/releases/download/v0.7.13/signalsurf-0.7.13.zip",
+        "sha256": "cb46d1c1a572fcedcb6ba5ba1727b25d91b7562d1f03dd3cff1d0299776ab5ef"
+      },
+      "description": "Access your Signalsurf workspace, Projects, and product tools from Claude."
+    }
+  ]
+}
