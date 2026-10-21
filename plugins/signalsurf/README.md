@@ -15,9 +15,9 @@ The Plugin bundles two things:
   and composed research, lead-sourcing and personal Outbox procedures; live
   capability schemas supply the callable contract.
 
-Use the [HTTPS catalog and ZIP path](../../GETTING_STARTED.md#claude-code-without-git)
+Use the [HTTPS catalog and ZIP path](https://github.com/Signalsurf-ai/signalsurf-agent/blob/main/GETTING_STARTED.md#claude-code-without-git)
 in Claude Code to avoid its Git-backed marketplace clone. Other apps have their
-own interface paths; customers should not need to clone this repository. See [Getting started](../../GETTING_STARTED.md) for
+own interface paths; customers should not need to clone this repository. See [Getting started](https://github.com/Signalsurf-ai/signalsurf-agent/blob/main/GETTING_STARTED.md) for
 Claude / Cowork, Codex / ChatGPT, Cursor, and Grok Bot, including availability
 and administrator requirements. Reading a repository URL in chat does not
 itself install the plugin.
@@ -35,7 +35,7 @@ After installing, start a new chat and ask:
 
 For apps supporting custom remote MCP, the connection URL is
 `https://mcp.signalsurf.ai/mcp`. It supplies the same tools and permission checks
-without installing these Skills. Follow the [MCP setup guide](../../GETTING_STARTED.md#raw-mcp).
+without installing these Skills. Follow the [MCP setup guide](https://github.com/Signalsurf-ai/signalsurf-agent/blob/main/GETTING_STARTED.md#raw-mcp).
 
 ## Cursor and Grok Bot review
 
@@ -60,7 +60,7 @@ explicitly authorized operation. Verify confirmation and retry handling as well
 as the resulting Record or File.
 
 Grok Bot marketplace availability requires separate review and host testing.
-See [Grok Bot setup](../../GETTING_STARTED.md#grok-bot). Report connection problems
+See [Grok Bot setup](https://github.com/Signalsurf-ai/signalsurf-agent/blob/main/GETTING_STARTED.md#grok-bot). Report connection problems
 without credentials through the repository's
 [issue tracker](https://github.com/Signalsurf-ai/signalsurf-agent/issues).
 See [Privacy](https://www.signalsurf.ai/privacy) and
