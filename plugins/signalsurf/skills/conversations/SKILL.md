@@ -9,7 +9,7 @@ Before every request using this Skill, follow [version check and automatic updat
 
 Read the [shared operating contract](../signalsurf/references/operating-contract.md) unless already loaded; a focused Skill uses the same context, actor, confirmation and result rules.
 
-Business work uses a selected Project with Messages enabled in File Access. Personal sends/schedules follow the same Messages gate. Pure Workspace reads may omit Project; reads within an explicit Project check its selection. Inspect current approvals and actual account/resource permissions before effects.
+Business work uses a selected Project with Messages enabled in File Access. Personal sends/schedules follow the same Messages gate. Human Phone calls and incoming forwarding retain their native Workspace scope; AI calls require an accessible Project. Pure Workspace reads may omit Project; reads within an explicit Project check its selection. Inspect current approvals and actual account/resource permissions before effects.
 
 When writing, reviewing or rewriting copy, read [Writing](../writing/SKILL.md) and only the matching purpose/channel references. Use the native procedure below to read, save or send; a writing request does not expand permissions.
 

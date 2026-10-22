@@ -10,44 +10,65 @@ Project.
 
 ## Install
 
-See [Getting started](./GETTING_STARTED.md) for Claude Code, Codex, and Cursor
-installation, Grok Bot marketplace availability, the separate ChatGPT connector path, OAuth, verification,
-updates, and troubleshooting.
+Start with your app below. Claude Code has a dedicated HTTPS catalog and ZIP
+installation path for customers without Git; other apps have their own interface
+paths. You need an eligible
+Signalsurf account and access to the Workspace you use. Approved new-account
+bootstrap depends on the deployed consent flow. Availability depends on your app,
+plan, and organization settings; a public repository is not a directory listing.
 
-This repository also contains the Cursor-compatible package intended for Grok
-Bot's **Connect apps** directory. Publishing this repository does not create a
-marketplace listing: availability requires a separate Cursor marketplace review
-and host verification. No approved Grok Bot listing is claimed here.
+| Your app        | Start here                                                                                                                                                                                                                       |
+| --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Claude Code     | Use the [Git-free HTTPS catalog](./GETTING_STARTED.md#claude-code-without-git). The GitHub repository installer requires Git.                                                                                                    |
+| Claude / Cowork | **Customize → Plugins → Add → Add marketplace**, enter `https://github.com/Signalsurf-ai/signalsurf-agent`, then add Signalsurf. [Steps](./GETTING_STARTED.md#claude-and-cowork).                                                |
+| Codex / ChatGPT | Use an available Signalsurf directory or workspace plugin. Workspace admins can import this repository through **Admin → Plugins → Add → Import marketplace**. [Steps and restrictions](./GETTING_STARTED.md#codex-and-chatgpt). |
+| Cursor          | Install from **Customize** when available. Teams can import the repository into a team marketplace. [Steps](./GETTING_STARTED.md#cursor).                                                                                        |
+| Grok Bot        | Use **Connect apps** when Signalsurf is available there. A Cursor installation does not install it in Grok Bot. [Steps and availability](./GETTING_STARTED.md#grok-bot).                                                         |
 
-The short version for Claude Code is:
+Then connect Signalsurf, sign in, review and approve the requested access, and
+[verify the connection](./GETTING_STARTED.md#verify-without-changing-data).
 
-```sh
-claude plugin marketplace add Signalsurf-ai/signalsurf-agent
-claude plugin install signalsurf@signalsurf --scope user
-```
+### Asking your AI to help
 
-For Codex:
+Paste this into your app:
 
-```sh
-codex plugin marketplace add Signalsurf-ai/signalsurf-agent
-codex plugin add signalsurf@signalsurf
-```
+> Help me connect Signalsurf: https://github.com/Signalsurf-ai/signalsurf-agent.
+> Read its Getting Started guide and use the installation path for this app.
+> In Claude Code, use the HTTPS catalog and ZIP path, never the GitHub clone
+> path. Otherwise use the supported installer or guide me through the interface.
+> Do not ask me to install Git, Node.js, or clone a repository. If installation requires an admin,
+> unavailable listing, or unsupported feature, explain that specific blocker.
+> After I authorize the connection, verify access without changing data.
+
+Reading a URL in chat does not itself install a plugin. The app must provide an
+installer and complete authorization. If your AI asks you to install Git, use
+the interface steps above or [troubleshooting](./GETTING_STARTED.md#troubleshooting).
+
+To start setup in your AI after connecting, use the
+[onboarding prompt](./GETTING_STARTED.md#start-setup-in-your-ai).
+
+Developer Git-based installation is in [advanced setup](./GETTING_STARTED.md#advanced-setup).
+This is a marketplace repository; its plugin lives in `plugins/signalsurf`.
+Use **Add marketplace** or **Import marketplace** where supported. A host's
+single-plugin importer may require a different repository layout.
 
 Installing the Plugin does not bypass Signalsurf permissions. OAuth asks the
 member to approve the requested grants for all Workspaces they can access,
 including future Workspaces. The server revalidates current membership and
 permissions on every tool call.
 
-## Developer fallback
+## Connect using an MCP URL
 
-Agents that cannot load plugins can connect directly to the hosted MCP endpoint:
+If your app supports custom remote MCP connections, use this server URL in its
+MCP or connector setup:
 
 ```text
 https://mcp.signalsurf.ai/mcp
 ```
 
 Raw MCP exposes the same tools and authorization model. It does not include the
-Plugin's interaction guidance and is not a separate Signalsurf mode.
+Plugin's Skills. The GitHub URL above is a plugin source; this MCP URL is a
+connection endpoint. Follow your app's [setup and permission requirements](./GETTING_STARTED.md#raw-mcp).
 
 [Signalsurf](https://www.signalsurf.ai) ·
 [Privacy](https://www.signalsurf.ai/privacy) ·
@@ -55,4 +76,4 @@ Plugin's interaction guidance and is not a separate Signalsurf mode.
 
 ## Writing guidance
 
-The packaged [Writing Skill](plugins/signalsurf/skills/writing/SKILL.md) supports standalone writing, review and rewrite as well as Content, Campaigns, Listening and Conversations copy. It selects email outreach, follow-up, conversation reply, LinkedIn post, X post, public reply, DM or connection-note guidance while preserving author voice and Chinese usage. The guidance is authored for SignalSurf. Product generation uses the same compiled references; `pnpm writing:sync` regenerates them and `pnpm check:plugin` verifies parity.
+The packaged [Writing Skill](plugins/signalsurf/skills/writing/SKILL.md) supports standalone writing, review and rewrite as well as Content, Campaigns, Listening and Conversations copy. It selects email outreach, follow-up, conversation reply, LinkedIn post, X post, public reply, DM or connection-note guidance while preserving author voice and Chinese usage. The guidance is authored for SignalSurf.
