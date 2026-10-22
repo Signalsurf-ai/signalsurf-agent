@@ -1,0 +1,381 @@
+{
+  "schemaVersion": 1,
+  "model": "Host configured default; actual model identifier unavailable in CLI output; no override",
+  "host": "Codex CLI",
+  "hostVersion": "0.163.0",
+  "snapshot": "60a03143a3b26f0b2597df1281a3d5006732ba31",
+  "startedAt": "2026-10-22T23:00:09.030005+00:00",
+  "finishedAt": "2026-10-22T23:01:35.632842+00:00",
+  "reviewer": "Independent candidate_review_one agent; parent collected and reconciled responses",
+  "executionMode": "simulation",
+  "realToolMutations": 0,
+  "promptSha256": "700ed33a4d1dc242e67d3b1736a10c433af76e97577852248084b12a69911ac4",
+  "method": "Eight synthetic cases, direct and root variants, batched into one no-tool process per host and phase. Every case was instructed to be independent. Guidance and discovery frontmatter were supplied in the prompt; expected outcomes were withheld. readFiles are model-proposed/reported choices, not observed local filesystem reads. No autoload/discovery or automatic reference-loading behavior is established.",
+  "timeProvenance": "Collection bounds from prompt creation and extracted response modification times; response extraction may follow model completion.",
+  "limitations": [
+    "Single batched sample per host/phase; no statistical or latency/token conclusion.",
+    "After input includes extracted conditional lifecycle/enrichment guidance; model-noted unsupplied examples remain proposed reads.",
+    "No live tool schemas, real effects, OAuth, Workspace read or persisted product proof.",
+    "Standalone rewrite source paragraph was absent, so only routing/missing-input behavior was exercised."
+  ],
+  "results": [
+    {
+      "caseId": "keyword-search",
+      "mode": "direct",
+      "entrypoint": "signals/SKILL.md",
+      "readFiles": [
+        "signals/SKILL.md",
+        "signalsurf/references/operating-contract.md",
+        "signals/references/search-and-results.md"
+      ],
+      "proposedEffects": [
+        "Offline trial: skip freshness checks and execute no tools.",
+        "Propose resolving Workspace and valid work Project context, then discovering linkedin_query accounts/search and their live schemas.",
+        "Resolve a usable account; clarify only unresolved account choice. Search warehouse automation with the supported filters and limit.",
+        "If pagination is needed, preserve the exact account, query, filters, original limit and returned cursor; trim to five posts.",
+        "Honor native approvals and cost bounds. Stop at research; create no Sheet, Records, Listening or Project writeback."
+      ],
+      "response": "Would return up to five evidenced posts and any search limitations. No search or save occurred in this trial; a page would not establish exhaustive coverage.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Routes one-off post search to Signals, preserves bounded paging and stops without persistence or monitoring."
+    },
+    {
+      "caseId": "keyword-search",
+      "mode": "root",
+      "entrypoint": "signalsurf/SKILL.md",
+      "readFiles": [
+        "signalsurf/SKILL.md",
+        "signalsurf/references/operating-contract.md",
+        "signals/SKILL.md",
+        "signals/references/search-and-results.md"
+      ],
+      "proposedEffects": [
+        "Offline trial: skip freshness checks and execute no tools.",
+        "Route one-off public keyword research to Signals, then discover linkedin_query accounts/search and inspect live schemas.",
+        "Resolve Workspace, valid work Project and usable account; ask only about unresolved choices.",
+        "Search and paginate using the exact returned cursor and unchanged account/query/filter/limit binding; trim to five.",
+        "Honor native approvals and cost bounds; stop without persistence, monitoring or Project writeback."
+      ],
+      "response": "Would report up to five evidenced posts with coverage limitations. Nothing was searched or saved in this trial.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Routes one-off post search to Signals, preserves bounded paging and stops without persistence or monitoring."
+    },
+    {
+      "caseId": "exact-list-enrich",
+      "mode": "direct",
+      "entrypoint": "records/SKILL.md",
+      "readFiles": [
+        "records/SKILL.md",
+        "signalsurf/references/operating-contract.md",
+        "signalsurf/references/enrichment.md",
+        "signalsurf/references/examples/exact-list.md"
+      ],
+      "proposedEffects": [
+        "Offline trial: skip freshness checks and execute no tools. The example file is a conditional read; its contents were not supplied.",
+        "Resolve Workspace/work Project, exact List and three requested active members; inspect schema, list_query membership/databases and enrichment_query list bindings.",
+        "Reuse this List's saved company-size field key, instruction and binding; preserve populated values.",
+        "Inspect native List Enrich schema and authority. For a shared profile field, retain listId, recordDatabaseId and the three canonical Record IDs; do not substitute generic Records access.",
+        "Run only the exact supported field under native confirmation and approved cost bounds; inspect run state and read back those members' fields.",
+        "Stop on denied access, missing native route or unresolved paid outcome; enable no automatic runs and make no unrelated edits."
+      ],
+      "response": "Would report verified field results separately from queued or failed work. Exact List/member references and authority must be resolved; no enrichment occurred.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Keeps the exact List, active members, saved binding, native authority and verified field results."
+    },
+    {
+      "caseId": "exact-list-enrich",
+      "mode": "root",
+      "entrypoint": "signalsurf/SKILL.md",
+      "readFiles": [
+        "signalsurf/SKILL.md",
+        "signalsurf/references/operating-contract.md",
+        "signalsurf/references/enrichment.md",
+        "records/SKILL.md",
+        "signalsurf/references/examples/exact-list.md"
+      ],
+      "proposedEffects": [
+        "Offline trial: skip freshness checks and execute no tools. Read the unsupplied exact-List example conditionally without assuming its contents.",
+        "Route existing-field completion to native Enrich with Records ownership.",
+        "Resolve work context, List schema, exact three active members and saved List binding.",
+        "For shared company-size data, use the native List route with listId, recordDatabaseId and canonical Record IDs; preserve populated values and unrelated members.",
+        "Follow live schema, authority, native confirmation and cost bounds; inspect runs and read back requested fields.",
+        "Stop on denied authority, missing route or uncertain paid outcome; create no replacement List, binding or automatic run."
+      ],
+      "response": "Would claim completion only for verified field readback, never queue acceptance. No enrichment was performed.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Keeps the exact List, active members, saved binding, native authority and verified field results."
+    },
+    {
+      "caseId": "list-access-denied",
+      "mode": "direct",
+      "entrypoint": "records/SKILL.md",
+      "readFiles": [
+        "records/SKILL.md",
+        "signalsurf/references/operating-contract.md",
+        "signalsurf/references/enrichment.md"
+      ],
+      "proposedEffects": [
+        "Offline trial: skip freshness checks and execute no tools.",
+        "Propose inspecting the exact denial, List scope, live capability and current authority.",
+        "Do not replace denied List Enrich with research plus manual Record writes, or infer collection authority from List access.",
+        "Report the native blocker and stop the proposed fallback. Any separately authorized independent Records work would require explicit collection access and its own valid procedure."
+      ],
+      "response": "The requested workaround would bypass the denied native List route. No research or Records edits would be performed; the access blocker remains unresolved.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Stops the denied List route without research plus generic Record-write fallback or authority expansion."
+    },
+    {
+      "caseId": "list-access-denied",
+      "mode": "root",
+      "entrypoint": "signalsurf/SKILL.md",
+      "readFiles": [
+        "signalsurf/SKILL.md",
+        "signalsurf/references/operating-contract.md",
+        "signalsurf/references/enrichment.md",
+        "records/SKILL.md"
+      ],
+      "proposedEffects": [
+        "Offline trial: skip freshness checks and execute no tools.",
+        "Route saved-field completion to native Enrich and Records; inspect the actual denial and authority if execution were available.",
+        "Do not switch to manual research/writeback or expand List scope into generic Records access.",
+        "Stop with the specific native access blocker; do not claim the product lacks every possible route."
+      ],
+      "response": "Would decline this access-bypassing fallback and report the native denial. No fields were researched or changed.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Stops the denied List route without research plus generic Record-write fallback or authority expansion."
+    },
+    {
+      "caseId": "delete-uncertain",
+      "mode": "direct",
+      "entrypoint": "records/SKILL.md",
+      "readFiles": [
+        "records/SKILL.md",
+        "signalsurf/references/operating-contract.md",
+        "signalsurf/references/file-lifecycle.md",
+        "signalsurf/references/examples/exact-retry.md"
+      ],
+      "proposedEffects": [
+        "Offline trial: skip freshness checks and execute no tools. The unsupplied exact-retry example would be read conditionally.",
+        "Recover the exact List, original operationId, payload, revision, dependencies and any existing confirmation binding; ask for missing original details if unavailable.",
+        "Discover the native list_manage delete action and reconcile its receipt and native List/Project Files state before any retry.",
+        "If exact replay is warranted, reuse the same operationId and payload under current native checks and existing confirmation resumes; never issue a new deletion identity.",
+        "Do not create Project work, acquire ownership or request a redundant conversational yes. Verify deletion state and preserve backing Records."
+      ],
+      "response": "Deletion remains unknown until receipt and native state are reconciled. No retry or cleanup claim was made.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Reconciles the original operation and native state before any exact replay; preserves backing Records."
+    },
+    {
+      "caseId": "delete-uncertain",
+      "mode": "root",
+      "entrypoint": "signalsurf/SKILL.md",
+      "readFiles": [
+        "signalsurf/SKILL.md",
+        "signalsurf/references/operating-contract.md",
+        "records/SKILL.md",
+        "signalsurf/references/file-lifecycle.md",
+        "signalsurf/references/examples/exact-retry.md"
+      ],
+      "proposedEffects": [
+        "Offline trial: skip freshness checks and execute no tools; the unsupplied example is only a proposed conditional read.",
+        "Route List deletion reconciliation to Records and native File lifecycle.",
+        "Resolve original target, operationId, exact payload and existing confirmation; inspect native receipt, List state and Project Files.",
+        "Replay only when warranted with the same operationId/payload, retaining revision, dependency and authority checks.",
+        "Stop if the outcome cannot be reconciled. Do not delete backing Records, create coordination resources or add grants."
+      ],
+      "response": "Would report verified deletion, verified non-deletion or an unresolved outcome. A timeout alone proves none of these.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Reconciles the original operation and native state before any exact replay; preserves backing Records."
+    },
+    {
+      "caseId": "personal-time-only",
+      "mode": "direct",
+      "entrypoint": "conversations/SKILL.md",
+      "readFiles": [
+        "conversations/SKILL.md",
+        "signalsurf/references/operating-contract.md",
+        "signalsurf/references/personal-schedule.md"
+      ],
+      "proposedEffects": [
+        "Offline trial: skip freshness checks and execute no tools.",
+        "Resolve the approved exact content, usable sender, recipient, agreed timezone and absolute due instant; recover authorized context before asking about missing details.",
+        "Resolve a valid work Project with Messages/Inbox selected and inspect approvals/account access.",
+        "Inspect live personal scheduling capability and reuse the recipient's supported active personal Schedule.",
+        "Preserve an explicitly chosen reply thread after reading its original email; otherwise use the supported new-thread default. Prepare the exact native preview and follow any required bound confirmation.",
+        "Schedule time-only delivery, then read back Schedule/Outbox IDs, endpoints, due time/timezone, condition, holds and status.",
+        "Do not create Campaigns, CRM Records, Workflows or reminders; offer optional CRM capture without delaying an authorized send."
+      ],
+      "response": "Would report verified scheduled/queued state, not delivery. The message would remain due even if the recipient replied; no email was scheduled here.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Uses native personal time-only scheduling, preserves approved targets/content and distinguishes queue from delivery."
+    },
+    {
+      "caseId": "personal-time-only",
+      "mode": "root",
+      "entrypoint": "signalsurf/SKILL.md",
+      "readFiles": [
+        "signalsurf/SKILL.md",
+        "signalsurf/references/operating-contract.md",
+        "conversations/SKILL.md",
+        "signalsurf/references/personal-schedule.md"
+      ],
+      "proposedEffects": [
+        "Offline trial: skip freshness checks and execute no tools.",
+        "Route personal timed delivery to Conversations and native Outbox scheduling.",
+        "Resolve exact approved content, sender, recipient, agreed timezone, due instant and selected work Project with Messages/Inbox access.",
+        "Inspect live schema, approvals and active personal Schedule; preserve selected reply semantics or supported new-thread default.",
+        "Follow native preview/confirmation without treating prior approval as a substitute for a newly required server confirmation; read back schedule and Outbox state.",
+        "Stop at verified scheduling. Do not add a no-reply condition, Campaign, reminder or unapproved CRM capture."
+      ],
+      "response": "Would distinguish scheduled acceptance, holds, dispatch and delivery. No scheduling or sending occurred in this trial.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Uses native personal time-only scheduling, preserves approved targets/content and distinguishes queue from delivery."
+    },
+    {
+      "caseId": "routine-saved-not-run",
+      "mode": "direct",
+      "entrypoint": "projects/SKILL.md",
+      "readFiles": [
+        "projects/SKILL.md",
+        "signalsurf/references/operating-contract.md",
+        "signalsurf/references/schedule-routing.md",
+        "signalsurf/references/examples/routine-evidence.md"
+      ],
+      "proposedEffects": [
+        "Offline trial: skip freshness checks and execute no tools. The unsupplied Routine evidence example is a conditional read.",
+        "Resolve the Project and exact Routine; load current context and inspect routine_query plus available run-history schemas.",
+        "Read the recorded occurrence, execution outcome and intended durable research result, including the relevant Project Thread/artifact.",
+        "Do not mutate, resume, duplicate or test-run the Routine merely to answer this question; perform no new paid research.",
+        "Stop with a supported success/failure/pending finding or a specific missing-evidence limitation."
+      ],
+      "response": "Saved and active configuration does not prove successful research. Without occurrence, run-outcome and durable-result evidence, success remains unverified.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Requires occurrence/run and durable-result evidence rather than equating active configuration with success."
+    },
+    {
+      "caseId": "routine-saved-not-run",
+      "mode": "root",
+      "entrypoint": "signalsurf/SKILL.md",
+      "readFiles": [
+        "signalsurf/SKILL.md",
+        "signalsurf/references/operating-contract.md",
+        "projects/SKILL.md",
+        "signalsurf/references/schedule-routing.md",
+        "signalsurf/references/examples/routine-evidence.md"
+      ],
+      "proposedEffects": [
+        "Offline trial: skip freshness checks and execute no tools; do not assume contents of the unsupplied example.",
+        "Route Routine execution verification to Projects and schedule routing.",
+        "Resolve Project/Routine and inspect available occurrence/run history and its intended durable result.",
+        "Distinguish active configuration, Fired schedule history and actual research execution.",
+        "Make no configuration changes or new research runs; stop when evidence supports a status or its absence is established."
+      ],
+      "response": "Would report successful completion only with recorded execution and the intended research result. Saved/active alone leaves success unverified.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Requires occurrence/run and durable-result evidence rather than equating active configuration with success."
+    },
+    {
+      "caseId": "uncertain-send",
+      "mode": "direct",
+      "entrypoint": "conversations/SKILL.md",
+      "readFiles": [
+        "conversations/SKILL.md",
+        "signalsurf/references/operating-contract.md",
+        "signalsurf/references/personal-schedule.md",
+        "signalsurf/references/examples/draft-send.md"
+      ],
+      "proposedEffects": [
+        "Offline trial: skip freshness checks and execute no tools. The unsupplied draft/send example would be read conditionally.",
+        "Recover the original operationId, exact payload, confirmation binding, target and sender; inspect native receipts, Outbox/dispatch outcomes and relevant conversation evidence through available live readers.",
+        "Do not retry with a new operationId: a timeout may conceal a successful external send.",
+        "Reconcile the provider outcome first. If a retry is supported and warranted, preserve the exact original operationId/payload and required confirmation binding.",
+        "Stop while the outcome is unknown; do not automatically retry or claim delivery from acceptance alone."
+      ],
+      "response": "Would not issue the requested new-ID retry because it could duplicate the message. The original send must be reconciled; no retry occurred.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Rejects a new retry identity and reconciles the original provider outcome before an exact retry."
+    },
+    {
+      "caseId": "uncertain-send",
+      "mode": "root",
+      "entrypoint": "signalsurf/SKILL.md",
+      "readFiles": [
+        "signalsurf/SKILL.md",
+        "signalsurf/references/operating-contract.md",
+        "conversations/SKILL.md",
+        "signalsurf/references/personal-schedule.md",
+        "signalsurf/references/examples/draft-send.md"
+      ],
+      "proposedEffects": [
+        "Offline trial: skip freshness checks and execute no tools; the unsupplied example is a proposed conditional read.",
+        "Route uncertain personal delivery to Conversations and delivery recovery.",
+        "Resolve original operationId/payload/confirmation and inspect available native receipt, Outbox, dispatch and conversation evidence.",
+        "Reject a new-ID retry; reconcile unknown provider state before considering any exact retry.",
+        "Preserve original binding if a supported retry becomes warranted, and stop if uncertainty persists."
+      ],
+      "response": "A timeout does not establish failure. Would reconcile the original send before any retry and report only the observed state; nothing was resent.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Rejects a new retry identity and reconciles the original provider outcome before an exact retry."
+    },
+    {
+      "caseId": "standalone-rewrite",
+      "mode": "direct",
+      "entrypoint": "writing/SKILL.md",
+      "readFiles": [
+        "writing/SKILL.md",
+        "writing/references/core.md",
+        "writing/references/voice.md",
+        "writing/references/review.md"
+      ],
+      "proposedEffects": [
+        "Offline trial: skip freshness checks and execute no tools.",
+        "Use only the supplied paragraph and preferences; request the paragraph because none appears in this task's context.",
+        "Rewrite only the requested scope, preserving facts, quotations, names, numbers, caveats and language.",
+        "Read Chinese calibration only if the supplied paragraph requires it; use another channel reference only if its venue becomes relevant.",
+        "Return the rewrite without SignalSurf access, persistence, sending or a claim of verified personal voice."
+      ],
+      "response": "Please provide the paragraph to rewrite. No source paragraph was included, so no rewrite can yet be produced.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Uses no product access and requests the absent source paragraph; rewrite quality is not exercised."
+    },
+    {
+      "caseId": "standalone-rewrite",
+      "mode": "root",
+      "entrypoint": "signalsurf/SKILL.md",
+      "readFiles": [
+        "signalsurf/SKILL.md",
+        "signalsurf/references/operating-contract.md",
+        "writing/SKILL.md",
+        "writing/references/core.md",
+        "writing/references/voice.md",
+        "writing/references/review.md"
+      ],
+      "proposedEffects": [
+        "Offline trial: skip freshness checks and execute no tools.",
+        "Route supplied-context standalone prose to Writing; no MCP connection, Workspace or Project is needed.",
+        "Request the absent paragraph, then rewrite for clarity within its facts and selection boundaries.",
+        "Load Chinese or venue-specific guidance only if the paragraph makes it relevant.",
+        "Stop after returning the requested rewrite; do not access SignalSurf data, save or send."
+      ],
+      "response": "Please provide the paragraph to rewrite. No paragraph was supplied, and no data access or rewrite occurred.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Uses no product access and requests the absent source paragraph; rewrite quality is not exercised."
+    }
+  ]
+}

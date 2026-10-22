@@ -68,3 +68,5 @@ Use the [bounded task-trial protocol](../evals/README.md) for independent before
 after behavior and preserve failed/unavailable evidence. A real model run in a
 read-only agent runtime must name that runtime; do not relabel it as a Claude,
 Codex or Cursor host journey. Keep supported-host install/OAuth proof separate.
+
+Dated bounded model trials and their limitations are recorded in [quality evidence](quality-evidence.md).
