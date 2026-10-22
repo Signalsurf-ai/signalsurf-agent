@@ -1,0 +1,313 @@
+{
+  "schemaVersion": 1,
+  "model": "claude-opus-5-5; configured default, no override",
+  "host": "Claude Code",
+  "hostVersion": "2.1.308",
+  "hostVersionProvenance": "Original CLI initialization event records this host version.",
+  "snapshot": "50190c49e668c1ba688b13a14831f281e1dec524",
+  "pluginTree": "caf3f1bd06d9ce853978390e0207427aa2f95260",
+  "startedAt": "2026-10-22T23:39:12.292682+00:00",
+  "finishedAt": "2026-10-22T23:40:19.437584+00:00",
+  "reviewer": "candidate_review_two agent independently reviewed parent-collected original responses against the prepared reviewer case specification",
+  "executionMode": "simulation",
+  "realToolMutations": 0,
+  "promptSha256": "0d29a2f2c630b0c01d892d1a4c68954573f8a2805e773b3d0d8d4496b896510c",
+  "rawProcessOutputSha256": "c6b346b73bd2acbc12e89f12537d0881faf686c2c6d51f2b33c151a74d0551c0",
+  "originalModelResponseSha256": "d76d3be3256e1cd6c0308d58ff648a21578f0b8f4c24c64d85341aef6db6eddc",
+  "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "method": "One supplied-guidance no-tool batch per host/phase; task rows instructed to be independent, not separate host sessions. Exact original parsed response fields are preserved. Expected answers, required outcomes and forbidden effects were withheld from the model.",
+  "guidanceProvenance": [
+    {
+      "path": "records/SKILL.md",
+      "bytes": 3046,
+      "sha256": "9170db5f781cafeccd52e6c9484d5c72215f9e551d5cba9777ca6e3db1613c2b"
+    },
+    {
+      "path": "signalsurf/SKILL.md",
+      "bytes": 3341,
+      "sha256": "6b58dc84f66a9f376acea4b0f0ef4b4ed4fc5a675dcf8330a9fd9573dcbf7fd5"
+    },
+    {
+      "path": "signalsurf/references/freshness.md",
+      "bytes": 4755,
+      "sha256": "137b8701acbd4473f2d1e4e6e89a5b91758df4f727a784a713f9486c6c2fbd5d"
+    },
+    {
+      "path": "signalsurf/references/operating-contract.md",
+      "bytes": 7046,
+      "sha256": "aad12e3370d65fd38b04dbe80876e920dd925e4c7863e013431d29269f84c155"
+    }
+  ],
+  "processEvidence": {
+    "kind": "Original CLI event-array and result-envelope inspection",
+    "eventCount": 14,
+    "eventTypes": [
+      "system",
+      "system",
+      "system",
+      "system",
+      "system",
+      "system",
+      "system",
+      "system",
+      "system",
+      "system",
+      "assistant",
+      "assistant",
+      "rate_limit_event",
+      "result"
+    ],
+    "enabledTools": [],
+    "mcpServers": [],
+    "toolUseBlocks": 0,
+    "numTurns": 1,
+    "usage": {
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 26722,
+      "cache_read_input_tokens": 2090,
+      "output_tokens": 5863,
+      "output_tokens_details": {
+        "thinking_tokens": 1045
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 26722,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 5863,
+          "cache_read_input_tokens": 2090,
+          "cache_creation_input_tokens": 26722,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 26722
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-opus-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 5863,
+        "cacheReadInputTokens": 2090,
+        "cacheCreationInputTokens": 26722,
+        "webSearchRequests": 0,
+        "costUSD": 0.331462,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 1045,
+        "canonicalModel": "claude-opus-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permissionDenials": [],
+    "settings": {
+      "toolsArgument": "",
+      "sessionPersistence": false,
+      "modelOverride": false,
+      "userConfigIsolation": false,
+      "strictMcpConfig": true,
+      "mcpConfig": {
+        "mcpServers": {}
+      }
+    },
+    "inheritedSignalsurfPluginVersions": [
+      "0.6.0"
+    ],
+    "limitation": "Host user configuration and registered Skills/plugins were inherited, including the declared older SignalSurf plugin. This was a supplied-guidance reasoning trial, not an isolated host installation or automatic Skill-loading test. Original init declares no enabled tools or MCP servers and assistant events contain no tool-use blocks."
+  },
+  "limitations": [
+    "Single batched sample; no statistical, general model-quality, latency or token-savings conclusion.",
+    "Guidance/discovery were supplied in the prompt; readFiles records proposed choices rather than observed reads or host autoload.",
+    "Processes used configured default models and inherited host settings except the declared invocation controls; no user configuration or connected account was changed.",
+    "Methodology deviation from the recommended isolated-configuration/local-reading trials in evals/README.md: normal host configuration was inherited and guidance/discovery were supplied. Absence of ambient guidance or host isolation was not established.",
+    "All context, IDs, facts and observations are synthetic. No real mutation, OAuth, Workspace, provider or persistence proof is established.",
+    "The fixture_* APIs and schemas are deliberately artificial; these cases do not verify live SignalSurf inputSchema or deployment compatibility.",
+    "No native confirmation/retry response or extended confirmation schema was supplied. Conditional confirmation advice in the original model response was not exercised or verified by these fixture cases."
+  ],
+  "results": [
+    {
+      "caseId": "synthetic-schema-1",
+      "mode": "direct",
+      "entrypoint": "records/SKILL.md",
+      "readFiles": [
+        "records/SKILL.md",
+        "signalsurf/references/operating-contract.md"
+      ],
+      "proposedEffects": [
+        "No freshness check: this trial pins its guidance.",
+        "Use the supplied current Workspace/Project context, resolved Record IDs and current read (job_title 'Partnerships Manager', name 'Mira Rowan', company 'Harbor Example Labs') as the pre-update state. No re-resolution is needed and no IDs are guessed.",
+        "Propose one supplied-fact ordinary update with no research, Signals or Enrich: fixture_record_manage {\"action\":\"update\",\"workspaceId\":\"11111111-1111-4111-8111-111111111111\",\"projectId\":\"22222222-2222-4222-8222-222222222222\",\"objectId\":\"33333333-3333-4333-8333-333333333333\",\"recordId\":\"44444444-4444-4444-8444-444444444444\",\"operationId\":\"synthetic-schema-1-job-title-v1\",\"input\":{\"fields\":{\"job_title\":\"Director of Partnerships\"}}}. name and company are omitted so they are preserved.",
+        "If the call returns confirmation_required, present its exact preview, obtain an affirmative reply in this host, then repeat the identical bound call with the returned confirmationId.",
+        "If the outcome is unknown, reconcile with a readback before any retry. An exact retry reuses the same operationId and payload.",
+        "Propose a readback: fixture_record_query {\"action\":\"get\",\"workspaceId\":\"11111111-1111-4111-8111-111111111111\",\"projectId\":\"22222222-2222-4222-8222-222222222222\",\"objectId\":\"33333333-3333-4333-8333-333333333333\",\"recordId\":\"44444444-4444-4444-8444-444444444444\"}. It must show job_title 'Director of Partnerships' with name and company unchanged before completion is reported.",
+        "No Project Thread writeback. This is a routine edit kept in Record history, and the user asked for the report here."
+      ],
+      "response": "Proposed only; nothing has been executed. Plan: update job_title on Record 44444444-4444-4444-8444-444444444444 (Mira Rowan) from 'Partnerships Manager' to 'Director of Partnerships' using fixture_record_manage action update with operationId synthetic-schema-1-job-title-v1. Only job_title is sent, so name and company are preserved. The update is not complete until a fixture_record_query get readback confirms the new job_title and the unchanged other fields. No mutation or readback result is available in this trial (mutationObservation is null), so the result is currently unverified. No Thread post is planned.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Proposes the exact minimal fixture update with supplied IDs, operationId and only job_title, followed by exact readback of the changed title and preserved fields; makes no execution claim."
+    },
+    {
+      "caseId": "synthetic-schema-1",
+      "mode": "root",
+      "entrypoint": "signalsurf/SKILL.md",
+      "readFiles": [
+        "signalsurf/SKILL.md",
+        "signalsurf/references/operating-contract.md",
+        "records/SKILL.md"
+      ],
+      "proposedEffects": [
+        "No freshness check: this trial pins its guidance.",
+        "Route by outcome: a supplied-fact CRM Record edit maps to the Records procedure. No Signals, Enrich or research is involved.",
+        "Use the supplied current context, resolved IDs and current read as the pre-update state. No IDs are guessed.",
+        "Propose fixture_record_manage {\"action\":\"update\",\"workspaceId\":\"11111111-1111-4111-8111-111111111111\",\"projectId\":\"22222222-2222-4222-8222-222222222222\",\"objectId\":\"33333333-3333-4333-8333-333333333333\",\"recordId\":\"44444444-4444-4444-8444-444444444444\",\"operationId\":\"synthetic-schema-1-job-title-v1\",\"input\":{\"fields\":{\"job_title\":\"Director of Partnerships\"}}}. Other fields are omitted and therefore preserved.",
+        "If confirmation_required is returned, show the exact preview, get an affirmative reply in this host, then repeat the identical call with confirmationId. On an unknown outcome, reconcile via readback before an exact retry with the same operationId and payload.",
+        "Propose a readback with fixture_record_query action get on the same IDs, verifying the new job_title and unchanged name and company.",
+        "No Thread writeback. This is a routine edit, and the user requested an in-host report."
+      ],
+      "response": "Proposed only; nothing has been executed. Routed to Records as a supplied-fact edit. Plan: send fixture_record_manage update with only job_title 'Director of Partnerships' for Record 44444444-4444-4444-8444-444444444444 (operationId synthetic-schema-1-job-title-v1), then read it back with fixture_record_query get. Completion requires observing job_title 'Director of Partnerships' with name 'Mira Rowan' and company 'Harbor Example Labs' unchanged. No mutation or readback observation exists in this trial, so the change is not confirmed. No Project post is planned.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Proposes the exact minimal fixture update with supplied IDs, operationId and only job_title, followed by exact readback of the changed title and preserved fields; makes no execution claim."
+    },
+    {
+      "caseId": "synthetic-schema-2",
+      "mode": "direct",
+      "entrypoint": "records/SKILL.md",
+      "readFiles": [
+        "records/SKILL.md",
+        "signalsurf/references/operating-contract.md"
+      ],
+      "proposedEffects": [
+        "No freshness check: this trial pins its guidance.",
+        "Use the supplied current context, resolved IDs and current read as the pre-update state.",
+        "Propose fixture_record_manage {\"action\":\"update\",\"workspaceId\":\"11111111-1111-4111-8111-111111111111\",\"projectId\":\"22222222-2222-4222-8222-222222222222\",\"objectId\":\"33333333-3333-4333-8333-333333333333\",\"recordId\":\"44444444-4444-4444-8444-444444444444\",\"operationId\":\"synthetic-schema-2-job-title-v1\",\"input\":{\"fields\":{\"job_title\":\"Director of Partnerships\"}}}. The optional auditLabel is omitted because no value was supplied and none should be invented.",
+        "If confirmation_required is returned, present the exact preview, get an affirmative reply, and repeat the identical call with confirmationId. On an unknown outcome, reconcile via readback before an exact retry with the same operationId and payload.",
+        "Propose a readback with fixture_record_query action get on the same IDs, verifying the new job_title and unchanged name and company.",
+        "No Thread writeback for this routine edit."
+      ],
+      "response": "Proposed only; nothing has been executed. Plan: update only job_title to 'Director of Partnerships' on Record 44444444-4444-4444-8444-444444444444 via fixture_record_manage update (operationId synthetic-schema-2-job-title-v1). The schema's optional auditLabel is left out because no label was supplied. A fixture_record_query get readback must confirm the new title and the preserved name and company before this is reported complete. No execution result exists in this trial, so the update remains unverified. No Thread post is planned.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Recognizes auditLabel is optional and omits it without blocking or inventing a value; proposes the exact scoped update and verification without a completion claim."
+    },
+    {
+      "caseId": "synthetic-schema-2",
+      "mode": "root",
+      "entrypoint": "signalsurf/SKILL.md",
+      "readFiles": [
+        "signalsurf/SKILL.md",
+        "signalsurf/references/operating-contract.md",
+        "records/SKILL.md"
+      ],
+      "proposedEffects": [
+        "No freshness check: this trial pins its guidance.",
+        "Route the supplied-fact CRM Record edit to Records. No research or Enrich is involved.",
+        "Propose fixture_record_manage {\"action\":\"update\",\"workspaceId\":\"11111111-1111-4111-8111-111111111111\",\"projectId\":\"22222222-2222-4222-8222-222222222222\",\"objectId\":\"33333333-3333-4333-8333-333333333333\",\"recordId\":\"44444444-4444-4444-8444-444444444444\",\"operationId\":\"synthetic-schema-2-job-title-v1\",\"input\":{\"fields\":{\"job_title\":\"Director of Partnerships\"}}}. The optional auditLabel is omitted rather than invented.",
+        "Handle any confirmation_required by presenting the exact preview, getting an affirmative reply, and repeating the identical call with confirmationId. Reconcile an unknown outcome before any exact retry.",
+        "Propose a readback with fixture_record_query action get to verify job_title and the unchanged name and company.",
+        "No Thread writeback."
+      ],
+      "response": "Proposed only; nothing has been executed. Routed to Records. Plan: send fixture_record_manage update with only job_title 'Director of Partnerships' (operationId synthetic-schema-2-job-title-v1). The optional auditLabel is omitted since none was supplied. Then read the Record back with fixture_record_query get. No mutation or readback observation is available here, so the change is not confirmed. No Project post is planned.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Recognizes auditLabel is optional and omits it without blocking or inventing a value; proposes the exact scoped update and verification without a completion claim."
+    },
+    {
+      "caseId": "synthetic-schema-3",
+      "mode": "direct",
+      "entrypoint": "records/SKILL.md",
+      "readFiles": [
+        "records/SKILL.md",
+        "signalsurf/references/operating-contract.md"
+      ],
+      "proposedEffects": [
+        "No freshness check: this trial pins its guidance.",
+        "The update schema requires input.revisionToken. Neither the supplied current read nor the fixture_record_query schema or result exposes a revision token.",
+        "Stop before mutation: do not invent, derive or reuse any value as revisionToken. Do not send a partial update.",
+        "Optionally rerun capability discovery for this outcome to learn where the required revisionToken comes from. Do not assume such a route exists.",
+        "If a real token is later observed from an authorized read, propose fixture_record_manage update with the same IDs, operationId synthetic-schema-3-job-title-v1, input.fields.job_title 'Director of Partnerships' and that observed revisionToken. Then read back and verify the new title with name and company unchanged.",
+        "No Thread writeback."
+      ],
+      "response": "Blocked; nothing has been executed. The synthetic update route for Record 44444444-4444-4444-8444-444444444444 requires a revisionToken, and no supplied observation provides one. The current read returns only name, job_title and company, and the query schema has no option to request a token. I will not fabricate a token. The record still reads job_title 'Partnerships Manager' as of the supplied observation. Next step: identify an authorized read or discovery result that returns the current revisionToken. With that token, the update (only job_title to 'Director of Partnerships', operationId synthetic-schema-3-job-title-v1) can be proposed and then verified by readback.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Stops before mutation because required revisionToken has no observed value, rejects fabrication and limits further work to supported discovery or an authoritative reader if one exists."
+    },
+    {
+      "caseId": "synthetic-schema-3",
+      "mode": "root",
+      "entrypoint": "signalsurf/SKILL.md",
+      "readFiles": [
+        "signalsurf/SKILL.md",
+        "signalsurf/references/operating-contract.md",
+        "records/SKILL.md"
+      ],
+      "proposedEffects": [
+        "No freshness check: this trial pins its guidance.",
+        "Route the supplied-fact CRM Record edit to Records.",
+        "The update schema requires input.revisionToken, and no supplied read or schema provides it. Stop before mutation and do not invent the token.",
+        "Optionally rerun capability discovery to find the authorized source of the revisionToken, without assuming it exists.",
+        "Only after a real token is observed, propose the update with the same IDs, operationId synthetic-schema-3-job-title-v1, job_title 'Director of Partnerships' and that token. Follow with a fixture_record_query get readback.",
+        "No Thread writeback."
+      ],
+      "response": "Blocked; nothing has been executed. Routed to Records, but the synthetic update requires a revisionToken that no supplied read or schema exposes. I will not guess one. The Record remains 'Partnerships Manager' per the supplied observation. To proceed, an authorized read or discovery result must provide the current revisionToken. Then the job_title-only update can be proposed and verified by readback.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Stops before mutation because required revisionToken has no observed value, rejects fabrication and limits further work to supported discovery or an authoritative reader if one exists."
+    },
+    {
+      "caseId": "synthetic-schema-4",
+      "mode": "direct",
+      "entrypoint": "records/SKILL.md",
+      "readFiles": [
+        "records/SKILL.md",
+        "signalsurf/references/operating-contract.md"
+      ],
+      "proposedEffects": [
+        "No freshness check: this trial pins its guidance.",
+        "The discovered fixture_record_manage exposes only action 'archive'. No update route for job_title is available in the supplied discovery.",
+        "Do not call archive or any other substitute; archiving does not fulfill the request and would change the Record's state.",
+        "Stop and report the missing route. Rediscovery for a field-update capability may be proposed, but one family's missing action does not prove product-wide absence, and no operation should be invented.",
+        "No mutation, no readback claim and no Thread writeback."
+      ],
+      "response": "Blocked; nothing has been executed. The only Record mutation surface supplied for this exercise (fixture_record_manage) supports 'archive', not an update. I will not archive the Record or use any other workaround. Record 44444444-4444-4444-8444-444444444444 still reads job_title 'Partnerships Manager' per the supplied observation. To proceed, a capability that updates job_title needs to be discovered with its exact schema. Then a job_title-only update to 'Director of Partnerships' (operationId synthetic-schema-4-job-title-v1) can be proposed and verified by readback.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Identifies that the offered archive action cannot perform the requested update, refuses substitute mutation and limits the missing-route conclusion to supplied discovery while allowing scoped rediscovery."
+    },
+    {
+      "caseId": "synthetic-schema-4",
+      "mode": "root",
+      "entrypoint": "signalsurf/SKILL.md",
+      "readFiles": [
+        "signalsurf/SKILL.md",
+        "signalsurf/references/operating-contract.md",
+        "records/SKILL.md"
+      ],
+      "proposedEffects": [
+        "No freshness check: this trial pins its guidance.",
+        "Route the supplied-fact CRM Record edit to Records.",
+        "The supplied discovery offers only fixture_record_manage action 'archive'. There is no update route, so stop before mutation.",
+        "Do not substitute archive or invent an update operation. Rediscovery for an update capability may be proposed without assuming it exists.",
+        "No mutation, no readback claim and no Thread writeback."
+      ],
+      "response": "Blocked; nothing has been executed. Routed to Records, but the supplied discovery exposes only an archive action on fixture_record_manage, with no way to update job_title. I will not archive the Record as a workaround. The Record remains 'Partnerships Manager' per the supplied observation. To proceed, an update capability for this Record must be discovered with its exact schema. The job_title-only change can then be proposed and confirmed by readback.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Identifies that the offered archive action cannot perform the requested update, refuses substitute mutation and limits the missing-route conclusion to supplied discovery while allowing scoped rediscovery."
+    }
+  ]
+}

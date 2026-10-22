@@ -1,0 +1,188 @@
+{
+  "schemaVersion": 1,
+  "baselineCommit": "79e795db1d76597fadb8863d89019d099c1437fb",
+  "measure": "Whitespace-delimited words and UTF-8 bytes; complete explicitly required cold paths, each file once. Not model tokens, latency or host behavior.",
+  "scenarios": [
+    {
+      "id": "records-direct",
+      "files": [
+        "records/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md"
+      ],
+      "baseline": {
+        "words": 3938,
+        "bytes": 28278
+      }
+    },
+    {
+      "id": "records-direct-via-root",
+      "files": [
+        "records/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md",
+        "signalsurf/SKILL.md"
+      ],
+      "baseline": {
+        "words": 5368,
+        "bytes": 40202
+      }
+    },
+    {
+      "id": "keyword-search-direct",
+      "files": [
+        "signals/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md",
+        "signals/references/search-and-results.md"
+      ],
+      "baseline": {
+        "words": 3879,
+        "bytes": 27913
+      }
+    },
+    {
+      "id": "keyword-search-direct-via-root",
+      "files": [
+        "signals/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md",
+        "signals/references/search-and-results.md",
+        "signalsurf/SKILL.md"
+      ],
+      "baseline": {
+        "words": 5309,
+        "bytes": 39837
+      }
+    },
+    {
+      "id": "connections-direct",
+      "files": [
+        "connections/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md"
+      ],
+      "baseline": {
+        "words": 3093,
+        "bytes": 22142
+      }
+    },
+    {
+      "id": "connections-direct-via-root",
+      "files": [
+        "connections/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md",
+        "signalsurf/SKILL.md"
+      ],
+      "baseline": {
+        "words": 4523,
+        "bytes": 34066
+      }
+    },
+    {
+      "id": "standalone-writing-direct",
+      "files": [
+        "writing/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "writing/references/core.md",
+        "writing/references/voice.md",
+        "writing/references/email-outreach.md"
+      ],
+      "baseline": {
+        "words": 1535,
+        "bytes": 11809
+      }
+    },
+    {
+      "id": "standalone-writing-direct-via-root",
+      "files": [
+        "writing/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "writing/references/core.md",
+        "writing/references/voice.md",
+        "writing/references/email-outreach.md",
+        "signalsurf/SKILL.md",
+        "signalsurf/references/operating-contract.md"
+      ],
+      "baseline": {
+        "words": 5257,
+        "bytes": 39890
+      }
+    },
+    {
+      "id": "record-history-direct",
+      "baselineFiles": [
+        "records/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md"
+      ],
+      "files": [
+        "records/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md",
+        "records/references/history.md"
+      ],
+      "baseline": {
+        "words": 3938,
+        "bytes": 28278
+      }
+    },
+    {
+      "id": "exact-list-enrich-direct",
+      "baselineFiles": [
+        "records/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md"
+      ],
+      "files": [
+        "records/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md",
+        "signalsurf/references/enrichment.md"
+      ],
+      "baseline": {
+        "words": 3938,
+        "bytes": 28278
+      }
+    },
+    {
+      "id": "delete-uncertain-direct",
+      "baselineFiles": [
+        "records/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md"
+      ],
+      "files": [
+        "records/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md",
+        "signalsurf/references/file-lifecycle.md",
+        "signalsurf/references/examples/exact-retry.md"
+      ],
+      "baseline": {
+        "words": 3938,
+        "bytes": 28278
+      }
+    },
+    {
+      "id": "agent-routine-direct",
+      "baselineFiles": [
+        "projects/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md",
+        "signalsurf/references/schedule-routing.md"
+      ],
+      "files": [
+        "projects/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md",
+        "signalsurf/references/schedule-routing.md"
+      ],
+      "baseline": {
+        "words": 4443,
+        "bytes": 32015
+      }
+    }
+  ]
+}

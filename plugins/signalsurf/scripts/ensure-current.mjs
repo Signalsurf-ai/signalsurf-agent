@@ -26,6 +26,7 @@ const MANIFESTS = [
 ]
 const REQUIRED = [
   ...MANIFESTS,
+  "LICENSE",
   ".mcp.json",
   "mcp.json",
   "scripts/ensure-current.mjs",

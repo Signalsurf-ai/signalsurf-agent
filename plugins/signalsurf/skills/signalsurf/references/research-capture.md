@@ -6,3 +6,5 @@ Known-person research and optional capture:
 4. Save only the requested outcome. A research-only request creates no CRM records. For requested Person capture, inspect the Object schema and existing identities before record_manage; preserve unrelated data and source provenance.
 5. When the requested outcome includes the Person's Company, resolve a verified company identity/domain from evidence, reuse or create the actual Company, and link the Person through the declared relation field. No fabricated Company and no universal Company-first gate; if evidence is insufficient, retain the Person and report the unresolved Company.
 6. Read back saved identities and relations. Record a material Project insight separately when it changes a decision or hypothesis; routine capture relies on Record history. Report verified facts, unresolved fields and actual saved results.
+
+For partial/unknown research or requested capture after research, read the synthetic [research-only example](examples/research-only.md).

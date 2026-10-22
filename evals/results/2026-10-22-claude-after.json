@@ -1,0 +1,391 @@
+{
+  "schemaVersion": 1,
+  "model": "claude-opus-5-5; host configured default; no override",
+  "host": "Claude Code",
+  "hostVersion": "2.1.308",
+  "snapshot": "60a03143a3b26f0b2597df1281a3d5006732ba31",
+  "startedAt": "2026-10-22T23:00:09.030005+00:00",
+  "finishedAt": "2026-10-22T23:02:57.935542+00:00",
+  "reviewer": "Independent candidate_review_one agent; parent collected and reconciled responses",
+  "executionMode": "simulation",
+  "realToolMutations": 0,
+  "promptSha256": "700ed33a4d1dc242e67d3b1736a10c433af76e97577852248084b12a69911ac4",
+  "method": "Eight synthetic cases, direct and root variants, batched into one no-tool process per host and phase. Every case was instructed to be independent. Guidance and discovery frontmatter were supplied in the prompt; expected outcomes were withheld. readFiles are model-proposed/reported choices, not observed local filesystem reads. No autoload/discovery or automatic reference-loading behavior is established.",
+  "timeProvenance": "Collection bounds from prompt creation and extracted response modification times; response extraction may follow model completion.",
+  "limitations": [
+    "Single batched sample per host/phase; no statistical or latency/token conclusion.",
+    "After input includes extracted conditional lifecycle/enrichment guidance; model-noted unsupplied examples remain proposed reads.",
+    "No live tool schemas, real effects, OAuth, Workspace read or persisted product proof.",
+    "Standalone rewrite source paragraph was absent, so only routing/missing-input behavior was exercised."
+  ],
+  "results": [
+    {
+      "caseId": "keyword-search",
+      "mode": "direct",
+      "entrypoint": "signals/SKILL.md",
+      "readFiles": [
+        "signals/SKILL.md",
+        "signalsurf/references/operating-contract.md",
+        "signals/references/search-and-results.md"
+      ],
+      "proposedEffects": [
+        "Freshness: the trial pins this guidance, so no version check or network fetch is run and freshness is not claimed as verified.",
+        "Discover linkedin_query and inspect its live accounts and search actions. A people-only LinkedIn choice in social_search is not treated as proof that no post reader exists.",
+        "Call accounts to resolve a usable connected LinkedIn account. Ask which one only if several are usable and the intended one is unresolved.",
+        "Read the live query/sort/timeRange/limit/cursor schema. Do not apply Listening recency limits.",
+        "Run one read-only keyword post search for 'warehouse automation' with a schema-valid limit.",
+        "If fewer than five posts come back and more are needed, reuse the exact nextCursor with the same account, query, filters and original limit.",
+        "Trim the final page to five posts.",
+        "No Sheet, Record, Listening or Project Thread writeback, as the user asked."
+      ],
+      "response": "I'll search public LinkedIn posts about warehouse automation using your connected LinkedIn account's keyword post reader. I'll return five posts with their source and time details and save nothing. If more than one LinkedIn account is connected, I'll ask which to use. This is one bounded search, not an exhaustive one. No results exist yet.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Routes one-off post search to Signals, preserves bounded paging and stops without persistence or monitoring."
+    },
+    {
+      "caseId": "keyword-search",
+      "mode": "root",
+      "entrypoint": "signalsurf/SKILL.md",
+      "readFiles": [
+        "signalsurf/SKILL.md",
+        "signalsurf/references/operating-contract.md",
+        "signals/SKILL.md",
+        "signals/references/search-and-results.md"
+      ],
+      "proposedEffects": [
+        "Freshness: pinned by the trial; not checked or claimed current.",
+        "The root intent map routes 'one-off public keyword search' to Signals, which then routes to its search-and-results reference.",
+        "Discover linkedin_query; call accounts to resolve the account, asking only if it is ambiguous.",
+        "Read the live search schema and run one read-only search for 'warehouse automation'.",
+        "Paginate only with the exact nextCursor and the original limit, then trim to five.",
+        "Stop at the research stage: no persistence, no Listening, no Project writeback."
+      ],
+      "response": "This is a one-off public post search, so I'll use the Signals procedure. I'll run one LinkedIn keyword post search for warehouse automation through your connected account and return five posts. Nothing will be saved. I'll ask which account to use only if several are connected. No search has run yet.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Routes one-off post search to Signals, preserves bounded paging and stops without persistence or monitoring."
+    },
+    {
+      "caseId": "exact-list-enrich",
+      "mode": "direct",
+      "entrypoint": "records/SKILL.md",
+      "readFiles": [
+        "records/SKILL.md",
+        "signalsurf/references/operating-contract.md",
+        "signalsurf/references/enrichment.md"
+      ],
+      "proposedEffects": [
+        "Freshness: pinned by the trial; not checked.",
+        "Resolve context: the List and the three members are not identified in the supplied context. Ask for them or reuse server-resolved IDs verbatim; never guess IDs.",
+        "Call list_query to get listId, recordDatabaseId, entryDatabaseId and current member IDs, and confirm the three are active members.",
+        "Call enrichment_query action list to find the saved company-size binding for this List and reuse its exact field key and instruction. Do not call enrichment_manage enable.",
+        "Check field ownership. A List-owned field uses entryDatabaseId with membership IDs; a shared profile field uses recordDatabaseId with canonical Record IDs plus the same listId.",
+        "Check that the field is supported and empty for each target. Exclude already-populated members unless a refresh was requested.",
+        "Inspect the live schema and current authority. If the native List route for shared fields with listId is missing, report a release gap and stop. Do not substitute Records access or manual writes.",
+        "Call enrichment_run action run for this one field key with the exact IDs, within approved credit bounds. Follow any confirmation_required preview, wait for an affirmative reply, then repeat the call with confirmationId.",
+        "Treat the returned run IDs as queued work. Inspect the run outcome, reconcile any uncertain paid result before retrying, and read back the three cells.",
+        "No automatic runs, no collection-wide scope, no new List. Project writeback only if the result is material."
+      ],
+      "response": "I'll fill company size for exactly those three active List members using the List's saved Enrich binding, without expanding scope. Please identify the List and the three members if they aren't already resolved. I'll show you the native confirmation and credit cost before running. I'll report results only after reading the fields back. Queued runs are not finished data.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Keeps the exact List, active members, saved binding, native authority and verified field results."
+    },
+    {
+      "caseId": "exact-list-enrich",
+      "mode": "root",
+      "entrypoint": "signalsurf/SKILL.md",
+      "readFiles": [
+        "signalsurf/SKILL.md",
+        "signalsurf/references/operating-contract.md",
+        "signalsurf/references/enrichment.md",
+        "records/SKILL.md"
+      ],
+      "proposedEffects": [
+        "Freshness: pinned; not checked.",
+        "The root intent map routes 'fill existing supported fields with researched facts' to native Enrich, then the owning Records procedure for Lists.",
+        "Resolve the List and the three members with list_query (IDs supplied or server-resolved, never guessed) and confirm they are active members.",
+        "Call enrichment_query list and reuse the saved binding; do not enable a new one.",
+        "Choose entry or record database IDs according to field ownership. Exclude populated values.",
+        "Check the live List route and authority. If the route is missing, report the gap and stop.",
+        "Call enrichment_run run with one field key and the exact IDs, through native confirmation and within the credit bound.",
+        "Inspect the run outcome and read back the cells. No automatic runs and no scope expansion."
+      ],
+      "response": "This is a native Enrich task scoped to a List. I'll reuse the List's saved company-size binding for only those three active members, after you confirm the native preview and cost. I'll report the values that are actually written once I read them back. Please identify the List and members if they aren't already resolved.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Keeps the exact List, active members, saved binding, native authority and verified field results."
+    },
+    {
+      "caseId": "list-access-denied",
+      "mode": "direct",
+      "entrypoint": "records/SKILL.md",
+      "readFiles": [
+        "records/SKILL.md",
+        "signalsurf/references/operating-contract.md",
+        "signalsurf/references/enrichment.md"
+      ],
+      "proposedEffects": [
+        "Freshness: pinned; not checked.",
+        "Do not research the fields or edit the Records directly as a workaround. A List grant never becomes generic Record authority, and Enrich forbids expanding scope to get around a failure.",
+        "Read the actual denial error to tell apart missing scope, a Project/File access problem, an invalid ID and an undeployed route. Compare the original IDs first.",
+        "Optionally run read-only access checks: project_query access, and the selected Records collection state.",
+        "Report the specific limitation. Then propose a supported path: the right access is granted by a Project manager/Workspace Admin, then the native route is retried as a new proposal with its own confirmation.",
+        "No Record writes, no paid research, no grant changes without an explicit separate request."
+      ],
+      "response": "I won't work around the denial by researching and editing the Records directly. The List grant doesn't authorize Record writes, and native Enrich must not be bypassed after an access failure. I'll check the exact denial reason (missing scope, Project or File access, ID mismatch, or an unavailable route) and report it. The supported fix is to get the required access, then rerun native Enrich for the same exact selection under a new confirmation. No fields have been changed.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Stops the denied List route without research plus generic Record-write fallback or authority expansion."
+    },
+    {
+      "caseId": "list-access-denied",
+      "mode": "root",
+      "entrypoint": "signalsurf/SKILL.md",
+      "readFiles": [
+        "signalsurf/SKILL.md",
+        "signalsurf/references/operating-contract.md",
+        "signalsurf/references/enrichment.md",
+        "records/SKILL.md"
+      ],
+      "proposedEffects": [
+        "Freshness: pinned; not checked.",
+        "The root intent map routes this to native Enrich and Records. The operating contract forbids adding grants or claiming ownership to bypass a failure.",
+        "Decline the requested substitution of manual research plus direct Record edits.",
+        "Diagnose the actual denial with read-only inspection.",
+        "Report the blocker and the supported remedy (correct access, then a fresh native Enrich proposal).",
+        "No mutations."
+      ],
+      "response": "I can't fill those shared fields through direct research and Record edits after native List Enrich denied access. That would expand authority beyond the List grant. I'll identify the exact reason for the denial and tell you what access is needed. Once it's granted, I can propose the native Enrich run again for the same members. Nothing has been written.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Stops the denied List route without research plus generic Record-write fallback or authority expansion."
+    },
+    {
+      "caseId": "delete-uncertain",
+      "mode": "direct",
+      "entrypoint": "records/SKILL.md",
+      "readFiles": [
+        "records/SKILL.md",
+        "signalsurf/references/operating-contract.md",
+        "signalsurf/references/file-lifecycle.md"
+      ],
+      "proposedEffects": [
+        "Freshness: pinned; not checked.",
+        "The exact-retry example (signalsurf/references/examples/exact-retry.md) is referenced but not supplied, so it is not used.",
+        "Recover the original exact List ID, operationId and payload from context. They are not in the supplied context, so ask for them; never reconstruct them.",
+        "Read native state with list_query for the exact List, plus Project Files.",
+        "If the List is gone: report the verified deletion and that its backing Records are preserved. No retry.",
+        "If it still exists and no deletion is in progress: replay the same list_manage action delete with the identical operationId and payload. The original explicit request authorizes the exact native invocation, so no second conversational confirmation is needed. Native confirmation resumes still apply.",
+        "If the state stays ambiguous: report it as unknown and do not issue a new deletion.",
+        "Read the state back before reporting."
+      ],
+      "response": "I'll check the List's actual native state before doing anything else. If it's already deleted, I'll confirm that; its backing Records are unaffected. If it still exists, I'll replay the exact same deletion with the same operation ID and payload, not a new deletion. Please share the List and original operation details if they aren't already in context. The outcome is unknown until I read the state.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Reconciles the original operation and native state before any exact replay; preserves backing Records."
+    },
+    {
+      "caseId": "delete-uncertain",
+      "mode": "root",
+      "entrypoint": "signalsurf/SKILL.md",
+      "readFiles": [
+        "signalsurf/SKILL.md",
+        "signalsurf/references/operating-contract.md",
+        "records/SKILL.md",
+        "signalsurf/references/file-lifecycle.md"
+      ],
+      "proposedEffects": [
+        "Freshness: pinned; not checked.",
+        "The root intent map routes CRM Lists to Records, which routes uncertain deletion to file-lifecycle.",
+        "Reconcile first: read the exact List and Project Files.",
+        "Replay the exact original operationId and payload only if the List is verified not deleted. Never start a new deletion.",
+        "Report the verified result or the remaining unknown state. Backing Records are preserved."
+      ],
+      "response": "I'll reconcile the timed-out deletion by reading the List's current state first. A retry, if needed, will reuse the exact original operation ID and payload. I'll report either a verified deletion (backing Records preserved) or the actual remaining state. The deletion is not confirmed yet.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Reconciles the original operation and native state before any exact replay; preserves backing Records."
+    },
+    {
+      "caseId": "personal-time-only",
+      "mode": "direct",
+      "entrypoint": "conversations/SKILL.md",
+      "readFiles": [
+        "conversations/SKILL.md",
+        "signalsurf/references/operating-contract.md",
+        "signalsurf/references/personal-schedule.md"
+      ],
+      "proposedEffects": [
+        "Freshness: pinned; not checked.",
+        "Writing is not loaded: the copy is already approved and must be preserved exactly.",
+        "Check work context: a selected work Project with Messages/Inbox enabled in File Access, and current approvals.",
+        "Resolve the exact connected sender account and exact recipient. Never infer either. The supplied context is empty, so ask for the sender, recipient, exact content and the 'agreed' timezone if they aren't resolvable.",
+        "Thread mode: emailMode new_thread with the approved subject, unless the user selected a reply. A reply needs the exact replyToEntryId after reading the original email.",
+        "Compute tomorrow 10:00 as an absolute time in the agreed timezone. Time-only: it sends even if the recipient replies.",
+        "Inspect and reuse the recipient's active personal Schedule rather than creating a competing one. Handle any collision.",
+        "Prepare the native schedule preview (sender, recipient, channel, subject, body, time, timezone, time-only). On confirmation_required, get an affirmative reply, then repeat the call with confirmationId. Use one operationId.",
+        "Read back the Schedule/Outbox IDs, sender, recipient, due time, timezone, condition and status. Queued is not delivered.",
+        "If the recipient is unfamiliar, offer CRM capture once alongside the confirmation. No CRM write without an explicit yes."
+      ],
+      "response": "I'll schedule your approved email exactly as written for tomorrow at 10:00 in the agreed timezone. It's time-only, so it sends even if they reply first. Before scheduling I'll show you a preview with sender, recipient, subject, body and time for confirmation. Please confirm the sender, recipient and timezone if they aren't already resolved. After scheduling I'll report the Outbox status; queued does not mean delivered.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Uses native personal time-only scheduling, preserves approved targets/content and distinguishes queue from delivery."
+    },
+    {
+      "caseId": "personal-time-only",
+      "mode": "root",
+      "entrypoint": "signalsurf/SKILL.md",
+      "readFiles": [
+        "signalsurf/SKILL.md",
+        "signalsurf/references/operating-contract.md",
+        "conversations/SKILL.md",
+        "signalsurf/references/personal-schedule.md"
+      ],
+      "proposedEffects": [
+        "Freshness: pinned; not checked.",
+        "The root intent map routes 'personal email, time-only delivery' to Conversations plus personal-schedule.",
+        "Check the Project Messages gate. Resolve sender and recipient exactly, keep the content exact, and use new_thread unless a reply was selected.",
+        "Reuse the active personal Schedule and prepare the native preview. Schedule only after an affirmative confirmation.",
+        "Read back the Outbox state. Offer CRM capture once if the recipient is unfamiliar."
+      ],
+      "response": "This is a time-only personal send, so I'll use native Outbox scheduling. No Campaign is needed. I'll preview the exact email, sender, recipient and tomorrow-10:00 time for your confirmation, then report the queued status. Queued is not delivery. Nothing has been scheduled yet.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Uses native personal time-only scheduling, preserves approved targets/content and distinguishes queue from delivery."
+    },
+    {
+      "caseId": "routine-saved-not-run",
+      "mode": "direct",
+      "entrypoint": "projects/SKILL.md",
+      "readFiles": [
+        "projects/SKILL.md",
+        "signalsurf/references/operating-contract.md",
+        "signalsurf/references/schedule-routing.md"
+      ],
+      "proposedEffects": [
+        "Freshness: pinned; not checked.",
+        "The routine-evidence example is referenced but not supplied, so it is not used.",
+        "Resolve the Project (project_query, get_project_context) and the exact Routine via routine_query action list, using its triggerId.",
+        "Inspect the Routine's run history for recorded occurrences and their outcomes (pending, completed or failed).",
+        "Check for the intended durable result in the relevant Project Thread.",
+        "No mutations, no test or paid runs to validate it."
+      ],
+      "response": "Being saved and active doesn't show that the research completed. I'll look up the Routine's recorded runs and their outcomes, and check for its published result in the Project Thread. I'll tell you whether a run completed, failed, is pending, or hasn't occurred yet. Until then, success is unconfirmed.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Requires occurrence/run and durable-result evidence rather than equating active configuration with success."
+    },
+    {
+      "caseId": "routine-saved-not-run",
+      "mode": "root",
+      "entrypoint": "signalsurf/SKILL.md",
+      "readFiles": [
+        "signalsurf/SKILL.md",
+        "signalsurf/references/operating-contract.md",
+        "projects/SKILL.md",
+        "signalsurf/references/schedule-routing.md"
+      ],
+      "proposedEffects": [
+        "Freshness: pinned; not checked.",
+        "The root intent map routes scheduled Agent work to Projects plus schedule-routing.",
+        "Call routine_query and read the run history and result Thread, read-only.",
+        "Report observed execution evidence separately from the saved configuration."
+      ],
+      "response": "Saved configuration isn't proof of a successful run. I'll check the Routine's run history and its result Thread and report the actual outcome: completed, failed, pending, or not yet run. That outcome isn't known yet.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Requires occurrence/run and durable-result evidence rather than equating active configuration with success."
+    },
+    {
+      "caseId": "uncertain-send",
+      "mode": "direct",
+      "entrypoint": "conversations/SKILL.md",
+      "readFiles": [
+        "conversations/SKILL.md",
+        "signalsurf/references/operating-contract.md",
+        "signalsurf/references/personal-schedule.md"
+      ],
+      "proposedEffects": [
+        "Freshness: pinned; not checked.",
+        "The draft-send example is referenced but not supplied, so it is not used.",
+        "Decline a retry with a new operationId. Sends are not automatically retryable after an ambiguous outcome, and exact retries must reuse the same operationId and payload.",
+        "Reconcile first: use conversations_query and get on the exact thread to check for the sent message, and inspect Outbox/dispatch outcome if available.",
+        "If the send is verified: report it as sent and do not retry.",
+        "If it is verified not sent: propose an exact retry with the original operationId and payload, still within the original confirmation binding. Any changed effect needs a new preview and confirmation.",
+        "If it is still unknown: report it as unknown and do not send."
+      ],
+      "response": "I won't retry with a new operation ID. That could deliver a duplicate message to the recipient. I'll first check whether the original send went through. If it didn't, any retry will reuse the exact original operation ID and content. If I can't determine the outcome, I'll report that instead of sending again. The send's status is currently unknown.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Rejects a new retry identity and reconciles the original provider outcome before an exact retry."
+    },
+    {
+      "caseId": "uncertain-send",
+      "mode": "root",
+      "entrypoint": "signalsurf/SKILL.md",
+      "readFiles": [
+        "signalsurf/SKILL.md",
+        "signalsurf/references/operating-contract.md",
+        "conversations/SKILL.md",
+        "signalsurf/references/personal-schedule.md"
+      ],
+      "proposedEffects": [
+        "Freshness: pinned; not checked.",
+        "The root intent map routes to Conversations. The contract requires reconciling unknown outcomes before any retry, and an exact retry keeps the same operationId.",
+        "Read conversation history and dispatch state.",
+        "Make no new-ID send. Do an exact replay only if the send is verified not to have happened."
+      ],
+      "response": "A timed-out send has an unknown outcome, so I'll reconcile it before anything else rather than sending again with a new operation ID. If it wasn't delivered, I'll retry with the original ID and content. If it was, I'll stop there. Nothing has been resent.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Rejects a new retry identity and reconciles the original provider outcome before an exact retry."
+    },
+    {
+      "caseId": "standalone-rewrite",
+      "mode": "direct",
+      "entrypoint": "writing/SKILL.md",
+      "readFiles": [
+        "writing/SKILL.md",
+        "writing/references/core.md",
+        "writing/references/voice.md",
+        "writing/references/review.md"
+      ],
+      "proposedEffects": [
+        "Freshness: pinned; not checked.",
+        "No MCP, Workspace or Project access: the task is standalone prose with supplied context.",
+        "The paragraph is not present in the supplied context, so ask the user to provide it.",
+        "Rewrite for clarity within the supplied scope only. Preserve facts, names, numbers, quotes, language and caveats, and add no facts.",
+        "Return only the rewritten paragraph, with no diagnostics. No save or send."
+      ],
+      "response": "Please paste the paragraph you'd like rewritten. I'll tighten it for clarity, keep every fact, name, number and quote intact, and add nothing new. I won't use any SignalSurf data, and I'll return only the rewritten text.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Uses no product access and requests the absent source paragraph; rewrite quality is not exercised."
+    },
+    {
+      "caseId": "standalone-rewrite",
+      "mode": "root",
+      "entrypoint": "signalsurf/SKILL.md",
+      "readFiles": [
+        "signalsurf/SKILL.md",
+        "writing/SKILL.md",
+        "writing/references/core.md",
+        "writing/references/voice.md",
+        "writing/references/review.md"
+      ],
+      "proposedEffects": [
+        "Freshness: pinned; not checked.",
+        "The root intent map routes standalone rewrite to Writing; supplied-context writing needs no MCP connection.",
+        "Request the missing paragraph.",
+        "Do a scope-limited rewrite that preserves facts. Output the replacement text only. No resource access or writeback."
+      ],
+      "response": "This is a standalone rewrite, so I won't touch SignalSurf. Please share the paragraph. I'll return a clearer version with the same facts and nothing added.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Uses no product access and requests the absent source paragraph; rewrite quality is not exercised."
+    }
+  ]
+}
