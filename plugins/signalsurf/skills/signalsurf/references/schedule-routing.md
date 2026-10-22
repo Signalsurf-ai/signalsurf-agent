@@ -24,3 +24,5 @@ For Related members, read `project_query` action `members` for the resolved Proj
 After mutation, read back the saved Routine and verify its ID, instruction, timing/timezone or source trigger, active/completed state, `wakeSurfer`, audience and next run when available. Report configuration as saved only after this readback. A saved Routine does not prove a run succeeded: execution proof needs the recorded occurrence, run outcome and intended durable result. Do not invent an MCP test action or run paid/provider work merely to validate configuration; use only an available native test operation within authorized scope.
 
 For personal Email/message delivery, read [personal schedule](personal-schedule.md) and use native Outbox scheduling. For an actual personal reminder, the host scheduler remains appropriate. A reminder does not execute SignalSurf work or dispatch an Email.
+
+For the difference between saved configuration and an observed run, read the synthetic [Routine evidence example](examples/routine-evidence.md).

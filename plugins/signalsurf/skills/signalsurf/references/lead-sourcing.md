@@ -12,3 +12,5 @@ After a successful miss, rejected candidates or shortfall, inspect actual source
 4. Use a bounded 5-10 row proof batch unless another scope was requested. Inspect the live schema, required context and returned cost/confirmation before paid dispatch. Persist returned resultRef through its requiredNextTool rather than reconstructing provider rows; inspect the destination first and preserve unrelated populated values.
 5. Map only returned values into declared destination fields. If the user explicitly asks for technology research, keep the initial company batch at 10 or fewer, avoid repeat lookups, and preserve tech_stack as an array when declared. Use people_enrich email only when verified work Email is actually requested for a known identity. Do not add hiring, qualification or outreach fields without that scope.
 6. Read back saved results and identity relations; report Company and People counts separately. Stop after the requested stage. Campaign preparation and activation are separate requested work.
+
+For an existing Company source to an exact People List, or uncertain native import, read the synthetic [exact-List example](examples/exact-list.md).

@@ -26,6 +26,21 @@ Use a marketplace import for the repository URL. A single-plugin importer that
 requires a manifest at the repository root may reject it; installing Git does
 not change the package layout.
 
+## Choose what to install
+
+| Route | Skills | MCP connection | Authorization | Use it when |
+| --- | --- | --- | --- | --- |
+| Full plugin | Complete guidance, references and updater | Bundled remote configuration | Connect and authorize in the host | You want guided SignalSurf work in a supported AI app |
+| Raw MCP | Not installed | Add the remote URL | Host OAuth and Workspace grants | Your host supports custom MCP but no plugin installer |
+| Optional SignalSurf CLI | Not installed | Built into the terminal client | CLI login and Workspace selection | You need developer, batch or CI access |
+| Skills-only / `npx skills` / single-folder copy | Not a supported complete package | Not configured | Not established | Use a supported route above instead |
+
+A full plugin needs installation, reload/new session, connection, authorization
+and a read-only verification. Raw MCP needs connection and verification without
+installing Skills. Standalone writing can use already-available Writing guidance
+without connecting a Workspace. The [compatibility matrix](docs/compatibility.md)
+separates documented routes from actual tested host versions and limitations.
+
 ## Claude Code without Git
 
 **Requirements:** Claude Code 2.1.224 or later and HTTPS access to the catalog
@@ -231,6 +246,50 @@ OAuth. Revoking the Signalsurf grant prevents new access tokens; already-issued
 access tokens expire within their short lifetime. Never paste tokens into chat,
 a shell command, an issue, or a support message.
 
+## Disconnect, uninstall and revoke
+
+Choose the operation you need; each has a different effect:
+
+1. **Disable** stops the plugin loading in that host/scope. Re-enable it to resume.
+2. **Uninstall** removes the plugin's local guidance/configuration as defined by
+   the host. Preserve plugin data where the host offers that choice.
+3. **Disconnect/log out** removes or stops the host's connection credentials.
+4. **Revoke service authorization** withdraws the SignalSurf grant separately.
+   Follow the connection's offered authorization controls. Do not assume a local
+   uninstall or host logout revoked the service grant; existing access tokens may
+   remain valid until their normal expiry.
+
+For Claude Code, open `/plugin`, select Signalsurf under **Installed**, and use
+**Disable** or **Uninstall** at its installed scope. Developers can use:
+
+```sh
+claude plugin disable signalsurf@signalsurf --scope user
+claude plugin uninstall signalsurf@signalsurf --scope user --keep-data
+```
+
+Use the actual installed scope instead of `user` for a project/local install.
+Managed installations may require an administrator. `--keep-data` is available
+in the tested Claude Code 2.1.308; on older hosts inspect help or use the UI before
+removing persistent plugin data.
+
+For Codex CLI, inspect the installed source, then remove only this plugin:
+
+```sh
+codex plugin remove signalsurf@signalsurf
+```
+
+In other apps, use the installed plugin/connector controls and involve the admin
+for managed sources. Inspect any independently registered raw MCP server before
+removing it. Disable or remove a temporary raw MCP registration when migrating
+to the bundled plugin so that one intended server remains enabled; do not erase
+unrelated host configuration or silently switch marketplace sources.
+
+Do not remove an entire marketplace or shared Skills directory to repair one
+plugin. Marketplace removal can affect every plugin from that source. Removing
+local files does not delete hosted Workspace data or cancel server-side schedules.
+Verify disconnection/removal and service revocation separately without pasting
+credentials into chat, shell arguments or a public issue.
+
 ## Raw MCP
 
 For apps with a supported custom remote MCP interface, add
@@ -266,6 +325,49 @@ These options are for developers and existing command-line users. Git-backed
 CLI marketplace installers may require Git in their execution environment.
 If it is unavailable, use the Claude Code HTTPS path or supported app interface; a missing CLI prerequisite
 should not become the default customer setup.
+
+### SignalSurf CLI
+
+`@signalsurf/cli` is an optional terminal client of the same hosted MCP service.
+It has its own npm version and requires Node.js 22.13 or newer. It does not
+install the plugin's Skills, and plugin updates do not update the CLI.
+
+```sh
+npm install --global @signalsurf/cli@0.3.1
+signalsurf --version
+signalsurf --help
+```
+
+Use the installed version's login and Workspace-selection commands shown by
+`signalsurf --help`; complete its supported OAuth flow rather than copying tokens
+into arguments. Verify read-only Workspace context and capability discovery
+before requesting product changes. Interactive login, stored configuration and
+headless automation have separate constraints; a clean install/help check does
+not establish an authenticated session. Uninstall with
+`npm uninstall --global @signalsurf/cli`; handle stored credentials and service
+authorization through their respective logout/revocation controls.
+
+The published 0.3.1 package predates current source hardening for OAuth issuer
+changes and legacy credentials. Keep its configuration restricted to the official
+SignalSurf service; do not reuse stored credentials across issuers. A source test
+pass does not establish that these fixes are in the installed npm version.
+
+The public [npm package](https://www.npmjs.com/package/@signalsurf/cli) and
+[compatibility record](docs/compatibility.md) identify tested versions. This
+optional developer path does not replace UI/HTTPS customer setup.
+
+### Skills-only and additional hosts
+
+This release supports complete plugin installations and raw MCP, rather than
+advertising `npx skills`, a copied domain Skill or an OpenCode clone as complete
+SignalSurf setup. The package has sibling references and parent manifests,
+MCP configuration and an updater outside individual Skill folders. An installer
+can discover a Skill while omitting those dependencies.
+
+Download the complete repository or plugin only for a documented developer
+verification path. Do not flatten Skill directories or copy one `SKILL.md` as an
+integration. Additional hosts require a tested layout, update/removal behavior,
+separate MCP/OAuth setup where relevant and an entry in the shared matrix.
 
 ### Claude Code CLI
 

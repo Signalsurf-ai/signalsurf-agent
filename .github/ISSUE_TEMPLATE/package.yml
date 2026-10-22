@@ -1,0 +1,37 @@
+name: Package or installation problem
+description: Report a reproducible public plugin or installation problem.
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        Share only redacted package evidence. Do not include tokens, cookies,
+        account details or customer data. Report vulnerabilities privately at
+        https://github.com/Signalsurf-ai/signalsurf-agent/security/advisories/new.
+  - type: input
+    id: host
+    attributes:
+      label: Host and version
+      placeholder: Claude Code 2.x, Codex CLI 0.x, or your app's displayed version
+    validations:
+      required: true
+  - type: input
+    id: package
+    attributes:
+      label: Plugin version and installation source
+      placeholder: Version, HTTPS catalog or marketplace, and user/project/admin scope
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction and expected result
+      description: Include minimal steps and the result you expected.
+    validations:
+      required: true
+  - type: textarea
+    id: error
+    attributes:
+      label: Actual result and redacted error
+      description: Remove credentials and customer information before attaching evidence.
+    validations:
+      required: true

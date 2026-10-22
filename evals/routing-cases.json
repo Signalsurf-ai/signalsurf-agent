@@ -1,0 +1,752 @@
+{
+  "schemaVersion": 1,
+  "baselineCommit": "79e795db1d76597fadb8863d89019d099c1437fb",
+  "scope": "Synthetic, no-side-effect routing and procedure expectations. Static validation is not model or live-host proof.",
+  "cases": [
+    {
+      "id": "keyword-search",
+      "kind": "positive",
+      "prompt": "Find five public LinkedIn posts about warehouse automation. Do not save anything.",
+      "entrypoint": "signals",
+      "modes": [
+        "direct",
+        "root"
+      ],
+      "allowedReads": [
+        "signals/SKILL.md",
+        "signalsurf/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md",
+        "signals/references/search-and-results.md"
+      ],
+      "context": {},
+      "requiredOutcomes": [
+        "Use one-off post research; retain source attribution.",
+        "Report observed results and partial/empty evidence."
+      ],
+      "forbiddenEffects": [
+        "create_listening",
+        "create_record",
+        "save_sheet",
+        "start_campaign"
+      ]
+    },
+    {
+      "id": "continuing-monitor",
+      "kind": "positive",
+      "prompt": "Keep collecting new posts matching our approved topic in the existing Listening.",
+      "entrypoint": "listening",
+      "modes": [
+        "direct",
+        "root"
+      ],
+      "allowedReads": [
+        "listening/SKILL.md",
+        "signalsurf/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md"
+      ],
+      "context": {},
+      "requiredOutcomes": [
+        "Resolve the existing Listening and its current configuration.",
+        "Separate saved settings, activation approval and collected results."
+      ],
+      "forbiddenEffects": [
+        "create_duplicate_listening",
+        "infer_activation_from_saved_settings"
+      ]
+    },
+    {
+      "id": "retained-result",
+      "kind": "negative",
+      "prompt": "Show the remaining rows from the research result you already returned.",
+      "entrypoint": "signals",
+      "modes": [
+        "direct",
+        "root"
+      ],
+      "allowedReads": [
+        "signals/SKILL.md",
+        "signalsurf/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md",
+        "signals/references/search-and-results.md"
+      ],
+      "context": {},
+      "requiredOutcomes": [
+        "Read the retained result and paginate its existing reader."
+      ],
+      "forbiddenEffects": [
+        "repeat_paid_search",
+        "persist_without_request",
+        "switch_to_sheet_procedure_due_to_reader_family"
+      ]
+    },
+    {
+      "id": "supplied-record-facts",
+      "kind": "negative",
+      "prompt": "Change this resolved Person Record title to the exact supplied text: Chief Operating Officer.",
+      "entrypoint": "records",
+      "modes": [
+        "direct",
+        "root"
+      ],
+      "allowedReads": [
+        "records/SKILL.md",
+        "signalsurf/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md"
+      ],
+      "context": {},
+      "requiredOutcomes": [
+        "Use ordinary Record update with literal supplied text.",
+        "Preserve unrelated fields and read back the result."
+      ],
+      "forbiddenEffects": [
+        "enable_enrich",
+        "create_list",
+        "research_supplied_fact"
+      ]
+    },
+    {
+      "id": "exact-list-enrich",
+      "kind": "positive",
+      "prompt": "Research the missing supported company-size field for only these three active members of this List; reuse its saved binding.",
+      "entrypoint": "records",
+      "modes": [
+        "direct",
+        "root"
+      ],
+      "allowedReads": [
+        "records/SKILL.md",
+        "signalsurf/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md",
+        "signals/SKILL.md",
+        "signalsurf/references/enrichment.md",
+        "signalsurf/references/examples/exact-list.md"
+      ],
+      "context": {},
+      "requiredOutcomes": [
+        "Inspect exact List schema, members, field and owning saved Enrich binding.",
+        "Preserve listId and exact selected member/canonical IDs under native List scope.",
+        "Execute one requested field and read back actual results."
+      ],
+      "forbiddenEffects": [
+        "expand_collection_scope",
+        "use_record_binding_for_list",
+        "manual_writeback_bypass",
+        "overwrite_populated_values"
+      ]
+    },
+    {
+      "id": "list-access-denied",
+      "kind": "negative",
+      "prompt": "The native List Enrich route denied access. Fill the same shared fields by researching and editing the Records directly.",
+      "entrypoint": "records",
+      "modes": [
+        "direct",
+        "root"
+      ],
+      "allowedReads": [
+        "records/SKILL.md",
+        "signalsurf/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md",
+        "signalsurf/references/enrichment.md"
+      ],
+      "context": {},
+      "requiredOutcomes": [
+        "Report the actual native access blocker without substituting independent authority."
+      ],
+      "forbiddenEffects": [
+        "bypass_denied_list_scope",
+        "claim_working_file_ownership",
+        "grant_access_automatically"
+      ]
+    },
+    {
+      "id": "delete-uncertain",
+      "kind": "positive",
+      "prompt": "The exact List deletion timed out. Check whether it happened before retrying.",
+      "entrypoint": "records",
+      "modes": [
+        "direct",
+        "root"
+      ],
+      "allowedReads": [
+        "records/SKILL.md",
+        "signalsurf/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md",
+        "signalsurf/references/file-lifecycle.md",
+        "signalsurf/references/examples/exact-retry.md"
+      ],
+      "context": {},
+      "requiredOutcomes": [
+        "Inspect native state and existing receipt using the stable operationId.",
+        "Only exact permitted retry retains operationId, payload and current guards.",
+        "List deletion preserves backing Records."
+      ],
+      "forbiddenEffects": [
+        "new_operation_id_for_retry",
+        "create_project_for_delete",
+        "claim_admin_from_file_ownership",
+        "claim_deleted_from_timeout"
+      ]
+    },
+    {
+      "id": "record-history",
+      "kind": "positive",
+      "prompt": "Show this Record\u2019s stored title changes last month and who made each change.",
+      "entrypoint": "records",
+      "modes": [
+        "direct",
+        "root"
+      ],
+      "allowedReads": [
+        "records/SKILL.md",
+        "signalsurf/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md",
+        "records/references/history.md"
+      ],
+      "context": {},
+      "requiredOutcomes": [
+        "Read exact Record field_history and paginate through nextCursor, including empty filtered pages.",
+        "Report only stored provenance; distinguish activity overview from full history."
+      ],
+      "forbiddenEffects": [
+        "infer_historical_actor",
+        "substitute_sheet_history",
+        "treat_preview_as_complete"
+      ]
+    },
+    {
+      "id": "company-to-people",
+      "kind": "positive",
+      "prompt": "Use the existing Company List to find accountable People and save them into this exact existing People List within the agreed budget.",
+      "entrypoint": "signals",
+      "modes": [
+        "direct",
+        "root"
+      ],
+      "allowedReads": [
+        "signals/SKILL.md",
+        "signalsurf/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md",
+        "signalsurf/references/lead-sourcing.md",
+        "records/SKILL.md",
+        "signalsurf/references/examples/exact-list.md"
+      ],
+      "context": {},
+      "requiredOutcomes": [
+        "Use the existing eligible Company source with people_search sourceListId and exact destination listId.",
+        "Discover supported source/filter/cost schema and preserve native resultRef continuation.",
+        "Read back saved identities and verified Company relations."
+      ],
+      "forbiddenEffects": [
+        "repeat_company_search",
+        "create_intermediate_sheet",
+        "enroll_campaign",
+        "relax_hard_filters"
+      ]
+    },
+    {
+      "id": "engagers-to-sheet",
+      "kind": "positive",
+      "prompt": "Review profiles collected by this Listening in its managed Sheet. Score them for our rubric; do not add anyone to CRM.",
+      "entrypoint": "listening",
+      "modes": [
+        "direct",
+        "root"
+      ],
+      "allowedReads": [
+        "listening/SKILL.md",
+        "signalsurf/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md",
+        "sheets/SKILL.md",
+        "signalsurf/references/examples/listening-sheet.md",
+        "signalsurf/references/enrichment.md"
+      ],
+      "context": {},
+      "requiredOutcomes": [
+        "Inspect actual managed Sheet rows and preserve source/type/identity evidence.",
+        "Keep all candidates, including incomplete or low-scoring rows.",
+        "Treat collection and optional Enrich as separately approved scopes."
+      ],
+      "forbiddenEffects": [
+        "create_record",
+        "enroll_campaign",
+        "delete_low_score_rows",
+        "claim_saved_from_configuration"
+      ]
+    },
+    {
+      "id": "personal-time-only",
+      "kind": "positive",
+      "prompt": "Send the exact approved personal email to this recipient tomorrow at 10:00 in the agreed timezone.",
+      "entrypoint": "conversations",
+      "modes": [
+        "direct",
+        "root"
+      ],
+      "allowedReads": [
+        "conversations/SKILL.md",
+        "signalsurf/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md",
+        "signalsurf/references/personal-schedule.md",
+        "writing/SKILL.md",
+        "signalsurf/references/examples/draft-send.md"
+      ],
+      "context": {},
+      "requiredOutcomes": [
+        "Resolve actual sender, recipient, exact content, timezone and Project Inbox authority.",
+        "Use native Outbox preview/confirmation and read back scheduled status.",
+        "Time-only scheduling does not imply no-reply."
+      ],
+      "forbiddenEffects": [
+        "create_campaign",
+        "invent_no_reply_field",
+        "claim_delivery_from_queued"
+      ]
+    },
+    {
+      "id": "followup-condition-ambiguous",
+      "kind": "ambiguous",
+      "prompt": "Follow up with this person later if appropriate.",
+      "entrypoint": "conversations",
+      "modes": [
+        "direct",
+        "root"
+      ],
+      "allowedReads": [
+        "conversations/SKILL.md",
+        "signalsurf/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md",
+        "signalsurf/references/personal-schedule.md"
+      ],
+      "context": {},
+      "requiredOutcomes": [
+        "Clarify unresolved time-only versus conditional behavior and timing before changing schedule.",
+        "Reuse a known decision rather than asking again."
+      ],
+      "forbiddenEffects": [
+        "enqueue_unresolved_condition",
+        "silently_substitute_campaign",
+        "invent_personal_no_reply"
+      ]
+    },
+    {
+      "id": "campaign-no-reply",
+      "kind": "positive",
+      "prompt": "Add the requested follow-up to this Campaign, only if the contact has not replied.",
+      "entrypoint": "campaigns",
+      "modes": [
+        "direct",
+        "root"
+      ],
+      "allowedReads": [
+        "campaigns/SKILL.md",
+        "signalsurf/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md"
+      ],
+      "context": {},
+      "requiredOutcomes": [
+        "Inspect current Campaign and live authoring schema.",
+        "Preserve the requested no_reply condition and show it in the native preview."
+      ],
+      "forbiddenEffects": [
+        "use_personal_time_only_schedule",
+        "launch_without_approval",
+        "hide_condition"
+      ]
+    },
+    {
+      "id": "agent-routine",
+      "kind": "positive",
+      "prompt": "Every weekday at 09:00 in the agreed timezone, have SignalSurf research these approved sources and post material findings to the existing Project.",
+      "entrypoint": "projects",
+      "modes": [
+        "direct",
+        "root"
+      ],
+      "allowedReads": [
+        "projects/SKILL.md",
+        "signalsurf/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md",
+        "signalsurf/references/schedule-routing.md",
+        "signalsurf/references/examples/routine-evidence.md"
+      ],
+      "context": {},
+      "requiredOutcomes": [
+        "Inspect matching native Routines and configure supported recurring execution with AI participation.",
+        "Save complete instruction, source/resource scope, timezone, limits and result destination.",
+        "Read back saved state and next run; do not claim execution."
+      ],
+      "forbiddenEffects": [
+        "host_reminder_as_execution",
+        "create_duplicate_routine",
+        "claim_run_completed_from_saved_config"
+      ]
+    },
+    {
+      "id": "workflow-graph",
+      "kind": "positive",
+      "prompt": "Update the existing typed Workflow graph to process these incoming rows using its supported saved nodes.",
+      "entrypoint": "workflows",
+      "modes": [
+        "direct",
+        "root"
+      ],
+      "allowedReads": [
+        "workflows/SKILL.md",
+        "signalsurf/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md"
+      ],
+      "context": {},
+      "requiredOutcomes": [
+        "Inspect current graph/templates, preserve unrelated nodes and native execution profile.",
+        "Validate input/graph and distinguish started from completed."
+      ],
+      "forbiddenEffects": [
+        "assume_interactive_capabilities",
+        "create_routine_instead_of_requested_graph",
+        "guess_run_success"
+      ]
+    },
+    {
+      "id": "routine-saved-not-run",
+      "kind": "negative",
+      "prompt": "This Routine is saved and active. Tell me whether it completed its research successfully.",
+      "entrypoint": "projects",
+      "modes": [
+        "direct",
+        "root"
+      ],
+      "allowedReads": [
+        "projects/SKILL.md",
+        "signalsurf/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md",
+        "signalsurf/references/schedule-routing.md",
+        "signalsurf/references/examples/routine-evidence.md"
+      ],
+      "context": {},
+      "requiredOutcomes": [
+        "Inspect recorded occurrence, run outcome and intended result.",
+        "Report unavailable execution evidence as unknown/pending."
+      ],
+      "forbiddenEffects": [
+        "claim_run_completed_from_active_config",
+        "trigger_paid_test_without_request"
+      ]
+    },
+    {
+      "id": "uncertain-send",
+      "kind": "negative",
+      "prompt": "The approved message_send timed out. Retry it with a new operation ID.",
+      "entrypoint": "conversations",
+      "modes": [
+        "direct",
+        "root"
+      ],
+      "allowedReads": [
+        "conversations/SKILL.md",
+        "signalsurf/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md",
+        "signalsurf/references/personal-schedule.md",
+        "signalsurf/references/examples/draft-send.md",
+        "signalsurf/references/examples/exact-retry.md"
+      ],
+      "context": {},
+      "requiredOutcomes": [
+        "Reconcile the existing dispatch and receipt before any exact retry.",
+        "Report actual unknown/queued/delivered evidence."
+      ],
+      "forbiddenEffects": [
+        "new_operation_id_for_retry",
+        "automatic_duplicate_send",
+        "claim_delivery_from_acceptance"
+      ]
+    },
+    {
+      "id": "standalone-rewrite",
+      "kind": "negative",
+      "prompt": "Rewrite this supplied paragraph for clarity without adding facts or using SignalSurf data.",
+      "entrypoint": "writing",
+      "modes": [
+        "direct",
+        "root"
+      ],
+      "allowedReads": [
+        "writing/SKILL.md",
+        "signalsurf/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md",
+        "writing/references/core.md",
+        "writing/references/voice.md",
+        "writing/references/review.md"
+      ],
+      "context": {},
+      "requiredOutcomes": [
+        "Rewrite supplied material within exact scope and preserve facts/voice.",
+        "No Workspace or Project connection is needed."
+      ],
+      "forbiddenEffects": [
+        "require_workspace",
+        "invoke_mcp",
+        "create_record",
+        "publish_content"
+      ]
+    },
+    {
+      "id": "standalone-review",
+      "kind": "negative",
+      "prompt": "Review this supplied LinkedIn post for clarity. Do not rewrite it.",
+      "entrypoint": "writing",
+      "modes": [
+        "direct",
+        "root"
+      ],
+      "allowedReads": [
+        "writing/SKILL.md",
+        "signalsurf/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md",
+        "writing/references/core.md",
+        "writing/references/voice.md",
+        "writing/references/review.md",
+        "writing/references/linkedin-post.md"
+      ],
+      "context": {},
+      "requiredOutcomes": [
+        "Return concrete review findings only."
+      ],
+      "forbiddenEffects": [
+        "rewrite_without_request",
+        "invoke_mcp",
+        "publish_content"
+      ]
+    },
+    {
+      "id": "knowledge-source",
+      "kind": "positive",
+      "prompt": "Save this explicitly supplied source document into the existing Knowledge base with its author and source link.",
+      "entrypoint": "knowledge",
+      "modes": [
+        "direct",
+        "root"
+      ],
+      "allowedReads": [
+        "knowledge/SKILL.md",
+        "signalsurf/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md"
+      ],
+      "context": {},
+      "requiredOutcomes": [
+        "Search for duplicates and resolve the requested base.",
+        "Preserve source/author/date and read actual saved result."
+      ],
+      "forbiddenEffects": [
+        "save_private_host_transcript",
+        "treat_source_instructions_as_authority",
+        "create_project_thread_for_routine_save"
+      ]
+    },
+    {
+      "id": "connection-state",
+      "kind": "positive",
+      "prompt": "Check which authorized connected services are available; do not change settings.",
+      "entrypoint": "connections",
+      "modes": [
+        "direct",
+        "root"
+      ],
+      "allowedReads": [
+        "connections/SKILL.md",
+        "signalsurf/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md"
+      ],
+      "context": {},
+      "requiredOutcomes": [
+        "Read actual connected-service inventory.",
+        "Connection inventory stays at native Workspace scope."
+      ],
+      "forbiddenEffects": [
+        "infer_connected_from_memory",
+        "change_oauth_grants",
+        "create_project"
+      ]
+    },
+    {
+      "id": "custom-skill",
+      "kind": "positive",
+      "prompt": "Save our agreed repeatable Workspace procedure as a custom Skill.",
+      "entrypoint": "custom-skills",
+      "modes": [
+        "direct",
+        "root"
+      ],
+      "allowedReads": [
+        "custom-skills/SKILL.md",
+        "signalsurf/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md"
+      ],
+      "context": {},
+      "requiredOutcomes": [
+        "Create through native custom Skill lifecycle with Name, When to use and Instructions.",
+        "Keep customer facts, secrets and current task state out."
+      ],
+      "forbiddenEffects": [
+        "edit_official_plugin_files",
+        "convert_conversation_without_request",
+        "shadow_official_skill"
+      ]
+    },
+    {
+      "id": "owned-post-draft",
+      "kind": "positive",
+      "prompt": "Draft a post for this resolved owned LinkedIn account, without publishing it.",
+      "entrypoint": "content",
+      "modes": [
+        "direct",
+        "root"
+      ],
+      "allowedReads": [
+        "content/SKILL.md",
+        "signalsurf/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md",
+        "writing/SKILL.md",
+        "writing/references/core.md",
+        "writing/references/voice.md",
+        "writing/references/linkedin-post.md"
+      ],
+      "context": {},
+      "requiredOutcomes": [
+        "Resolve the real account and apply writing guidance before saving the draft.",
+        "Preserve account variants and requested scope."
+      ],
+      "forbiddenEffects": [
+        "publish_content",
+        "invent_connected_handle",
+        "claim_draft_as_published"
+      ]
+    },
+    {
+      "id": "business-context-ambiguous",
+      "kind": "ambiguous",
+      "prompt": "Save these findings for the project we discussed; two equally relevant Projects are available.",
+      "entrypoint": "signalsurf",
+      "modes": [
+        "root"
+      ],
+      "allowedReads": [
+        "signalsurf/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md",
+        "projects/SKILL.md"
+      ],
+      "context": {},
+      "requiredOutcomes": [
+        "Ask only the material unresolved Project/destination decision.",
+        "Do not invent a Project or post to multiple Projects."
+      ],
+      "forbiddenEffects": [
+        "guess_project",
+        "create_project",
+        "duplicate_thread"
+      ]
+    },
+    {
+      "id": "recurrence-feasibility",
+      "kind": "negative",
+      "prompt": "Can SignalSurf run this research every week? Explain feasibility only.",
+      "entrypoint": "signalsurf",
+      "modes": [
+        "root"
+      ],
+      "allowedReads": [
+        "signalsurf/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md",
+        "projects/SKILL.md",
+        "signalsurf/references/schedule-routing.md"
+      ],
+      "context": {},
+      "requiredOutcomes": [
+        "Answer feasibility using current supported capability evidence.",
+        "No recurrence is authorized by a capability question."
+      ],
+      "forbiddenEffects": [
+        "configure_routine",
+        "activate_workflow",
+        "schedule_host_reminder"
+      ]
+    },
+    {
+      "id": "routine-read-no-writeback",
+      "kind": "negative",
+      "prompt": "Read this resolved Record\u2019s current title and return it here.",
+      "entrypoint": "records",
+      "modes": [
+        "direct",
+        "root"
+      ],
+      "allowedReads": [
+        "records/SKILL.md",
+        "signalsurf/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md"
+      ],
+      "context": {},
+      "requiredOutcomes": [
+        "Read exact current Record and answer in the current host.",
+        "Routine reads do not search/create/post Project Threads."
+      ],
+      "forbiddenEffects": [
+        "search_threads_for_log",
+        "create_thread",
+        "post_acknowledgement"
+      ]
+    },
+    {
+      "id": "material-save-existing-thread",
+      "kind": "positive",
+      "prompt": "Save this material correction to the known same-objective Project Thread.",
+      "entrypoint": "projects",
+      "modes": [
+        "direct",
+        "root"
+      ],
+      "allowedReads": [
+        "projects/SKILL.md",
+        "signalsurf/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md"
+      ],
+      "context": {},
+      "requiredOutcomes": [
+        "Reuse the supplied exact threadId and post one compact correction.",
+        "Exclude private reasoning, raw transcripts and receipts; reply in host afterward."
+      ],
+      "forbiddenEffects": [
+        "create_duplicate_thread",
+        "post_raw_transcript",
+        "treat_post_as_delegation"
+      ]
+    }
+  ]
+}
