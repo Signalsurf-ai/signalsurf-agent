@@ -8,7 +8,11 @@ import path from "node:path"
 import test from "node:test"
 import { ROOT as DEFAULT_DISTRIBUTION_ROOT } from "../scripts/check.mjs"
 import { ensureCurrent } from "../plugins/signalsurf/scripts/ensure-current.mjs"
-function updaterFixture(t, version = "1.1.0") {
+function updaterFixture(
+  t,
+  version = "1.1.0",
+  commit = (version === "1.2.0" ? "b" : "a").repeat(40)
+) {
   const directory = mkdtempSync(path.join(tmpdir(), "signalsurf-update-"))
   t.after(() => rmSync(directory, { recursive: true, force: true }))
   const installed = path.join(directory, "signalsurf")
@@ -44,7 +48,6 @@ function updaterFixture(t, version = "1.1.0") {
     }
   }
   collect(published)
-  const commit = (version === "1.2.0" ? "b" : "a").repeat(40)
   const calls = []
   const tree = [...files].map(([name, bytes]) => ({
     path: `plugins/signalsurf/${name}`,
@@ -349,6 +352,101 @@ test("does not reinstall an equal version", async (t) => {
     existsSync(path.join(f.directory, ".signalsurf.update-lock")),
     false
   )
+})
+
+test("recovers broken installed guidance only through a verified forward patch and requires reload", async (t) => {
+  const bad = updaterFixture(t)
+  const skill = "skills/signalsurf/SKILL.md"
+  const rootSkill = path.join(bad.installed, skill)
+  const publishGuidance = (release, reference) => {
+    const bytes = Buffer.from(
+      "---\nname: signalsurf\ndescription: Use SignalSurf safely.\n---\n\n" +
+        `Before product operations, read the [required operating contract](${reference}).\n`
+    )
+    // The broken reference has a valid blob identity; this is not corrupt transport.
+    release.files.set(skill, bytes)
+    const entry = release.tree.find((entry) => entry.path === `plugins/signalsurf/${skill}`)
+    entry.size = bytes.length
+    entry.sha = createHash("sha1")
+      .update(`blob ${bytes.length}\0`)
+      .update(bytes)
+      .digest("hex")
+  }
+  const readRequiredContract = () => {
+    const reference = readFileSync(rootSkill, "utf8").match(
+      /\[required operating contract\]\(([^)]+)\)/
+    )?.[1]
+    assert.ok(reference, "the installed Skill must identify its required contract")
+    return readFileSync(path.resolve(path.dirname(rootSkill), reference), "utf8")
+  }
+  const unrelated = new Map([
+    ["host-settings.json", Buffer.from('{"theme":"dark","workspace":"local"}\n')],
+    ["other-plugin/SKILL.md", Buffer.from("Unrelated installed guidance.\n")],
+  ])
+  for (const [name, bytes] of unrelated) {
+    const file = path.join(bad.directory, name)
+    mkdirSync(path.dirname(file), { recursive: true })
+    writeFileSync(file, bytes)
+  }
+  const assertPreserved = () => {
+    for (const [name, bytes] of unrelated)
+      assert.deepEqual(readFileSync(path.join(bad.directory, name)), bytes, name)
+    assert.equal(existsSync(path.join(bad.directory, ".signalsurf.update-lock")), false)
+  }
+  const assertInstalled = (release) => {
+    for (const [name, bytes] of release.files)
+      assert.deepEqual(readFileSync(path.join(bad.installed, name)), bytes, name)
+  }
+
+  publishGuidance(bad, "references/missing-operating-contract.md")
+  assert.equal(bad.files.has("skills/signalsurf/references/missing-operating-contract.md"), false)
+  const installedBad = await ensureCurrent({ root: bad.installed, fetchImpl: bad.fetchImpl })
+  assert.equal(installedBad.status, "updated")
+  assert.equal(installedBad.installed_version, "1.1.0")
+  assert.equal(installedBad.reload_required, true)
+  assertInstalled(bad)
+  assert.throws(readRequiredContract, { code: "ENOENT" })
+  assertPreserved()
+
+  const sameVersion = updaterFixture(t, "1.1.0", "c".repeat(40))
+  publishGuidance(sameVersion, "references/operating-contract.md")
+  const unchanged = await ensureCurrent({ root: bad.installed, fetchImpl: sameVersion.fetchImpl })
+  assert.equal(unchanged.status, "current")
+  assert.equal(unchanged.current_version, "1.1.0")
+  assert.equal(unchanged.latest_version, "1.1.0")
+  assert.equal(unchanged.update_available, false)
+  assert.equal(unchanged.reload_required, undefined)
+  assert.equal(sameVersion.calls.length, 1, "equal versions stop after the version check")
+  assertInstalled(bad)
+  assert.throws(readRequiredContract, { code: "ENOENT" })
+  assertPreserved()
+
+  const patch = updaterFixture(t, "1.1.1", "b".repeat(40))
+  publishGuidance(patch, "references/operating-contract.md")
+  const tampered = await ensureCurrent({
+    root: bad.installed,
+    fetchImpl: (url, options) =>
+      url.endsWith(skill)
+        ? new Response("unverified recovery guidance")
+        : patch.fetchImpl(url, options),
+  })
+  assert.equal(tampered.status, "unavailable")
+  assert.equal(tampered.reason, "release_integrity_mismatch")
+  assertInstalled(bad)
+  assert.throws(readRequiredContract, { code: "ENOENT" })
+  assertPreserved()
+
+  const recovered = await ensureCurrent({ root: bad.installed, fetchImpl: patch.fetchImpl })
+  assert.equal(recovered.status, "updated")
+  assert.equal(recovered.previous_version, "1.1.0")
+  assert.equal(recovered.installed_version, "1.1.1")
+  assert.equal(recovered.current_version, "1.1.1")
+  assert.equal(recovered.release_commit, "b".repeat(40))
+  assert.equal(recovered.update_available, false)
+  assert.equal(recovered.reload_required, true)
+  assertInstalled(patch)
+  assert.equal(readRequiredContract(), patch.files.get("skills/signalsurf/references/operating-contract.md").toString())
+  assertPreserved()
 })
 
 test("keeps the newer installation when an older concurrent check acquires the lock later", async (t) => {

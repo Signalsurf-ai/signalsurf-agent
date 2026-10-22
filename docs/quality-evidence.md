@@ -6,7 +6,7 @@ This record separates portable checks, bounded model reasoning and host installa
 
 The Skill trial candidate is public commit `60a03143a3b26f0b2597df1281a3d5006732ba31`, plugin tree `caf3f1bd06d9ce853978390e0207427aa2f95260`, version `0.7.16`. Later release-tool/catalog/evidence changes preserve that plugin tree. Before guidance is public commit `79e795db1d76597fadb8863d89019d099c1437fb`.
 
-The public command `npm test` checks package structure and negative boundaries, updater behavior, deterministic release artifacts and interrupted publication reconciliation, plus 27 routing cases, six recovery examples and 12 complete reading paths. Static fixture success does not establish model behavior. CI tests Node 22 and 24; the development-tool minimum is Node 22.13. The bundled customer updater retains its Node 18 minimum.
+The public command `npm test` checks package structure and negative boundaries, updater behavior, deterministic release artifacts and interrupted publication reconciliation, plus 31 routing cases (including four artificial compatibility fixtures), six recovery examples and 12 complete reading paths. Static fixture success does not establish model behavior. CI tests Node 22 and 24; the development-tool minimum is Node 22.13. The bundled customer updater retains its Node 18 minimum.
 
 Cold-reading document bytes, including required shared guidance, changed as follows. These are source measures, not measured model-token savings.
 
@@ -33,6 +33,21 @@ Eight synthetic cases each used direct and root variants: one-off keyword resear
 Claude-before's two keyword-search variants claimed returned posts although no search ran and no results were supplied. After responses state that search/results do not yet exist. This is a single bounded regression observation, not a general quality comparison. The standalone rewrite checks missing-input handling, not rewrite quality. No actual effects occurred. Proposed file choices do not establish host automatic discovery or reads.
 
 Reviewed responses and provenance: [Codex before](../evals/results/2026-10-22-codex-before.json), [Codex after](../evals/results/2026-10-22-codex-after.json), [Claude before](../evals/results/2026-10-22-claude-before.json), [Claude after](../evals/results/2026-10-22-claude-after.json). Validate their shapes with `node evals/check.mjs --result <receipt>`; the checker does not decide the behavioral verdict.
+
+## Supplemental writeback and compatibility trials
+
+Two additional writeback cases each used direct and root variants against the same before/after guidance: a routine Record read that should stay in the host reply, and a material correction that should use one known same-objective Project Thread. Context includes exact targets, supplied synthetic observations, approved shareable facts and private scratch material that must stay out of shared writeback. Expected outcomes were withheld from the trial processes.
+
+| Runtime | Writeback before | Writeback after | Artificial compatibility after |
+| --- | --- | --- | --- |
+| Codex CLI 0.163.0, configured default model (identifier unavailable) | 4 pass | 4 pass | 8 pass |
+| Claude Code 2.1.308, `claude-opus-5-5` | 4 pass | 4 pass | 8 pass |
+
+Both runtimes' before/after writeback samples keep the routine read out of Project Threads and limit the correction to the known Thread and approved compact facts. There is no observed improvement claim: the baseline also passes these samples. The compatibility rows use invented `fixture_*` APIs and schemas for minimal inputs, an optional additive field, an unavailable required revision value and a removed action. Both runtimes propose valid initial scoped update payloads for the first two and stop or rediscover safely for the latter two. No confirmation/retry response or extended schema was supplied, so conditional confirmation advice was not exercised or verified. These are artificial reasoning exercises, not a captured live SignalSurf schema, deployment or backward-compatibility test.
+
+Original response fields and reviewed verdicts are preserved in [Codex writeback before](../evals/results/2026-10-22-codex-writeback-before.json), [Codex writeback after](../evals/results/2026-10-22-codex-writeback-after.json), [Codex compatibility after](../evals/results/2026-10-22-codex-compatibility-after.json), [Claude writeback before](../evals/results/2026-10-22-claude-writeback-before.json), [Claude writeback after](../evals/results/2026-10-22-claude-writeback-after.json) and [Claude compatibility after](../evals/results/2026-10-22-claude-compatibility-after.json). The receipts record exact prompt/guidance/output hashes, timestamps, invocation controls and original usage. Usage does not establish token savings. The first Claude attempt was terminated without output and supplies no behavioral result; its execution identity is retained with the successful strict retry.
+
+Each process is one supplied-guidance batch whose rows were instructed to be independent. File choices are proposals rather than observed reads. Codex JSONL events show no tool/command items; Claude's original initialization declares no enabled tools or MCP servers and its assistant events have no tool-use blocks. These processes depart from the isolated host configuration and actual local-reading procedure recommended in [the trial guide](../evals/README.md): user configuration was inherited, including a registered SignalSurf `0.6.0` plugin in Claude and a Codex experimental-feature warning. Ambient guidance was not excluded. The observations therefore cover supplied-guidance reasoning only; they do not establish automatic discovery, isolated host installation, OAuth, real mutations or persistence. The original four trial receipts remain unchanged.
 
 ## Installation and integration
 

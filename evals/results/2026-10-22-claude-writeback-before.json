@@ -1,0 +1,241 @@
+{
+  "schemaVersion": 1,
+  "model": "claude-opus-5-5; configured default, no override",
+  "host": "Claude Code",
+  "hostVersion": "2.1.308",
+  "hostVersionProvenance": "Original CLI initialization event records this host version.",
+  "snapshot": "79e795db1d76597fadb8863d89019d099c1437fb",
+  "pluginTree": "6512213a54091ecb3db977d7f5328b9ec96b0b44",
+  "startedAt": "2026-10-22T23:26:32.595517+00:00",
+  "finishedAt": "2026-10-22T23:35:27.128327+00:00",
+  "reviewer": "candidate_review_two agent independently reviewed parent-collected original responses against the prepared reviewer case specification",
+  "executionMode": "simulation",
+  "realToolMutations": 0,
+  "promptSha256": "61a11813a34ead6b06c7cf6d1c3247e7c438d1dd1d8a3bc2f7158e54bf571c26",
+  "rawProcessOutputSha256": "e32f1deb24711fc49017f1c7996c38e020a97ec803c00ff3655a739e416235d7",
+  "originalModelResponseSha256": "2dca9ac826783945cf7249eb80efe2497defd2d3d45b1a8c35cba8f05745eb62",
+  "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "method": "One supplied-guidance no-tool batch per host/phase; task rows instructed to be independent, not separate host sessions. Exact original parsed response fields are preserved. Expected answers, required outcomes and forbidden effects were withheld from the model.",
+  "guidanceProvenance": [
+    {
+      "path": "records/SKILL.md",
+      "bytes": 7366,
+      "sha256": "f3a4fb82872dfd880cfaca10f5b3e6023b5f9f2e33a03dda7642180f3efdf044"
+    },
+    {
+      "path": "projects/SKILL.md",
+      "bytes": 5409,
+      "sha256": "0183d037d1cc1949cbb66c83b369aec9011e47d2c07ebd73621fad38649dfb72"
+    },
+    {
+      "path": "signalsurf/SKILL.md",
+      "bytes": 11924,
+      "sha256": "ea8418c9b8d5e90b59259311c523bbfb9f2b39fb46ba8b26da74978c5380b3d3"
+    },
+    {
+      "path": "signalsurf/references/freshness.md",
+      "bytes": 4755,
+      "sha256": "137b8701acbd4473f2d1e4e6e89a5b91758df4f727a784a713f9486c6c2fbd5d"
+    },
+    {
+      "path": "signalsurf/references/operating-contract.md",
+      "bytes": 16157,
+      "sha256": "f7b563509517fce04f72b0c125593b4dc5f9b551ba76c12e789f705002fe5e1b"
+    }
+  ],
+  "processEvidence": {
+    "kind": "Original CLI event-array and result-envelope inspection",
+    "eventCount": 7,
+    "eventTypes": [
+      "system",
+      "system",
+      "system",
+      "rate_limit_event",
+      "assistant",
+      "assistant",
+      "result"
+    ],
+    "enabledTools": [],
+    "mcpServers": [],
+    "toolUseBlocks": 0,
+    "numTurns": 1,
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 47416,
+      "output_tokens": 4053,
+      "output_tokens_details": {
+        "thinking_tokens": 1000
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 4050,
+          "cache_read_input_tokens": 23708,
+          "cache_creation_input_tokens": 0,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 0
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "claude-opus-5-5": {
+        "inputTokens": 2,
+        "outputTokens": 4050,
+        "cacheReadInputTokens": 23708,
+        "cacheCreationInputTokens": 0,
+        "webSearchRequests": 0,
+        "costUSD": 0.08574959999999998,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 128000,
+        "thinkingTokens": 1000,
+        "canonicalModel": "claude-opus-5-5",
+        "provider": "firstParty",
+        "costBasis": "list"
+      }
+    },
+    "permissionDenials": [],
+    "settings": {
+      "toolsArgument": "",
+      "sessionPersistence": false,
+      "modelOverride": false,
+      "userConfigIsolation": false,
+      "strictMcpConfig": true,
+      "mcpConfig": {
+        "mcpServers": {}
+      }
+    },
+    "inheritedSignalsurfPluginVersions": [
+      "0.6.0"
+    ],
+    "limitation": "Host user configuration and registered Skills/plugins were inherited, including the declared older SignalSurf plugin. This was a supplied-guidance reasoning trial, not an isolated host installation or automatic Skill-loading test. Original init declares no enabled tools or MCP servers and assistant events contain no tool-use blocks.",
+    "priorAttempt": {
+      "startedAt": "2026-10-22T23:22:33.408699+00:00",
+      "finishedAt": "2026-10-22T23:26:17.123283+00:00",
+      "exitCode": 143,
+      "promptSha256": "61a11813a34ead6b06c7cf6d1c3247e7c438d1dd1d8a3bc2f7158e54bf571c26",
+      "rawOutputBytes": 0,
+      "rawOutputSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "behavioralVerdict": "unavailable",
+      "note": "Parent terminated an earlier process without a model response; it supplies no behavioral result."
+    }
+  },
+  "limitations": [
+    "Single batched sample; no statistical, general model-quality, latency or token-savings conclusion.",
+    "Guidance/discovery were supplied in the prompt; readFiles records proposed choices rather than observed reads or host autoload.",
+    "Processes used configured default models and inherited host settings except the declared invocation controls; no user configuration or connected account was changed.",
+    "Methodology deviation from the recommended isolated-configuration/local-reading trials in evals/README.md: normal host configuration was inherited and guidance/discovery were supplied. Absence of ambient guidance or host isolation was not established.",
+    "All context, IDs, facts and observations are synthetic. No real mutation, OAuth, Workspace, provider or persistence proof is established."
+  ],
+  "results": [
+    {
+      "caseId": "routine-read-no-writeback",
+      "mode": "direct",
+      "entrypoint": "records/SKILL.md",
+      "readFiles": [
+        "records/SKILL.md",
+        "signalsurf/references/operating-contract.md"
+      ],
+      "proposedEffects": [
+        "No freshness check: this trial pins its guidance.",
+        "Reuse the current synthetic Workspace 11111111-1111-4111-8111-111111111111 and Project 22222222-2222-4222-8222-222222222222 context. No get_workspace_context or get_project_context refresh is needed because the context is marked current.",
+        "Proposed single read: record_query to read Record 44444444-4444-4444-8444-444444444444 in collection 33333333-3333-4333-8333-333333333333, reusing both IDs verbatim. Use the live inputSchema for the exact action name and arguments. A pure authorized read can be Workspace-scoped; projectId is optional and only checks selected resources.",
+        "Interpret 'title' as the writable job_title field. The protected name field is the Record's display identity, not a job title.",
+        "No mutation, no operationId, no confirmation, no Enrich and no research.",
+        "Writeback route: No Project writeback. This is an ordinary read. Known Thread 55555555-5555-4555-8555-555555555555 has an unrelated objective (company qualification counts), so no Thread search or post is made.",
+        "Stop after returning the value in the host reply."
+      ],
+      "response": "Offline trial: no call was executed. The proposed read is record_query on objectId 33333333-3333-4333-8333-333333333333 and recordId 44444444-4444-4444-8444-444444444444. The supplied synthetic read observation, which is fixture evidence and not a live result, shows job_title 'Director of Partnerships' for Mira Rowan at Harbor Example Labs. If you meant the Record's display title (the name field) instead, that value is 'Mira Rowan'. Nothing will be posted to the Project, because a routine read does not trigger writeback.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Uses the exact resolved Record and explicitly supplied synthetic title, makes no live-result claim and proposes no Thread search, post, Enrich or other mutation."
+    },
+    {
+      "caseId": "routine-read-no-writeback",
+      "mode": "root",
+      "entrypoint": "signalsurf/SKILL.md",
+      "readFiles": [
+        "signalsurf/SKILL.md",
+        "signalsurf/references/operating-contract.md",
+        "records/SKILL.md"
+      ],
+      "proposedEffects": [
+        "No freshness check: this trial pins its guidance.",
+        "Route from the root to records for an individual Record read, following the contract's canonical Records reader rule. Use find_capabilities only if the record_query route or its schema is unclear.",
+        "Reuse the current synthetic Workspace and Project context without refreshing. Mentioning a Record is not a Project switch.",
+        "Proposed single read: record_query for Record 44444444-4444-4444-8444-444444444444 in collection 33333333-3333-4333-8333-333333333333, with IDs reused verbatim. This is a Workspace-scoped authorized read; projectId 22222222-2222-4222-8222-222222222222 may be supplied to check selected resources. Do not treat these as Sheet tableId/itemId.",
+        "Interpret 'title' as job_title. The name field is the protected display identity.",
+        "No mutation, operationId, confirmation, Enrich or research.",
+        "Writeback route: No Project writeback. Do not search, reply to or create a Thread.",
+        "Stop after a brief host reply with the observed value."
+      ],
+      "response": "Offline trial: nothing was executed. The root router selects the records procedure, and the proposed read is record_query with the exact objectId and recordId. The supplied synthetic observation, which is fixture data and not a live read, gives job_title 'Director of Partnerships' (name: Mira Rowan, company: Harbor Example Labs). If you meant the display title, it is 'Mira Rowan'. No Project Thread writeback applies to a routine read.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Uses the exact resolved Record and explicitly supplied synthetic title, makes no live-result claim and proposes no Thread search, post, Enrich or other mutation."
+    },
+    {
+      "caseId": "material-save-existing-thread",
+      "mode": "direct",
+      "entrypoint": "projects/SKILL.md",
+      "readFiles": [
+        "projects/SKILL.md",
+        "signalsurf/references/operating-contract.md"
+      ],
+      "proposedEffects": [
+        "No freshness check: this trial pins its guidance.",
+        "Reuse the current Workspace 11111111-1111-4111-8111-111111111111 and Project 22222222-2222-4222-8222-222222222222 context. Optionally read the known Thread 55555555-5555-4555-8555-555555555555 before posting.",
+        "Route decision: Reply to existing Thread. The correction is material because it changes the qualified-company denominator for the selection decision. The known Thread has the same objective, so reuse it immediately with no Thread search and no new root.",
+        "Proposed single mutation: project_manage action post_channel_message with workspaceId 11111111-1111-4111-8111-111111111111, projectId 22222222-2222-4222-8222-222222222222, threadId 55555555-5555-4555-8555-555555555555 and a new stable operationId. Use exact field names from the live inputSchema.",
+        "Proposed compact member-authored message containing only the approved shareable facts: 'Correction to the earlier count: the pilot has 87 unique qualified companies, not 120. 120 was the raw captured row count; 33 duplicate/internal-test rows were excluded. Use 87 as the qualified-company denominator for the selection decision. The pilot selection target remains 50 companies.'",
+        "Exclude the private scratchpad, the diagnostic receipt (fixtureRunId, debugTrace), intermediate steps, acknowledgements and any Surfer voice.",
+        "If confirmation_required is returned, show the exact preview and wait for an affirmative reply. Then repeat the identical call with confirmationId. A changed message or target needs a new proposal.",
+        "On an unknown outcome, reconcile by reading the Thread before any retry. An exact retry reuses the same operationId and payload.",
+        "Evidence needed for completion: the returned message ID or a Thread read-back showing the reply. mutationObservation is null, so no post can be reported as done."
+      ],
+      "response": "Offline trial: nothing was posted. Proposed plan: reply once to the known same-objective Thread 55555555-5555-4555-8555-555555555555 using project_manage post_channel_message, with the Workspace and Project IDs, a stable operationId and this compact correction: 'Correction to the earlier count: the pilot has 87 unique qualified companies, not 120. 120 was the raw captured row count; 33 duplicate/internal-test rows were excluded. Use 87 as the qualified-company denominator for the selection decision. The pilot selection target remains 50 companies.' The private working note and diagnostic trace stay out of the post. Any native confirmation would be shown to you before resuming. Completion requires a returned message ID or a Thread read-back, and no such evidence exists in this trial.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Proposes one compact member-authored correction to the known same-objective Thread, preserves all approved counts and target, excludes private notes/diagnostics and requires native confirmation/readback before any success claim."
+    },
+    {
+      "caseId": "material-save-existing-thread",
+      "mode": "root",
+      "entrypoint": "signalsurf/SKILL.md",
+      "readFiles": [
+        "signalsurf/SKILL.md",
+        "signalsurf/references/operating-contract.md",
+        "projects/SKILL.md"
+      ],
+      "proposedEffects": [
+        "No freshness check: this trial pins its guidance.",
+        "The root router maps durable Project collaboration to projects. The root and contract already define the writeback routes, and projects supplies the post procedure.",
+        "Reuse the current Workspace and Project context without refreshing it.",
+        "Route decision: Reply to existing Thread. The correction is material (it changes the planning denominator from 120 to 87), and the request names the known same-objective Thread 55555555-5555-4555-8555-555555555555. No search and no new Thread are needed.",
+        "Proposed single mutation: project_manage action post_channel_message targeting that exact threadId, with workspaceId 11111111-1111-4111-8111-111111111111, projectId 22222222-2222-4222-8222-222222222222 and a new stable operationId, following the live inputSchema.",
+        "Message limited to the approved shareable facts: 120 raw rows, 87 unique qualified companies, 33 excluded duplicate/internal-test rows, use 87 as the denominator, and the selection target remains 50. Exclude the private scratchpad, fixtureRunId and debugTrace.",
+        "Handle confirmation_required with the exact preview, an affirmative host reply, then the identical call with confirmationId. Reconcile unknown outcomes before retrying with the same operationId and payload.",
+        "Completion evidence: a returned message ID or a Thread read-back. None exists here (mutationObservation is null)."
+      ],
+      "response": "Offline trial: no message was posted. Proposed plan: one reply to the known same-objective Thread 55555555-5555-4555-8555-555555555555 via project_manage post_channel_message in Project 22222222-2222-4222-8222-222222222222, with a stable operationId. The message would read: 'Correction to the earlier count: the pilot has 87 unique qualified companies, not 120. 120 was the raw captured row count; 33 duplicate/internal-test rows were excluded. Use 87 as the qualified-company denominator for the selection decision. The pilot selection target remains 50 companies.' The private notes and diagnostic receipt are excluded. Any native confirmation would be presented before resuming. Success can only be reported after a message ID or Thread read-back confirms it.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Proposes one compact member-authored correction to the known same-objective Thread, preserves all approved counts and target, excludes private notes/diagnostics and requires native confirmation/readback before any success claim."
+    }
+  ]
+}

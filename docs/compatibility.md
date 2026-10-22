@@ -32,6 +32,12 @@ result and remaining gap. Keep these columns distinct:
 | Route/version | Official contract | Static package | Fresh install | Update/reload | Disable/remove | OAuth | Workspace read |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | Claude Code 2.1.308 / plugin 0.7.15, 2026-10-22 America/Los_Angeles | CLI help and linked official docs | Published SHA-256 ZIP; intentionally wrong hash rejected before install | Passed HTTPS catalog install in isolated user config with Git unavailable | Candidate upgrade recorded separately | Disable/enable passed; final removal recorded separately | Not executed | Not executed |
+| Claude Code 2.1.308 / plugin 0.7.16, 2026-10-22 America/Los_Angeles | Same host contract; immutable raw HTTPS catalog | Anonymous release downloads match prepared bytes; all installed files, 14 Skills, references, MIT notice and one MCP registration match candidate `50190c4` | Passed with Git unavailable in isolated user config | Main-catalog upgrade and conversation reload pending activation at this snapshot; subsequent receipts belong to the linked release notes | Uninstall with `--keep-data` passed; unrelated fixtures and synthetic local data preserved | Not executed | Not executed |
+
+[0.7.16 release notes](https://github.com/Signalsurf-ai/signalsurf-agent/releases/tag/v0.7.16)
+retain the immutable candidate identity and any later main-activation/lifecycle
+receipts. A GitHub release-asset catalog URL was interpreted as a Git source by
+this host; the documented `raw.githubusercontent.com` catalog route passed.
 
 Mark an inapplicable cell with a reason, such as “raw MCP installs no Skills” or
 “standalone writing does not access a Workspace.” Keep proof receipts in the
