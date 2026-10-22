@@ -37,7 +37,7 @@ export function build(candidate, root = ROOT) {
   const assets = new Map([[archiveName, archive], ["marketplace.json", marketplace], ["SHA256SUMS", Buffer.from(`${digest(archive)}  ${archiveName}\n`)]])
   const plan = { format: 1, repository: REPO, version, tag, candidate, plugin_tree: git(root, ["rev-parse", `${candidate}:${PLUGIN}`]).toString().trim(), assets: Object.fromEntries([...assets].map(([name, bytes]) => [name, { sha256: digest(bytes), size: bytes.length }])) }
   assets.set("release.json", jsonBytes(plan))
-  return { plan, assets }
+  return { plan, assets, committedCatalog: tree.find(file => file.name === ".claude-plugin/https-marketplace.json")?.bytes }
 }
 
 export function prepare({ candidate, out, root = ROOT }) {
@@ -79,6 +79,10 @@ function assertForwardVersion(plan, state) {
   if (!SEMVER.test(state.active_version ?? "") || (state.active_version !== plan.version && !versionAdvance(state.active_version, plan.version))) throw new Error("prepared version is older than the active package or current version is unknown; prepare a forward patch")
 }
 
+function assertCommittedCatalog(built) {
+  if (!Buffer.isBuffer(built.committedCatalog) || !built.committedCatalog.equals(built.assets.get("marketplace.json"))) throw new Error("committed HTTPS catalog does not match the generated release catalog; commit marketplace.json as .claude-plugin/https-marketplace.json and prepare the final candidate")
+}
+
 export async function inspect({ built, remote, complete = false }) {
   const state = await remote.read(built.plan)
   assertRemote(built.plan, state, { complete })
@@ -97,6 +101,7 @@ export async function inspect({ built, remote, complete = false }) {
 
 export async function stage({ built, remote, authorization }) {
   if (authorization !== `${REPO}@${built.plan.tag}`) throw new Error("explicit repository@tag authorization is required")
+  assertCommittedCatalog(built)
   let state = await inspect({ built, remote })
   assertForwardVersion(built.plan, state)
   if (!state.release) {
@@ -120,6 +125,7 @@ export async function stage({ built, remote, authorization }) {
 
 export async function activate({ built, remote, authorization }) {
   if (authorization !== `${REPO}@${built.plan.tag}`) throw new Error("explicit repository@tag authorization is required")
+  assertCommittedCatalog(built)
   const state = await inspect({ built, remote })
   assertForwardVersion(built.plan, state)
   if (!state.release) throw new Error("stage and verify the release first")

@@ -17,6 +17,16 @@ function repository(t) {
   return { directory, root, candidate: git("rev-parse", "HEAD"), git }
 }
 
+function releaseCandidate(t) {
+  const f = repository(t), generated = build(f.candidate, f.root).assets.get("marketplace.json"), catalog = path.join(f.root, ".claude-plugin/https-marketplace.json")
+  if (!readFileSync(catalog).equals(generated)) {
+    writeFileSync(catalog, generated)
+    f.git("add", ".claude-plugin/https-marketplace.json"); f.git("-c", "user.name=Package Fixture", "-c", "user.email=fixture@example.com", "commit", "-qm", "Final release catalog")
+    f.candidate = f.git("rev-parse", "HEAD")
+  }
+  return f
+}
+
 function fake(built) {
   const state = { active_version: "0.0.0", tag: null, release: null }, bytes = new Map(), writes = []
   const remote = {
@@ -68,7 +78,8 @@ test("the version gate compares an actual changed plugin against its base commit
 })
 
 test("draft staging and activation verify exact remote bytes and are idempotent", async t => {
-  const f = repository(t), built = build(f.candidate, f.root), r = fake(built)
+  const f = releaseCandidate(t), built = build(f.candidate, f.root), r = fake(built)
+  assert.equal(built.committedCatalog.equals(built.assets.get("marketplace.json")), true)
   await stage({ built, ...r })
   assert.equal(r.state.release.draft, true)
   await activate({ built, ...r })
@@ -79,8 +90,24 @@ test("draft staging and activation verify exact remote bytes and are idempotent"
   assert.equal(r.writes.length, built.assets.size + 2)
 })
 
+test("stale committed catalog URLs or hashes allow preparation but block all release mutations", async t => {
+  for (const field of ["url", "sha256"]) await t.test(field, async t => {
+    const f = releaseCandidate(t), catalog = path.join(f.root, ".claude-plugin/https-marketplace.json"), value = JSON.parse(readFileSync(catalog))
+    value.plugins[0].source[field] = field === "url" ? `https://github.com/${REPO}/releases/download/v0.0.0/signalsurf-0.0.0.zip` : "0".repeat(64)
+    writeFileSync(catalog, `${JSON.stringify(value, null, 2)}\n`)
+    f.git("add", ".claude-plugin/https-marketplace.json"); f.git("-c", "user.name=Package Fixture", "-c", "user.email=fixture@example.com", "commit", "-qm", `Stale catalog ${field}`)
+    const candidate = f.git("rev-parse", "HEAD"), out = path.join(f.directory, "prepared")
+    prepare({ candidate, out, root: f.root })
+    const built = verify({ directory: out, candidate, root: f.root }), r = fake(built)
+    r.remote.read = async () => { throw new Error("remote must not be read before catalog validation") }
+    await assert.rejects(stage({ built, ...r }), /committed HTTPS catalog does not match/)
+    await assert.rejects(activate({ built, ...r }), /committed HTTPS catalog does not match/)
+    assert.deepEqual(r.writes, [])
+  })
+})
+
 test("an ambiguous upload is read back before a separate invocation resumes", async t => {
-  const f = repository(t), built = build(f.candidate, f.root), r = fake(built), upload = r.remote.upload
+  const f = releaseCandidate(t), built = build(f.candidate, f.root), r = fake(built), upload = r.remote.upload
   let interrupted = false
   r.remote.upload = async (...args) => { await upload(...args); if (!interrupted) { interrupted = true; throw new Error("response lost") } }
   await assert.rejects(stage({ built, ...r }), /response lost/)
@@ -91,7 +118,7 @@ test("an ambiguous upload is read back before a separate invocation resumes", as
 })
 
 test("an ambiguous draft creation is not replayed", async t => {
-  const f = repository(t), built = build(f.candidate, f.root), r = fake(built), create = r.remote.create
+  const f = releaseCandidate(t), built = build(f.candidate, f.root), r = fake(built), create = r.remote.create
   r.remote.create = async plan => { await create(plan); throw new Error("response lost") }
   await assert.rejects(stage({ built, ...r }), /response lost/)
   await stage({ built, ...r })
@@ -99,7 +126,7 @@ test("an ambiguous draft creation is not replayed", async t => {
 })
 
 test("interrupted activation resumes by identity without republishing", async t => {
-  const f = repository(t), built = build(f.candidate, f.root), r = fake(built)
+  const f = releaseCandidate(t), built = build(f.candidate, f.root), r = fake(built)
   await stage({ built, ...r })
   const publish = r.remote.publish
   r.remote.publish = async plan => { await publish(plan); throw new Error("response lost") }
@@ -109,7 +136,7 @@ test("interrupted activation resumes by identity without republishing", async t 
 })
 
 test("moved tags, corrupt assets and missing staged files block publication", async t => {
-  const f = repository(t), built = build(f.candidate, f.root), r = fake(built)
+  const f = releaseCandidate(t), built = build(f.candidate, f.root), r = fake(built)
   await assert.rejects(stage({ built, ...r, authorization: "" }), /authorization/)
   await assert.rejects(activate({ built, ...r }), /stage and verify/)
   await stage({ built, ...r })

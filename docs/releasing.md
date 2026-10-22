@@ -59,7 +59,10 @@ node scripts/release.mjs verify --candidate <full-candidate-B-SHA> --dir <prepar
 ```
 
 Both tree values and the regenerated catalog must agree. Use candidate B and its
-new receipt for publication; never relabel A's receipt. Include public PR checks,
+new receipt for publication; never relabel A's receipt. Candidate A is for
+preparation only: `stage` and `activate` compare its committed HTTPS catalog with
+the generated `marketplace.json` byte for byte and reject a stale URL, hash or
+other catalog difference before any remote operation. Include public PR checks,
 required maintainer review, applicable private integration parity and changed
 host-install receipts in the release decision. Portable package checks do not
 substitute for those independently owned gates. Release tools do not bypass PR
@@ -127,7 +130,7 @@ also allows a staged candidate to be reviewed before main changes.
   recovery guide; never delete another process's lock or a preserved package.
 
 The test suite exercises deterministic artifacts, missing notices, wrong
-candidates, moved tags, corrupt/missing assets, interrupted uploads, lost draft
-creation/publication responses and idempotent reconciliation in disposable local
-fixtures. Those fixtures do not publish a release or establish real host/OAuth
-compatibility.
+candidates, stale committed catalogs, moved tags, corrupt/missing assets,
+interrupted uploads, lost draft creation/publication responses and idempotent
+reconciliation in disposable local fixtures. Those fixtures do not publish a
+release or establish real host/OAuth compatibility.
