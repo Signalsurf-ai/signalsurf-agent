@@ -1,0 +1,245 @@
+{
+  "schemaVersion": 1,
+  "model": "Configured default; actual model identifier unavailable in original CLI events; no override",
+  "host": "Codex CLI",
+  "hostVersion": "0.163.0",
+  "hostVersionProvenance": "Parent verified this installed host version during the same audit session; the supplemental execution metadata does not repeat a --version invocation.",
+  "snapshot": "50190c49e668c1ba688b13a14831f281e1dec524",
+  "pluginTree": "caf3f1bd06d9ce853978390e0207427aa2f95260",
+  "startedAt": "2026-10-22T23:23:50.455153+00:00",
+  "finishedAt": "2026-10-22T23:25:26.172430+00:00",
+  "reviewer": "candidate_review_two agent independently reviewed parent-collected original responses against the prepared reviewer case specification",
+  "executionMode": "simulation",
+  "realToolMutations": 0,
+  "promptSha256": "0d29a2f2c630b0c01d892d1a4c68954573f8a2805e773b3d0d8d4496b896510c",
+  "rawProcessOutputSha256": "ade6919a737463ff2cecacd844e0835d03f73d6fd7b50b4eb26972a7d3ac46b5",
+  "originalModelResponseSha256": "6e5273ebaea29097f43a535cb5649f563f4d2e13855d92e9a258b117c1ccfde2",
+  "stderrSha256": "5df1a8bc7d343089cb71b89deb36337441ce16e048e35602e92ac6dea9ef058a",
+  "method": "One supplied-guidance no-tool batch per host/phase; task rows instructed to be independent, not separate host sessions. Exact original parsed response fields are preserved. Expected answers, required outcomes and forbidden effects were withheld from the model.",
+  "guidanceProvenance": [
+    {
+      "path": "records/SKILL.md",
+      "bytes": 3046,
+      "sha256": "9170db5f781cafeccd52e6c9484d5c72215f9e551d5cba9777ca6e3db1613c2b"
+    },
+    {
+      "path": "signalsurf/SKILL.md",
+      "bytes": 3341,
+      "sha256": "6b58dc84f66a9f376acea4b0f0ef4b4ed4fc5a675dcf8330a9fd9573dcbf7fd5"
+    },
+    {
+      "path": "signalsurf/references/freshness.md",
+      "bytes": 4755,
+      "sha256": "137b8701acbd4473f2d1e4e6e89a5b91758df4f727a784a713f9486c6c2fbd5d"
+    },
+    {
+      "path": "signalsurf/references/operating-contract.md",
+      "bytes": 7046,
+      "sha256": "aad12e3370d65fd38b04dbe80876e920dd925e4c7863e013431d29269f84c155"
+    }
+  ],
+  "processEvidence": {
+    "kind": "Original JSONL event inspection",
+    "eventCount": 5,
+    "itemTypes": [
+      "error",
+      "agent_message"
+    ],
+    "toolOrCommandItems": 0,
+    "usage": {
+      "input_tokens": 35826,
+      "cached_input_tokens": 0,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 4639,
+      "reasoning_output_tokens": 366
+    },
+    "warning": "Inherited under-development chronicle feature warning; process completed successfully.",
+    "settings": {
+      "sandbox": "read-only",
+      "ephemeral": true,
+      "skipGitRepoCheck": true,
+      "modelOverride": false,
+      "userConfigIsolation": false,
+      "toolExecutionDisabledByCli": false
+    }
+  },
+  "limitations": [
+    "Single batched sample; no statistical, general model-quality, latency or token-savings conclusion.",
+    "Guidance/discovery were supplied in the prompt; readFiles records proposed choices rather than observed reads or host autoload.",
+    "Processes used configured default models and inherited host settings except the declared invocation controls; no user configuration or connected account was changed.",
+    "Methodology deviation from the recommended isolated-configuration/local-reading trials in evals/README.md: normal host configuration was inherited and guidance/discovery were supplied. Absence of ambient guidance or host isolation was not established.",
+    "All context, IDs, facts and observations are synthetic. No real mutation, OAuth, Workspace, provider or persistence proof is established.",
+    "The fixture_* APIs and schemas are deliberately artificial; these cases do not verify live SignalSurf inputSchema or deployment compatibility.",
+    "No native confirmation/retry response or extended confirmation schema was supplied. Conditional confirmation advice in the original model response was not exercised or verified by these fixture cases."
+  ],
+  "results": [
+    {
+      "caseId": "synthetic-schema-1",
+      "mode": "direct",
+      "entrypoint": "records/SKILL.md",
+      "readFiles": [
+        "records/SKILL.md",
+        "signalsurf/references/operating-contract.md"
+      ],
+      "proposedEffects": [
+        "Use the supplied resolved collection, Record, current Record read and current Workspace/Project context. This is a supplied-fact edit through ordinary update; no research, Enrich, schema change or additional target resolution is needed.",
+        "Propose fixture_record_manage with arguments: {\"action\":\"update\",\"workspaceId\":\"11111111-1111-4111-8111-111111111111\",\"projectId\":\"22222222-2222-4222-8222-222222222222\",\"objectId\":\"33333333-3333-4333-8333-333333333333\",\"recordId\":\"44444444-4444-4444-8444-444444444444\",\"operationId\":\"synthetic-schema-1-job-title-v1\",\"input\":{\"fields\":{\"job_title\":\"Director of Partnerships\"}}}.",
+        "After an observed successful mutation, propose fixture_record_query with arguments: {\"action\":\"get\",\"workspaceId\":\"11111111-1111-4111-8111-111111111111\",\"projectId\":\"22222222-2222-4222-8222-222222222222\",\"objectId\":\"33333333-3333-4333-8333-333333333333\",\"recordId\":\"44444444-4444-4444-8444-444444444444\"}. Require the same identity, job_title equal to Director of Partnerships, name equal to Mira Rowan and company equal to Harbor Example Labs before reporting verified completion.",
+        "No material clarification or additional confirmation is currently needed. If native confirmation is newly required, pause for its exact preview and affirmative host reply, then use a schema-supported confirmation retry with the bound effects unchanged. Do not invent a confirmationId property in the supplied schema.",
+        "Reconcile an unknown outcome before retrying; an exact retry retains the same operationId and payload. Stop on a blocking error, unresolved outcome, confirmation requirement or verified readback. Keep routine history on the Record and report here without Project writeback."
+      ],
+      "response": "Offline proposal only; no tools, filesystem reads, freshness check or mutation occurred. The supplied fixture schema supports the exact job_title-only update. Completion remains unverified because mutationObservation is null and no post-update readback is supplied.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Proposes a valid minimal fixture update with exact IDs, operationId and only job_title, followed by native readback; preserves unrelated fields and does not claim execution."
+    },
+    {
+      "caseId": "synthetic-schema-1",
+      "mode": "root",
+      "entrypoint": "signalsurf/SKILL.md",
+      "readFiles": [
+        "signalsurf/SKILL.md",
+        "signalsurf/references/operating-contract.md",
+        "records/SKILL.md"
+      ],
+      "proposedEffects": [
+        "Route the supplied-fact CRM edit from the root intent map to Records. Reuse the supplied resolved collection, Record, current Record read and current Workspace/Project context; no research, Enrich, schema change or additional target resolution is needed.",
+        "Propose fixture_record_manage with arguments: {\"action\":\"update\",\"workspaceId\":\"11111111-1111-4111-8111-111111111111\",\"projectId\":\"22222222-2222-4222-8222-222222222222\",\"objectId\":\"33333333-3333-4333-8333-333333333333\",\"recordId\":\"44444444-4444-4444-8444-444444444444\",\"operationId\":\"synthetic-schema-1-job-title-v1\",\"input\":{\"fields\":{\"job_title\":\"Director of Partnerships\"}}}.",
+        "After an observed successful mutation, propose fixture_record_query with arguments: {\"action\":\"get\",\"workspaceId\":\"11111111-1111-4111-8111-111111111111\",\"projectId\":\"22222222-2222-4222-8222-222222222222\",\"objectId\":\"33333333-3333-4333-8333-333333333333\",\"recordId\":\"44444444-4444-4444-8444-444444444444\"}. Require the same identity, job_title equal to Director of Partnerships, name equal to Mira Rowan and company equal to Harbor Example Labs before reporting verified completion.",
+        "No material clarification or additional confirmation is currently needed. If native confirmation is newly required, pause for its exact preview and affirmative host reply, then use a schema-supported confirmation retry with the bound effects unchanged. Do not invent a confirmationId property in the supplied schema.",
+        "Reconcile an unknown outcome before retrying; an exact retry retains the same operationId and payload. Stop on a blocking error, unresolved outcome, confirmation requirement or verified readback. Keep routine history on the Record and report here without Project writeback."
+      ],
+      "response": "Offline proposal only; no tools, filesystem reads, freshness check or mutation occurred. Root routing selects Records, whose supplied fixture schema supports the exact job_title-only update. Completion remains unverified because mutationObservation is null and no post-update readback is supplied.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Proposes a valid minimal fixture update with exact IDs, operationId and only job_title, followed by native readback; preserves unrelated fields and does not claim execution."
+    },
+    {
+      "caseId": "synthetic-schema-2",
+      "mode": "direct",
+      "entrypoint": "records/SKILL.md",
+      "readFiles": [
+        "records/SKILL.md",
+        "signalsurf/references/operating-contract.md"
+      ],
+      "proposedEffects": [
+        "Use the supplied resolved collection, Record, current Record read and current Workspace/Project context for an ordinary supplied-fact update. No research, Enrich or schema administration is needed.",
+        "Propose fixture_record_manage with arguments: {\"action\":\"update\",\"workspaceId\":\"11111111-1111-4111-8111-111111111111\",\"projectId\":\"22222222-2222-4222-8222-222222222222\",\"objectId\":\"33333333-3333-4333-8333-333333333333\",\"recordId\":\"44444444-4444-4444-8444-444444444444\",\"operationId\":\"synthetic-schema-2-job-title-v1\",\"input\":{\"fields\":{\"job_title\":\"Director of Partnerships\"}}}. Omit optional auditLabel because no value is supplied or needed.",
+        "After an observed successful mutation, propose fixture_record_query with arguments: {\"action\":\"get\",\"workspaceId\":\"11111111-1111-4111-8111-111111111111\",\"projectId\":\"22222222-2222-4222-8222-222222222222\",\"objectId\":\"33333333-3333-4333-8333-333333333333\",\"recordId\":\"44444444-4444-4444-8444-444444444444\"}. Require the same identity, the requested job_title, and unchanged name Mira Rowan and company Harbor Example Labs.",
+        "No material clarification or additional confirmation is currently needed; the optional auditLabel does not create a blocker. If native confirmation is newly required, present its exact preview, obtain affirmative host consent and use only a schema-supported confirmation retry without changing the bound effects.",
+        "Reconcile unknown outcomes before any exact retry using the same operationId and payload. Stop on a blocking error, unresolved outcome, confirmation requirement or verified readback. Report here, retaining routine Record history without a Project post."
+      ],
+      "response": "Offline proposal only; no tools, filesystem reads, freshness check or mutation occurred. The supplied schema permits the scoped update with auditLabel omitted. mutationObservation is null, so neither the change nor preservation of other fields has been verified.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Correctly treats auditLabel as optional and omits it without blocking; proposes the exact scoped update and readback without an execution claim."
+    },
+    {
+      "caseId": "synthetic-schema-2",
+      "mode": "root",
+      "entrypoint": "signalsurf/SKILL.md",
+      "readFiles": [
+        "signalsurf/SKILL.md",
+        "signalsurf/references/operating-contract.md",
+        "records/SKILL.md"
+      ],
+      "proposedEffects": [
+        "Route the supplied-fact CRM edit to Records. Use the supplied resolved collection, Record, current Record read and current Workspace/Project context. No research, Enrich or schema administration is needed.",
+        "Propose fixture_record_manage with arguments: {\"action\":\"update\",\"workspaceId\":\"11111111-1111-4111-8111-111111111111\",\"projectId\":\"22222222-2222-4222-8222-222222222222\",\"objectId\":\"33333333-3333-4333-8333-333333333333\",\"recordId\":\"44444444-4444-4444-8444-444444444444\",\"operationId\":\"synthetic-schema-2-job-title-v1\",\"input\":{\"fields\":{\"job_title\":\"Director of Partnerships\"}}}. Omit optional auditLabel because no value is supplied or needed.",
+        "After an observed successful mutation, propose fixture_record_query with arguments: {\"action\":\"get\",\"workspaceId\":\"11111111-1111-4111-8111-111111111111\",\"projectId\":\"22222222-2222-4222-8222-222222222222\",\"objectId\":\"33333333-3333-4333-8333-333333333333\",\"recordId\":\"44444444-4444-4444-8444-444444444444\"}. Require the same identity, the requested job_title, and unchanged name Mira Rowan and company Harbor Example Labs.",
+        "No material clarification or additional confirmation is currently needed; the optional auditLabel does not create a blocker. If native confirmation is newly required, present its exact preview, obtain affirmative host consent and use only a schema-supported confirmation retry without changing the bound effects.",
+        "Reconcile unknown outcomes before any exact retry using the same operationId and payload. Stop on a blocking error, unresolved outcome, confirmation requirement or verified readback. Report here, retaining routine Record history without a Project post."
+      ],
+      "response": "Offline proposal only; no tools, filesystem reads, freshness check or mutation occurred. Root routing selects Records. The supplied schema permits the scoped update with auditLabel omitted, but mutationObservation is null and no post-update verification is available.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Correctly treats auditLabel as optional and omits it without blocking; proposes the exact scoped update and readback without an execution claim."
+    },
+    {
+      "caseId": "synthetic-schema-3",
+      "mode": "direct",
+      "entrypoint": "records/SKILL.md",
+      "readFiles": [
+        "records/SKILL.md",
+        "signalsurf/references/operating-contract.md"
+      ],
+      "proposedEffects": [
+        "Keep the ordinary Records update procedure and the supplied exact target and current work context. The requested value and authority are clear, but input.revisionToken is required and no token is supplied. Do not construct or submit an incomplete mutation, fabricate a token, or substitute the timestamp or operationId.",
+        "A proposed prerequisite read is fixture_record_query with arguments: {\"action\":\"get\",\"workspaceId\":\"11111111-1111-4111-8111-111111111111\",\"projectId\":\"22222222-2222-4222-8222-222222222222\",\"objectId\":\"33333333-3333-4333-8333-333333333333\",\"recordId\":\"44444444-4444-4444-8444-444444444444\"}. Its supplied input schema does not establish that its response contains a revision token.",
+        "If the read does not provide a documented authoritative token, propose outcome-based capability discovery for obtaining the exact Record's revisionToken. No discovery argument schema or alternative token capability is supplied, so do not invent either. Stop before mutation until an authoritative token and its binding to this Record revision are available.",
+        "Once that prerequisite is supported, propose fixture_record_manage action update using the supplied workspaceId, projectId, objectId and recordId, operationId synthetic-schema-3-job-title-v1, input.fields containing only job_title equal to Director of Partnerships, and input.revisionToken containing the authoritative returned token.",
+        "No clarification of the desired edit or renewed user authorization is needed. A newly returned native confirmation would require its exact preview and affirmative host response through a supported confirmation route. Reconcile unknown outcomes before retrying; do not silently change an exact retry's token or payload.",
+        "Before any completion report, require mutation success and exact Record readback verifying the requested title and unchanged name Mira Rowan and company Harbor Example Labs. Keep the result here and routine history on the Record; do not post a Project Thread."
+      ],
+      "response": "Offline proposal only; no tools, filesystem reads, freshness check or mutation occurred. The proposed update is blocked by the missing required revisionToken. The supplied fixture does not establish how to obtain it, and confirmation cannot replace that missing input.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Stops before mutation because the required revisionToken is unavailable, refuses to fabricate it and proposes authoritative acquisition only if a supported route exists."
+    },
+    {
+      "caseId": "synthetic-schema-3",
+      "mode": "root",
+      "entrypoint": "signalsurf/SKILL.md",
+      "readFiles": [
+        "signalsurf/SKILL.md",
+        "signalsurf/references/operating-contract.md",
+        "records/SKILL.md"
+      ],
+      "proposedEffects": [
+        "Route the supplied-fact CRM edit to Records and retain the supplied exact target and current work context. The requested value and authority are clear, but input.revisionToken is required and no token is supplied. Do not submit an incomplete mutation or fabricate a token from another supplied value.",
+        "A proposed prerequisite read is fixture_record_query with arguments: {\"action\":\"get\",\"workspaceId\":\"11111111-1111-4111-8111-111111111111\",\"projectId\":\"22222222-2222-4222-8222-222222222222\",\"objectId\":\"33333333-3333-4333-8333-333333333333\",\"recordId\":\"44444444-4444-4444-8444-444444444444\"}. Its supplied input schema does not establish that its response contains a revision token.",
+        "If the read does not provide a documented authoritative token, propose outcome-based capability discovery for obtaining the exact Record's revisionToken. No discovery argument schema or alternative token capability is supplied, so do not invent either. Stop before mutation until an authoritative token and its binding to this Record revision are available.",
+        "Once that prerequisite is supported, propose fixture_record_manage action update using the supplied workspaceId, projectId, objectId and recordId, operationId synthetic-schema-3-job-title-v1, input.fields containing only job_title equal to Director of Partnerships, and input.revisionToken containing the authoritative returned token.",
+        "No clarification of the desired edit or renewed user authorization is needed. A newly returned native confirmation would require its exact preview and affirmative host response through a supported confirmation route. Reconcile unknown outcomes before retrying; do not silently change an exact retry's token or payload.",
+        "Before any completion report, require mutation success and exact Record readback verifying the requested title and unchanged name Mira Rowan and company Harbor Example Labs. Keep the result here and routine history on the Record; do not post a Project Thread."
+      ],
+      "response": "Offline proposal only; no tools, filesystem reads, freshness check or mutation occurred. Root routing selects Records, but its supplied fixture update requires an unavailable revisionToken. The proposal stops before mutation until an authoritative token acquisition route is established.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Stops before mutation because the required revisionToken is unavailable, refuses to fabricate it and proposes authoritative acquisition only if a supported route exists."
+    },
+    {
+      "caseId": "synthetic-schema-4",
+      "mode": "direct",
+      "entrypoint": "records/SKILL.md",
+      "readFiles": [
+        "records/SKILL.md",
+        "signalsurf/references/operating-contract.md"
+      ],
+      "proposedEffects": [
+        "Retain the Records supplied-fact update procedure, supplied exact Record and current Workspace/Project context. The discovered fixture_record_manage supports only archive; its action and input schema cannot express the requested job_title update.",
+        "Do not propose archive, disguise the title as an archive reason, send an unsupported update action, modify the schema, create a replacement Record or use Sheets as a workaround.",
+        "Propose find_capabilities discovery by the requested outcome: update only job_title on the exact existing Person Record using the supplied fact. This is conditional discovery, not an executed call; no discovery argument schema is supplied. Inspect any returned exact action schema and access before constructing a mutation. This family's missing update action does not establish product-wide absence.",
+        "Any supported update route would retain workspaceId 11111111-1111-4111-8111-111111111111, work projectId 22222222-2222-4222-8222-222222222222, objectId 33333333-3333-4333-8333-333333333333 and recordId 44444444-4444-4444-8444-444444444444 in their schema-declared roles. Preserve operationId synthetic-schema-4-job-title-v1 for the intended mutation where supported and set only job_title to Director of Partnerships.",
+        "No user clarification or additional confirmation is currently needed. Stop before mutation while no compatible route is supplied. If further discovery establishes no available route, report that scoped blocker here. If native confirmation is returned by a supported route, require its exact preview and affirmative host response before a schema-supported bound retry.",
+        "A later supported mutation would require outcome reconciliation before retries and exact Record readback verifying the new title, name Mira Rowan and company Harbor Example Labs unchanged. Keep routine Record history and report here without Project writeback."
+      ],
+      "response": "Offline proposal only; no tools, filesystem reads, freshness check or mutation occurred. The supplied fixture exposes archive rather than update, so it cannot perform the requested edit. Outcome-based discovery is the proposed next step; no alternative update capability or product-wide absence has been established.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Recognizes archive cannot perform the requested update, proposes no substitute effect and limits the conclusion to the missing offered route while allowing outcome-based discovery."
+    },
+    {
+      "caseId": "synthetic-schema-4",
+      "mode": "root",
+      "entrypoint": "signalsurf/SKILL.md",
+      "readFiles": [
+        "signalsurf/SKILL.md",
+        "signalsurf/references/operating-contract.md",
+        "records/SKILL.md"
+      ],
+      "proposedEffects": [
+        "Route the supplied-fact CRM edit to Records and retain the supplied exact Record and current Workspace/Project context. The discovered fixture_record_manage supports only archive; its action and input schema cannot express the requested job_title update.",
+        "Do not propose archive, disguise the title as an archive reason, send an unsupported update action, modify the schema, create a replacement Record or use Sheets as a workaround.",
+        "Propose find_capabilities discovery by the requested outcome: update only job_title on the exact existing Person Record using the supplied fact. This is conditional discovery, not an executed call; no discovery argument schema is supplied. Inspect any returned exact action schema and access before constructing a mutation. This family's missing update action does not establish product-wide absence.",
+        "Any supported update route would retain workspaceId 11111111-1111-4111-8111-111111111111, work projectId 22222222-2222-4222-8222-222222222222, objectId 33333333-3333-4333-8333-333333333333 and recordId 44444444-4444-4444-8444-444444444444 in their schema-declared roles. Preserve operationId synthetic-schema-4-job-title-v1 for the intended mutation where supported and set only job_title to Director of Partnerships.",
+        "No user clarification or additional confirmation is currently needed. Stop before mutation while no compatible route is supplied. If further discovery establishes no available route, report that scoped blocker here. If native confirmation is returned by a supported route, require its exact preview and affirmative host response before a schema-supported bound retry.",
+        "A later supported mutation would require outcome reconciliation before retries and exact Record readback verifying the new title, name Mira Rowan and company Harbor Example Labs unchanged. Keep routine Record history and report here without Project writeback."
+      ],
+      "response": "Offline proposal only; no tools, filesystem reads, freshness check or mutation occurred. Root routing selects Records, but the supplied fixture exposes only archive. The proposal stops before mutation pending discovery of a compatible update route; it does not establish product-wide absence.",
+      "verdict": "pass",
+      "observedEffects": [],
+      "rationale": "Recognizes archive cannot perform the requested update, proposes no substitute effect and limits the conclusion to the missing offered route while allowing outcome-based discovery."
+    }
+  ]
+}

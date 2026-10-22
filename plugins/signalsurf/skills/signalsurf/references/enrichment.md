@@ -1,0 +1,15 @@
+# Fill existing fields through native Enrich
+
+Read this procedure for lookup-based completion of supported existing Sheet columns, Record fields or List members. Supplied facts and deterministic edits use ordinary destination updates. Research-only requests create no Records or persistent Enrich configuration.
+
+1. Inspect the owning destination schema, exact requested fields and saved bindings with `enrichment_query` action `list`. Prefer native Enrich over separate row-by-row research and manual writeback. Reuse the exact saved field key/instruction and binding for this scope; `enrichment_manage` action `enable` is only for a missing binding or an explicitly requested settings change.
+2. Keep the requested selection and approved cost bounds. Preserve populated values unless refresh was requested. Primary, protected and unsupported fields do not become eligible by changing the research method. Report the actual limitation before proposing a supported alternative.
+3. Resolve selection by its owner:
+   - **Records:** retain the actual `objectId` and exact requested Record IDs, or the explicitly requested collection selection. Use `record_manage` action `select`; do not add a `listId` or create a List. Independent Record edits and Enrich require explicit Records collection access.
+   - **Lists:** retain `listId`, its exact active-member selection and this List's saved binding. Read `list_query` for `recordDatabaseId`, `entryDatabaseId` and current member IDs. List-owned fields use `entryDatabaseId` and membership IDs; shared profile fields use `recordDatabaseId` and canonical Record IDs with the same `listId`. Native manual Enrich updates those members' shared basic data visible across Lists. A List grant does not authorize generic Record writes, schema edits, unrelated Records or collection-wide runs. Record and List bindings are separate; do not substitute one for the other.
+   - **Sheets:** retain the actual Sheet, requested rows or supported Sheet scope and saved column binding. Do not reinterpret Record IDs as Sheet row IDs.
+4. Inspect the live schema and current authority before execution. If the deployed server lacks the native List route for shared fields with `listId`, report the release gap; do not substitute independent Records access or research plus manual writes. For Records/Sheets pass the returned selection token unchanged to `enrichment_run` action `run`; for Lists pass the exact selected IDs described above. Run one exact field key at a time.
+5. Automatic runs require their own request. Shared Record/profile enrichment is manual; never enable automatic new-member runs for shared profile fields. Honor native confirmation, credit bounds and current File/Project access; do not expand scope to work around a failure.
+6. Queued work is not completed field data. Inspect the returned run IDs, reconcile uncertain paid outcomes before retrying, then read back the requested cells and report actual results. Preserve unrelated and populated values outside the approved refresh.
+
+For a worked exact-List example or an uncertain result, read [exact-List example](examples/exact-list.md).

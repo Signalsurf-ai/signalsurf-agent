@@ -11,8 +11,8 @@
       "name": "signalsurf",
       "source": {
         "source": "archive",
-        "url": "https://github.com/Signalsurf-ai/signalsurf-agent/releases/download/v0.7.15/signalsurf-0.7.15.zip",
-        "sha256": "1a7e0d4093e61416fcbca64a9ba9a7beb46b74652fba006dc87ba3aa6bd1ff02"
+        "url": "https://github.com/Signalsurf-ai/signalsurf-agent/releases/download/v0.7.16/signalsurf-0.7.16.zip",
+        "sha256": "5b82c56eaed9e1832fb83e55ab4de889f90692efa4f90fbad8cb41962fe71d26"
       },
       "description": "Access your Signalsurf workspace, Projects, and product tools from Claude."
     }

@@ -1,0 +1,158 @@
+{
+  "schemaVersion": 1,
+  "scope": "Synthetic procedure envelopes, not copyable live API arguments. Validate exact inputSchema separately before real execution.",
+  "examples": [
+    {
+      "id": "research-only",
+      "guide": "signalsurf/references/examples/research-only.md",
+      "caseIds": [
+        "keyword-search"
+      ],
+      "requestedStage": "research",
+      "steps": [
+        {
+          "capability": "social_get",
+          "action": null
+        }
+      ],
+      "observedState": "completed",
+      "evidence": [
+        "source",
+        "result"
+      ],
+      "claimedState": "completed",
+      "effects": []
+    },
+    {
+      "id": "exact-list",
+      "guide": "signalsurf/references/examples/exact-list.md",
+      "caseIds": [
+        "company-to-people",
+        "exact-list-enrich"
+      ],
+      "requestedStage": "capture",
+      "steps": [
+        {
+          "capability": "people_search",
+          "action": null
+        },
+        {
+          "capability": "record_manage",
+          "action": "create"
+        }
+      ],
+      "observedState": "saved",
+      "evidence": [
+        "resultRef",
+        "readback"
+      ],
+      "claimedState": "saved",
+      "effects": [
+        "record_capture"
+      ]
+    },
+    {
+      "id": "listening-sheet",
+      "guide": "signalsurf/references/examples/listening-sheet.md",
+      "caseIds": [
+        "engagers-to-sheet"
+      ],
+      "requestedStage": "research",
+      "steps": [
+        {
+          "capability": "listening_query",
+          "action": "post"
+        },
+        {
+          "capability": "item_query",
+          "action": null
+        }
+      ],
+      "observedState": "partial",
+      "evidence": [
+        "source",
+        "result"
+      ],
+      "claimedState": "partial",
+      "effects": []
+    },
+    {
+      "id": "draft-send",
+      "guide": "signalsurf/references/examples/draft-send.md",
+      "caseIds": [
+        "personal-time-only",
+        "uncertain-send"
+      ],
+      "requestedStage": "delivery",
+      "steps": [
+        {
+          "capability": "message_draft",
+          "action": null
+        },
+        {
+          "capability": "message_send",
+          "action": null
+        }
+      ],
+      "observedState": "queued",
+      "evidence": [
+        "queue_receipt"
+      ],
+      "claimedState": "queued",
+      "effects": [
+        "approved_queue"
+      ]
+    },
+    {
+      "id": "routine-evidence",
+      "guide": "signalsurf/references/examples/routine-evidence.md",
+      "caseIds": [
+        "agent-routine",
+        "routine-saved-not-run"
+      ],
+      "requestedStage": "configure",
+      "steps": [
+        {
+          "capability": "routine_query",
+          "action": "list"
+        },
+        {
+          "capability": "routine_manage",
+          "action": "configure"
+        }
+      ],
+      "observedState": "saved",
+      "evidence": [
+        "readback"
+      ],
+      "claimedState": "saved",
+      "effects": [
+        "approved_configuration"
+      ]
+    },
+    {
+      "id": "exact-retry",
+      "guide": "signalsurf/references/examples/exact-retry.md",
+      "caseIds": [
+        "delete-uncertain"
+      ],
+      "requestedStage": "delete",
+      "steps": [
+        {
+          "capability": "list_manage",
+          "action": "delete"
+        }
+      ],
+      "observedState": "unknown",
+      "evidence": [
+        "timeout"
+      ],
+      "claimedState": "unknown",
+      "effects": [],
+      "originalOperationId": "<same-operation-id>",
+      "retryOperationId": "<same-operation-id>",
+      "reconciled": false,
+      "retryDispatched": false
+    }
+  ]
+}

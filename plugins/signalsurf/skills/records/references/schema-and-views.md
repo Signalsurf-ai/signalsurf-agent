@@ -1,0 +1,7 @@
+# Record schemas and List views
+
+Read this procedure for a requested collection/schema, List process-field or List view change.
+
+For localized collection fields, use `object_manage` action `patch_schema`; for an Explicit List's process fields, use `list_manage` action `patch_entry_schema`. Read current schemas and revisions first. Name each field to add, update or explicitly delete. Omitted fields, options and relation metadata remain intact; supplied options replace that field's option list. Identity and system fields are protected. Full schema replacement is for an explicitly intended complete replacement and requires preserving everything outside the request.
+
+Use `list_manage` actions `view_create`, `view_update` or `view_delete` for native List table views. Pass `listId`; `table_views` targets Sheets and cannot use a List ID. Read `list_query` action `get` for complete schemas, existing views and revisions. Filters use scoped column IDs such as `output.record:stage` or `output.list_entry:assignee`, with actual stored values/options. They narrow the List's membership without changing it. Preserve unrelated views and settings; explicitly send an empty filter list to clear filters. Update a dependent view before deleting its filtered field or removing a selected enum option. An attached List grants its own field operations, bounded Record reads, and native Enrich on its exact active members. It does not grant generic Record writes or collection-wide Records access.

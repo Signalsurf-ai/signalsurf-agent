@@ -21,7 +21,7 @@ When writing, reviewing or rewriting copy, read [Writing](../writing/SKILL.md) a
 
 Use `listening_query` action `post` for one collected post's capture evidence. Distinguish observed profiles, actual interactions, configured destinations and verified saved Sheet rows. Returned profiles are bounded samples; a configured destination does not prove delivery. Preserve source-post attribution and inspect destination rows before reporting saved results.
 
-For an explicitly requested whole-Listening deletion, use `listening_manage` action `delete` with a stable `operationId` and exact target/revision checks, then verify the result. Follow the shared operating contract for native member deletion, with no second conversational yes; existing confirmation resumes and internal Surfer/browser/autonomous confirmations remain unchanged. Native member deletion follows Workspace resource authority; historical attachment to an inaccessible Project is not itself a deletion prerequisite. Do not create a Project, Thread or Run, or claim Working File ownership to bypass permissions. Delegated background execution retains its native Project scope.
+For a requested whole-Listening deletion or its reconciliation, read [native File lifecycle](../signalsurf/references/file-lifecycle.md) and discover `listening_manage` action `delete` for the exact target.
 
 # Engagers into Sheets
 
@@ -35,3 +35,5 @@ Use this procedure when the user wants profiles that interacted with monitored L
 6. Verify actual destination rows, avatars, interaction/source evidence and completed custom cells. Latest-run counters are not Sheet totals. A queued job, empty field, timeout or capacity deferral is not a provider miss. Reconcile uncertain paid outcomes before retrying. Preserve File authority and only promise follow-up after registering a supported follow-up.
 
 Legacy List-based collection must be explicitly reconfigured. Preserve existing Lists, Records and observations; never silently convert it into new paid Sheet collection. Keep unsupported steps as reported gaps instead of creating a fake destination or bypassing locked fields.
+
+For a composed managed-Sheet review, optional CRM admission or uncertain capture, read the synthetic [Listening and Sheet example](../signalsurf/references/examples/listening-sheet.md).

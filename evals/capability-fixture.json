@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "provenance": {
+    "kind": "published-procedure-names",
+    "repository": "https://github.com/Signalsurf-ai/signalsurf-agent",
+    "commit": "79e795db1d76597fadb8863d89019d099c1437fb",
+    "observedAt": "2026-10-22",
+    "scope": "Capability names/actions explicitly documented in the pinned public guidance. This is not a live server inputSchema or deployment compatibility assertion."
+  },
+  "capabilities": {
+    "social_get": {
+      "actions": [],
+      "source": "plugins/signalsurf/skills/signalsurf/references/research-capture.md"
+    },
+    "people_search": {
+      "actions": [],
+      "source": "plugins/signalsurf/skills/signalsurf/references/lead-sourcing.md"
+    },
+    "record_manage": {
+      "actions": [
+        "create",
+        "update",
+        "select"
+      ],
+      "source": "plugins/signalsurf/skills/records/SKILL.md"
+    },
+    "enrichment_query": {
+      "actions": [
+        "list"
+      ],
+      "source": "plugins/signalsurf/skills/records/SKILL.md"
+    },
+    "enrichment_run": {
+      "actions": [
+        "run"
+      ],
+      "source": "plugins/signalsurf/skills/records/SKILL.md"
+    },
+    "listening_query": {
+      "actions": [
+        "post"
+      ],
+      "source": "plugins/signalsurf/skills/listening/SKILL.md"
+    },
+    "item_query": {
+      "actions": [],
+      "source": "plugins/signalsurf/skills/sheets/SKILL.md"
+    },
+    "message_draft": {
+      "actions": [],
+      "source": "plugins/signalsurf/skills/conversations/SKILL.md"
+    },
+    "message_send": {
+      "actions": [],
+      "source": "plugins/signalsurf/skills/conversations/SKILL.md"
+    },
+    "routine_query": {
+      "actions": [
+        "list"
+      ],
+      "source": "plugins/signalsurf/skills/signalsurf/references/schedule-routing.md"
+    },
+    "routine_manage": {
+      "actions": [
+        "configure"
+      ],
+      "source": "plugins/signalsurf/skills/signalsurf/references/schedule-routing.md"
+    },
+    "list_manage": {
+      "actions": [
+        "delete"
+      ],
+      "source": "plugins/signalsurf/skills/records/SKILL.md"
+    }
+  }
+}

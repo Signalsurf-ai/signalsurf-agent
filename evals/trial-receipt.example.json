@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "model": "<actual-model-id-and-settings>",
+  "host": "<actual-host-or-read-only-agent-runtime>",
+  "hostVersion": "<actual-version-or-unavailable>",
+  "snapshot": "79e795db1d76597fadb8863d89019d099c1437fb",
+  "patchDigest": "<actual-patch-digest-if-working-tree-is-not-the-snapshot>",
+  "startedAt": "2026-10-22T12:00:00Z",
+  "finishedAt": "2026-10-22T12:01:00Z",
+  "reviewer": "<actual-independent-reviewer>",
+  "executionMode": "simulation",
+  "realToolMutations": 0,
+  "results": [
+    {
+      "caseId": "uncertain-send",
+      "mode": "direct",
+      "verdict": "unavailable",
+      "readFiles": [],
+      "proposedEffects": [],
+      "observedEffects": [],
+      "response": "Example shape only; no model response was collected.",
+      "rationale": "No behavioral trial was run for this example receipt."
+    }
+  ]
+}

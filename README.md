@@ -74,6 +74,14 @@ connection endpoint. Follow your app's [setup and permission requirements](./GET
 [Privacy](https://www.signalsurf.ai/privacy) ·
 [Terms](https://www.signalsurf.ai/terms)
 
+## Developers and contributors
+
+The optional [SignalSurf CLI](./GETTING_STARTED.md#signalsurf-cli) is a terminal
+client of the same hosted MCP service; it is not required for plugin setup.
+See [contributing](./CONTRIBUTING.md) for public source ownership and `npm test`,
+[compatibility](./docs/compatibility.md) for the evidence behind each route, and
+[releasing](./docs/releasing.md) for maintainer preparation and recovery.
+
 ## Writing guidance
 
 The packaged [Writing Skill](plugins/signalsurf/skills/writing/SKILL.md) supports standalone writing, review and rewrite as well as Content, Campaigns, Listening and Conversations copy. It selects email outreach, follow-up, conversation reply, LinkedIn post, X post, public reply, DM or connection-note guidance while preserving author voice and Chinese usage. The guidance is authored for SignalSurf.
