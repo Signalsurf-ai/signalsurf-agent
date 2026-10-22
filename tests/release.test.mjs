@@ -5,7 +5,7 @@ import { tmpdir } from "node:os"
 import path from "node:path"
 import test from "node:test"
 import { ROOT, versionIssues } from "../scripts/check.mjs"
-import { activate, assertRemote, build, inspect, prepare, REPO, stage, verify } from "../scripts/release.mjs"
+import { activate, assertRemote, build, githubRemote, inspect, prepare, REPO, stage, verify } from "../scripts/release.mjs"
 import { crc32, zip } from "../scripts/zip.mjs"
 
 function repository(t) {
@@ -37,6 +37,41 @@ function fake(built) {
     async publish(plan) { writes.push("publish"); state.tag = plan.candidate; state.release.draft = false },
   }
   return { state, bytes, writes, remote, authorization: `${REPO}@${built.plan.tag}` }
+}
+
+function githubFixture(built, { published = false, duplicate = false } = {}) {
+  const r = fake(built), calls = [], prefix = `repos/${REPO}`
+  r.state.tag = published ? built.plan.candidate : null
+  r.state.release = { id: 1, tag_name: built.plan.tag, target_commitish: built.plan.candidate, draft: !published, assets: [] }
+  const notFound = () => { throw Object.assign(new Error("Not Found"), { stderr: Buffer.from("gh: Not Found (HTTP 404)") }) }
+  const execute = (command, args) => {
+    assert.equal(command, "gh"); calls.push([...args])
+    if (args[0] === "release") {
+      assert.deepEqual(args.slice(0, 3), ["release", "upload", built.plan.tag])
+      assert.deepEqual(args.slice(4), ["--repo", REPO])
+      const name = path.basename(args[3]), value = readFileSync(args[3])
+      r.writes.push(`upload:${name}`); r.bytes.set(name, value)
+      r.state.release.assets.push({ id: r.state.release.assets.length + 1, name, size: value.length })
+      return Buffer.alloc(0)
+    }
+    assert.equal(args[0], "api")
+    const method = args[2], endpoint = args[3]
+    if (method !== "GET") { r.writes.push(method); throw new Error("unexpected GitHub mutation") }
+    let value
+    if (endpoint === `${prefix}/contents/plugins/signalsurf/plugin.json?ref=main`) value = { content: Buffer.from(JSON.stringify({ version: r.state.active_version })).toString("base64") }
+    else if (endpoint === `${prefix}/git/ref/tags/${built.plan.tag}`) { if (!r.state.tag) return notFound(); value = { object: { type: "commit", sha: r.state.tag } } }
+    else if (endpoint === `${prefix}/releases/tags/${built.plan.tag}`) { if (!published) return notFound(); value = r.state.release }
+    else if (endpoint === `${prefix}/releases?per_page=100`) {
+      assert.deepEqual(args.slice(4), ["--paginate", "--slurp"])
+      value = [Array.from({ length: 100 }, (_, index) => ({ tag_name: `v0.0.${index}` })), [r.state.release]]
+      if (duplicate) value.push([{ ...r.state.release, id: 2 }])
+    } else if (endpoint.startsWith(`${prefix}/releases/assets/`)) {
+      const asset = r.state.release.assets.find(asset => String(asset.id) === endpoint.split("/").at(-1))
+      assert.ok(asset); return r.bytes.get(asset.name)
+    } else throw new Error(`unexpected endpoint: ${endpoint}`)
+    return Buffer.from(JSON.stringify(value))
+  }
+  return { ...r, calls, remote: githubRemote(undefined, { execute }) }
 }
 
 test("deterministic ZIP uses stable CRC, dates, ordering and notices", () => {
@@ -88,6 +123,34 @@ test("draft staging and activation verify exact remote bytes and are idempotent"
   assert.equal(r.writes.filter(value => value === "create").length, 1)
   assert.equal(r.writes.filter(value => value === "publish").length, 1)
   assert.equal(r.writes.length, built.assets.size + 2)
+})
+
+test("GitHub tag 404 finds an existing draft on a later listing page and resumes without creating it", async t => {
+  const f = releaseCandidate(t), built = build(f.candidate, f.root), r = githubFixture(built)
+  const state = await stage({ built, ...r })
+  assert.equal(state.release.id, 1)
+  assert.equal(state.release.draft, true)
+  assert.equal(state.release.assets.length, built.assets.size)
+  await stage({ built, ...r })
+  assert.deepEqual(r.writes, [...built.assets.keys()].map(name => `upload:${name}`))
+  assert.ok(r.calls.some(args => args[3] === `repos/${REPO}/releases/tags/${built.plan.tag}`))
+  assert.ok(r.calls.some(args => args[3] === `repos/${REPO}/releases?per_page=100`))
+})
+
+test("GitHub published tag lookup keeps its direct identity without listing drafts", async () => {
+  const built = { plan: { tag: "v1.2.3", candidate: "a".repeat(40) } }, r = githubFixture(built, { published: true })
+  const state = await r.remote.read(built.plan)
+  assert.equal(state.release.id, 1)
+  assert.equal(state.release.draft, false)
+  assert.equal(state.tag, built.plan.candidate)
+  assert.equal(r.calls.some(args => args[3] === `repos/${REPO}/releases?per_page=100`), false)
+  assert.deepEqual(r.writes, [])
+})
+
+test("GitHub draft lookup rejects exact-tag duplicates across all listing pages", async () => {
+  const built = { plan: { tag: "v1.2.3", candidate: "a".repeat(40) } }, r = githubFixture(built, { duplicate: true })
+  await assert.rejects(r.remote.read(built.plan), /duplicate releases for the exact tag/)
+  assert.deepEqual(r.writes, [])
 })
 
 test("stale committed catalog URLs or hashes allow preparation but block all release mutations", async t => {

@@ -136,13 +136,14 @@ export async function activate({ built, remote, authorization }) {
   return published
 }
 
-export function githubRemote(directory) {
-  const api = (endpoint, { method = "GET", input, binary = false } = {}) => {
+export function githubRemote(directory, { execute = execFileSync } = {}) {
+  const api = (endpoint, { method = "GET", input, binary = false, paginate = false } = {}) => {
     const args = ["api", "--method", method, endpoint]
     if (input) args.push("--input", "-")
     if (binary) args.push("-H", "Accept: application/octet-stream")
+    if (paginate) args.push("--paginate", "--slurp")
     try {
-      const bytes = execFileSync("gh", args, { input: input && JSON.stringify(input), maxBuffer: 16 * 1024 * 1024, stdio: ["pipe", "pipe", "pipe"] })
+      const bytes = execute("gh", args, { input: input && JSON.stringify(input), maxBuffer: 16 * 1024 * 1024, stdio: ["pipe", "pipe", "pipe"] })
       return binary ? bytes : JSON.parse(bytes)
     } catch (error) {
       if (method === "GET" && /HTTP 404/.test(String(error.stderr))) return null
@@ -158,7 +159,16 @@ export function githubRemote(directory) {
       let target = reference?.object
       if (target?.type === "tag") target = api(`repos/${REPO}/git/tags/${target.sha}`)?.object
       if (target && target.type !== "commit") throw new Error("unsupported release tag identity")
-      const release = api(`repos/${REPO}/releases/tags/${plan.tag}`)
+      let release = api(`repos/${REPO}/releases/tags/${plan.tag}`)
+      if (!release) {
+        // GitHub can omit a draft from the tag endpoint until its tag exists.
+        // Read every authenticated listing page before deciding creation is safe.
+        const pages = api(`repos/${REPO}/releases?per_page=100`, { paginate: true })
+        if (!Array.isArray(pages) || !pages.every(Array.isArray)) throw new Error("release listing could not be verified; reconcile before creation")
+        const matches = pages.flat().filter(value => value?.tag_name === plan.tag)
+        if (matches.length > 1) throw new Error("duplicate releases for the exact tag; reconcile manually")
+        release = matches[0] ?? null
+      }
       return { tag: target?.sha, release, active_version: activeVersion }
     },
     async download(_plan, asset) {
@@ -174,7 +184,7 @@ export function githubRemote(directory) {
       const temporary = mkdtempSync(path.join(tmpdir(), "signalsurf-upload-"))
       const file = path.join(temporary, name)
       writeFileSync(file, bytes, { flag: "wx" })
-      try { execFileSync("gh", ["release", "upload", plan.tag, file, "--repo", REPO], { stdio: ["ignore", "pipe", "pipe"] }) }
+      try { execute("gh", ["release", "upload", plan.tag, file, "--repo", REPO], { stdio: ["ignore", "pipe", "pipe"] }) }
       catch { throw new Error("upload outcome is uncertain; run inspect before retrying (never use --clobber)") }
       finally { rmSync(temporary, { recursive: true, force: true }) }
     },

@@ -83,9 +83,12 @@ node scripts/release.mjs activate --candidate <full-candidate-B-SHA> --dir <prep
 
 `stage` reconciles the exact tag/release first, creates a draft only if absent,
 uploads only missing assets, and downloads every present asset to compare exact
-bytes. It refuses mismatched existing tags/assets, duplicate names and unexpected
-assets. It never uses `--clobber`. A draft creation or upload with an uncertain
-response ends the command without an automatic replay.
+bytes. If GitHub's tag lookup returns 404, it searches every page of the
+authenticated release listing for that exact tag; an existing draft is resumed,
+and duplicate matches stop the operation. A 404 from tag lookup alone is not
+proof that creation failed. It refuses mismatched existing tags/assets, duplicate
+asset names and unexpected assets. It never uses `--clobber`. A draft creation
+or upload with an uncertain response ends the command without an automatic replay.
 
 `activate` requires all staged bytes to match before publishing the draft. It
 reads back the published release, full tag target and every asset. It refuses a
@@ -131,6 +134,6 @@ also allows a staged candidate to be reviewed before main changes.
 
 The test suite exercises deterministic artifacts, missing notices, wrong
 candidates, stale committed catalogs, moved tags, corrupt/missing assets,
-interrupted uploads, lost draft creation/publication responses and idempotent
-reconciliation in disposable local fixtures. Those fixtures do not publish a
-release or establish real host/OAuth compatibility.
+interrupted uploads, lost draft creation/publication responses, GitHub draft
+lookup across pages and idempotent reconciliation in disposable local fixtures.
+Those fixtures do not publish a release or establish real host/OAuth compatibility.
