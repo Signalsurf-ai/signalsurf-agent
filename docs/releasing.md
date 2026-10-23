@@ -63,10 +63,12 @@ new receipt for publication; never relabel A's receipt. Candidate A is for
 preparation only: `stage` and `activate` compare its committed HTTPS catalog with
 the generated `marketplace.json` byte for byte and reject a stale URL, hash or
 other catalog difference before any remote operation. Include public PR checks,
-required maintainer review, applicable private integration parity and changed
-host-install receipts in the release decision. Portable package checks do not
-substitute for those independently owned gates. Release tools do not bypass PR
-or branch protection.
+required maintainer review, runtime-compatibility evidence when advertised tool
+contracts change, and changed host-install receipts in the release decision.
+Consumers update selected references under their own integration review; a
+package release does not require synchronizing a private repository. Package
+checks do not substitute for those independently owned gates. Release tools do
+not bypass PR or branch protection.
 
 ## Stage, verify and activate
 

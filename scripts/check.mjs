@@ -7,13 +7,55 @@ export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "
 export const PLUGIN = "plugins/signalsurf"
 export const MANIFESTS = ["plugin.json", ".claude-plugin/plugin.json", ".codex-plugin/plugin.json", ".cursor-plugin/plugin.json"]
 export const SKILLS = ["campaigns", "connections", "content", "conversations", "custom-skills", "knowledge", "listening", "onboarding", "projects", "records", "sheets", "signals", "signalsurf", "workflows", "writing"]
+const WRITING_REFERENCES = ["core", "voice", "email-outreach", "follow-up", "email-reply", "linkedin-post", "x-post", "public-reply", "direct-message", "connection-note", "chinese", "review", "template"]
 export const SEMVER = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/
 const REPOSITORY = "https://github.com/Signalsurf-ai/signalsurf-agent"
 const MCP = "https://mcp.signalsurf.ai/mcp"
 const ROOT_ENTRIES = new Set([".agents", ".claude-plugin", ".cursor-plugin", ".github", ".gitignore", ".gitattributes", "AGENTS.md", "CLAUDE.md", "CONTRIBUTING.md", "CODE_OF_CONDUCT.md", "GETTING_STARTED.md", "LICENSE", "NOTICE", "README.md", "SECURITY.md", "docs", "evals", "scripts", "tests", "package.json", "package-lock.json", "plugins"])
 const SECRET_PATH = /(?:^|\/)(?:\.env(?:\.|$)|credentials?(?:\.|$)|id_(?:rsa|ed25519)(?:\.|$)|[^/]*\.(?:pem|p12|key)$)/i
-const SECRET_CONTENT = [/-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/, /\b(?:gh[pousr]_[A-Za-z0-9]{32,}|github_pat_[A-Za-z0-9_]{40,}|ssmcp_(?:live|rt)_[A-Za-z0-9_-]{16,})\b/, /\beyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\b/, /(?:^|\n)\s*(?:export\s+)?(?:[A-Z0-9_]*(?:API_KEY|ACCESS_TOKEN|REFRESH_TOKEN|CLIENT_SECRET|PASSWORD))\s*[:=]\s*["']?(?!\$|<)[A-Za-z0-9+/_=-]{20,}/]
+const SECRET_CONTENT = [/-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/, /\b(?:gh[pousr]_[A-Za-z0-9]{32,}|github_pat_[A-Za-z0-9_]{40,}|ssmcp_(?:live|rt)_[A-Za-z0-9_-]{16,})\b/, /\bsk_(?:live|test)_[A-Za-z0-9]{20,}\b/, /GOCSPX-[A-Za-z0-9_-]{20,}/, /\bwhsec_[A-Za-z0-9+/_-]{24,}={0,2}(?![A-Za-z0-9+/_=-])/, /\beyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\b/, /(?:^|\n)\s*(?:(?:env|export)\s+)?["']?(?:[A-Z0-9]+[_-])*(?:access[_-]?token|api[_-]?key|client[_-]?secret|cookie|password|private[_-]?key|refresh[_-]?token|secret|service[_-]?role[_-]?key|token|x-api-key)["']?\s*[:=]\s*["']?(?!\$\{?|<)[A-Za-z0-9+./_=-]{16,}/i]
 const PRIVATE_CONTENT = [/(?:\/Users\/|\/home\/)[A-Za-z0-9_.-]+\//, /https:\/\/(?:linear\.app\/signalsurf|github\.com\/Signalsurf-ai\/signalsurf-web)(?:\/|\b)/i]
+
+function pngCrc32(bytes) {
+  let crc = 0xffffffff
+  for (const byte of bytes) {
+    crc ^= byte
+    for (let bit = 0; bit < 8; bit++) crc = (crc >>> 1) ^ (0xedb88320 & -(crc & 1))
+  }
+  return (crc ^ 0xffffffff) >>> 0
+}
+
+function checkPngIcon(file, bytes, problem) {
+  const invalid = () => problem(file, "icon is not a valid PNG")
+  if (bytes.length < 33 || !bytes.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]))) {
+    invalid()
+    return
+  }
+  let offset = 8, width, height, sawHeader = false, sawImageData = false, sawEnd = false, valid = true
+  while (offset < bytes.length) {
+    if (offset + 12 > bytes.length) { valid = false; break }
+    const length = bytes.readUInt32BE(offset), data = offset + 8, crc = data + length, end = crc + 4
+    if (end > bytes.length) { valid = false; break }
+    const type = bytes.toString("ascii", offset + 4, data)
+    if (!/^[A-Za-z]{4}$/.test(type) || pngCrc32(bytes.subarray(offset + 4, crc)) !== bytes.readUInt32BE(crc)) valid = false
+    if (!sawHeader) {
+      if (type !== "IHDR" || length !== 13) valid = false
+      else { sawHeader = true; width = bytes.readUInt32BE(data); height = bytes.readUInt32BE(data + 4) }
+    } else if (type === "IHDR") valid = false
+    if (type === "IDAT") sawImageData = true
+    if (type === "IEND") {
+      if (length !== 0 || end !== bytes.length) valid = false
+      sawEnd = true
+      offset = end
+      break
+    }
+    offset = end
+  }
+  if (!valid || !sawHeader || !sawImageData || !sawEnd || offset !== bytes.length) invalid()
+  if (width === undefined || height === undefined) return
+  if (width !== height) problem(file, `icon must be square (${width}x${height})`)
+  if (width < 48 || height < 48 || width > 4096 || height > 4096) problem(file, "icon dimensions must be between 48 and 4096 pixels")
+}
 
 export function walk(root, relative = "") {
   return readdirSync(path.join(root, relative)).sort().flatMap(name => {
@@ -49,6 +91,7 @@ export function check(root = ROOT, { catalog = true } = {}) {
     if (stat.isSymbolicLink() || !stat.isFile()) { problem(file, "symlinks and special files are not distributable"); continue }
     if (SECRET_PATH.test(file)) problem(file, "secret-bearing filename")
     if (stat.size > (file.startsWith(`${PLUGIN}/`) ? 524288 : 2097152)) problem(file, "file exceeds package size budget")
+    if (file.endsWith("/icon.png")) checkPngIcon(file, readFileSync(path.join(root, file)), problem)
     if (!/\.(?:png|jpg|jpeg|gif|webp|ico)$/i.test(file)) {
       const text = readFileSync(path.join(root, file), "utf8")
       contents.set(file, text)
@@ -113,6 +156,18 @@ export function check(root = ROOT, { catalog = true } = {}) {
     const frontmatter = text.match(/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/)?.[1]
     if (!frontmatter || !new RegExp(`^name: ["']?${skill}["']?$`, "m").test(frontmatter) || !/^description: .+/m.test(frontmatter)) problem(file, "invalid Skill name/description frontmatter")
     if (!text.includes("references/freshness.md")) problem(file, "missing shared freshness procedure")
+    const contract = skill === "signalsurf" ? "references/operating-contract.md" : "../signalsurf/references/operating-contract.md"
+    if (!text.includes(`](${contract})`)) problem(file, "Skill must link the shared operating contract; Writing applies it when accessing SignalSurf resources")
+    if (["signalsurf", "content", "campaigns", "conversations", "listening"].includes(skill) && !text.includes("](../writing/SKILL.md)")) problem(file, "Skill must route copy work to Writing")
+    if (skill === "writing") for (const reference of WRITING_REFERENCES) {
+      if (!text.includes(`](references/${reference}.md)`)) problem(file, `Writing Skill must route ${reference} guidance`)
+    }
+    if (skill === "conversations") {
+      if (!text.includes("`conversations_query`") || /`(?:inbox_query|meeting_query)`/.test(text)) problem(file, "Conversations Skill must use the unified conversations_query reader")
+      for (const reference of ["phone", "meeting-recorder"]) {
+        if (!text.includes(`](references/${reference}.md)`)) problem(file, `Conversations Skill must route ${reference} guidance`)
+      }
+    }
   }
   const discovered = walk(root).filter(file => file.startsWith(`${PLUGIN}/skills/`) && file.endsWith("/SKILL.md")).map(file => file.split("/")[3]).sort()
   if (discovered.join() !== [...SKILLS].sort().join()) problem(`${PLUGIN}/skills`, "unexpected Skill discovery inventory")

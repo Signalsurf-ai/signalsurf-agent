@@ -6,6 +6,10 @@ root. The root owns cross-domain intent routing. Maintainer/release tooling stay
 outside `plugins/signalsurf/skills` so installing the product does not advertise
 maintainer commands as customer procedures.
 
+These Skills serve customers using SignalSurf from external AI apps. Engineering
+Skills used to develop the SignalSurf application are a separate concern and are
+not part of this plugin. Writing also supports supplied-context work without MCP.
+
 ## Procedure ownership
 
 | Decision or safeguard | Authoritative portable guidance | Read condition |
@@ -29,10 +33,11 @@ maintainer commands as customer procedures.
 The compact contract retains universal safeguards and points to domain procedures
 under explicit conditions. Moving text does not transfer authorization to a Skill,
 create a new server capability or change hosted behavior. Native MCP schemas and
-server permissions remain live authority. Public guidance is maintained here;
-consumers of an earlier exported full operating contract must coordinate an
-explicit import/parity change rather than silently overwriting this package from
-an older private snapshot. Package checks cannot attest private consumer parity.
+server permissions remain live authority. Public guidance is maintained here.
+Product consumers of selected references own their version provenance and
+integration checks; their copies are not another editable source for this plugin.
+Ordinary package maintenance does not require private-repository synchronization.
+Package checks do not attest a consumer's integration or deployed MCP behavior.
 
 ## Measured reading paths
 

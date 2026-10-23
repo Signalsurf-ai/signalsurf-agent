@@ -6,6 +6,11 @@ here are the release source. The hosted MCP service owns authentication,
 Workspace permissions and product operations; a plugin contribution does not
 need its private source or an internal issue tracker.
 
+`plugins/signalsurf/skills` contains customer workflows for external AI apps,
+including standalone Writing. Contributor instructions and release procedures
+stay outside that directory. The application, MCP implementation and optional CLI
+are maintained separately from this package.
+
 ## Make a change
 
 1. Fork this repository and branch from `main`.
@@ -54,10 +59,11 @@ bootstrap or urgent recovery, after recording the reason, independent review,
 checks and subsequent reconciliation in the PR. Never bypass a known failing
 integrity or authorization check.
 
-Legacy private snapshots are integration inputs, not another editable source.
-They must identify their public source and cannot replace this repository's
-tracked tree. Shared runtime-contract changes require a separate integration
-review; ordinary portable package fixes can be validated and released here.
+Product consumers may reuse selected references from a public commit. Each
+consumer owns its provenance, update review and integration checks; it cannot
+overwrite this repository's source. Ordinary package contributions and releases
+do not require synchronizing a private copy. Changes to advertised tool contracts
+still need compatibility evidence for the hosted service they describe.
 
 Contributions remain under the repository's MIT license. Retain relevant
 copyright and attribution; disclose copied third-party material and its license.
