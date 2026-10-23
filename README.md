@@ -76,6 +76,10 @@ connection endpoint. Follow your app's [setup and permission requirements](./GET
 
 ## Developers and contributors
 
+The Skills in `plugins/signalsurf/skills` teach a customer's AI how to use
+Signalsurf through its hosted MCP tools. Engineering instructions for developing
+this package live in `AGENTS.md` and contributor documentation.
+
 The optional [SignalSurf CLI](./GETTING_STARTED.md#signalsurf-cli) is a terminal
 client of the same hosted MCP service; it is not required for plugin setup.
 See [contributing](./CONTRIBUTING.md) for public source ownership and `npm test`,

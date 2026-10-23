@@ -1,8 +1,10 @@
 # SignalSurf Agent
 
-This public repository owns the portable plugin: Skills, references, host manifests,
-updater, validation and release preparation. Hosted MCP authentication, permissions
-and product operations are maintained separately.
+This public repository owns the customer plugin: Skills for using SignalSurf from
+an external AI app, references, host manifests, updater, validation and releases.
+Hosted MCP implementation, authentication, permissions and the optional CLI are
+maintained separately. This file guides contributors; customer workflows belong
+in `plugins/signalsurf/skills`, not engineering or release procedures.
 
 - Keep public instructions in English and usable without private source, internal
   trackers, employee paths, credentials or customer data.
