@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url"
 export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
 export const PLUGIN = "plugins/signalsurf"
 export const MANIFESTS = ["plugin.json", ".claude-plugin/plugin.json", ".codex-plugin/plugin.json", ".cursor-plugin/plugin.json"]
-export const SKILLS = ["campaigns", "connections", "content", "conversations", "custom-skills", "knowledge", "listening", "projects", "records", "sheets", "signals", "signalsurf", "workflows", "writing"]
+export const SKILLS = ["campaigns", "connections", "content", "conversations", "custom-skills", "knowledge", "listening", "onboarding", "projects", "records", "sheets", "signals", "signalsurf", "workflows", "writing"]
 export const SEMVER = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/
 const REPOSITORY = "https://github.com/Signalsurf-ai/signalsurf-agent"
 const MCP = "https://mcp.signalsurf.ai/mcp"

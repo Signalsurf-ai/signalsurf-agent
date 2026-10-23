@@ -30,6 +30,7 @@ for (const [name, mutate, expected] of [
   ["incomplete license", root => writeFileSync(path.join(root, "plugins/signalsurf/LICENSE"), "MIT"), /complete canonical MIT notice/],
   ["missing installed notice", root => rmSync(path.join(root, "plugins/signalsurf/LICENSE")), /missing installed license/],
   ["bad frontmatter", root => writeFileSync(path.join(root, "plugins/signalsurf/skills/records/SKILL.md"), "# Missing metadata"), /frontmatter/],
+  ["missing onboarding entrypoint", root => rmSync(path.join(root, "plugins/signalsurf/skills/onboarding"), { recursive: true }), /missing Skill|unexpected Skill discovery inventory/],
   ["missing relative reference", root => writeFileSync(path.join(root, "docs/broken.md"), "[Missing](missing.md)"), /unresolved relative Markdown link/],
   ["path outside package", root => writeFileSync(path.join(root, "plugins/signalsurf/skills/records/references.md"), "extra"), /unexpected plugin file/],
   ["unsafe source file", root => writeFileSync(path.join(root, ".env"), "placeholder"), /secret-bearing filename/],

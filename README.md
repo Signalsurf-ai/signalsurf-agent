@@ -12,8 +12,9 @@ Project.
 
 Start with your app below. Claude Code has a dedicated HTTPS catalog and ZIP
 installation path for customers without Git; other apps have their own interface
-paths. You need a
-Signalsurf account and access to a Workspace. Availability depends on your app,
+paths. You need an eligible
+Signalsurf account and access to the Workspace you use. Approved new-account
+bootstrap depends on the deployed consent flow. Availability depends on your app,
 plan, and organization settings; a public repository is not a directory listing.
 
 | Your app        | Start here                                                                                                                                                                                                                       |
@@ -24,7 +25,7 @@ plan, and organization settings; a public repository is not a directory listing.
 | Cursor          | Install from **Customize** when available. Teams can import the repository into a team marketplace. [Steps](./GETTING_STARTED.md#cursor).                                                                                        |
 | Grok Bot        | Use **Connect apps** when Signalsurf is available there. A Cursor installation does not install it in Grok Bot. [Steps and availability](./GETTING_STARTED.md#grok-bot).                                                         |
 
-Then connect Signalsurf, sign in, choose the allowed Workspaces, and
+Then connect Signalsurf, sign in, review and approve the requested access, and
 [verify the connection](./GETTING_STARTED.md#verify-without-changing-data).
 
 ### Asking your AI to help
@@ -43,14 +44,18 @@ Reading a URL in chat does not itself install a plugin. The app must provide an
 installer and complete authorization. If your AI asks you to install Git, use
 the interface steps above or [troubleshooting](./GETTING_STARTED.md#troubleshooting).
 
+To start setup in your AI after connecting, use the
+[onboarding prompt](./GETTING_STARTED.md#start-setup-in-your-ai).
+
 Developer Git-based installation is in [advanced setup](./GETTING_STARTED.md#advanced-setup).
 This is a marketplace repository; its plugin lives in `plugins/signalsurf`.
 Use **Add marketplace** or **Import marketplace** where supported. A host's
 single-plugin importer may require a different repository layout.
 
 Installing the Plugin does not bypass Signalsurf permissions. OAuth asks the
-member which Workspaces and grants the AI may use, and the server revalidates
-authorization on every tool call.
+member to approve the requested grants for all Workspaces they can access,
+including future Workspaces. The server revalidates current membership and
+permissions on every tool call.
 
 ## Connect using an MCP URL
 

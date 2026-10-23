@@ -11,6 +11,7 @@ Select the requested outcome, not a tool's technical family. Use live `find_capa
 
 | Requested outcome | Procedure |
 | --- | --- |
+| Start or resume setup, interview the member and build an initial audience-to-Campaign outcome | [Onboarding](../onboarding/SKILL.md) |
 | One-off public keyword search or more rows from retained research | [Signals](../signals/SKILL.md) |
 | Known profile/posts research, with optional requested capture | [Research and capture](references/research-capture.md), then [Signals](../signals/SKILL.md); [Records](../records/SKILL.md) only for capture |
 | Company/People discovery from a source or existing Company List | [Lead sourcing](references/lead-sourcing.md), [Signals](../signals/SKILL.md), requested [Records](../records/SKILL.md) or [Sheets](../sheets/SKILL.md) destination |

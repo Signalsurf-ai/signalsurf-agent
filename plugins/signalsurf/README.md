@@ -9,7 +9,7 @@ The Plugin bundles two things:
 - the hosted Signalsurf MCP connection at `https://mcp.signalsurf.ai/mcp`;
 - one root operating Skill plus focused Skills for Projects, Records, Sheets,
   Signals, Listening, Workflows, Content, Conversations, Campaigns,
-  Knowledge, Connections, and custom Skills. They choose work context, resource targets, execution and result persistence
+  Knowledge, Connections, Onboarding, and custom Skills. They choose work context, resource targets, execution and result persistence
   independently. A direct File operation can use Project context without a
   Thread or ownership transfer. Portable references share the maintained core
   and composed research, lead-sourcing and personal Outbox procedures; live
@@ -23,8 +23,9 @@ and administrator requirements. Reading a repository URL in chat does not
 itself install the plugin.
 
 Connect the bundled Signalsurf service after installation if the app lists it
-as disconnected. OAuth starts during connection or first use. Choose only the Workspaces the
-AI should reach. Tokens are exchanged directly between the host and Signalsurf;
+as disconnected. OAuth starts during connection or first use. Review the requested
+grants for current and future accessible Workspaces; the server rechecks current
+membership and permissions on every call. Tokens are exchanged directly between the host and Signalsurf;
 do not paste a token into chat or a terminal command.
 
 After installing, start a new chat and ask:

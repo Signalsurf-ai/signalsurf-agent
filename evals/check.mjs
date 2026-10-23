@@ -6,6 +6,7 @@ import { tmpdir } from 'node:os';
 import { dirname, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validateExample } from './contracts.mjs';
+import { SKILLS } from '../scripts/check.mjs';
 
 const root = realpathSync(resolve(dirname(fileURLToPath(import.meta.url)), '..'));
 const skillsRoot = resolve(root, 'plugins/signalsurf/skills');
@@ -39,7 +40,7 @@ assert.match(corpus.baselineCommit, /^[a-f0-9]{40}$/);
 assert(corpus.cases.length >= 20, 'Keep representative positive, negative and ambiguous cases');
 const ids = new Set();
 const names = new Set(readdirSync(skillsRoot, { withFileTypes: true }).filter(item => item.isDirectory()).map(item => item.name));
-assert.equal(names.size, 14, 'Preserve the existing 14 Skill entrypoints');
+assert.deepEqual([...names].sort(), [...SKILLS].sort(), 'Preserve the supported Skill entrypoints');
 for (const item of corpus.cases) {
   assert.match(item.id, /^[a-z][a-z0-9-]+$/);
   assert(!ids.has(item.id), `Duplicate case ${item.id}`);

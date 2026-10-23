@@ -1,6 +1,6 @@
 # Skill quality and ownership
 
-The package preserves 14 discoverable Skills and direct focused entry. A host can
+The package provides 15 discoverable Skills, including Onboarding, and direct focused entry. A host can
 select Records, Writing or another fitting procedure without first loading the
 root. The root owns cross-domain intent routing. Maintainer/release tooling stays
 outside `plugins/signalsurf/skills` so installing the product does not advertise
@@ -11,6 +11,8 @@ maintainer commands as customer procedures.
 | Decision or safeguard | Authoritative portable guidance | Read condition |
 | --- | --- | --- |
 | Authenticated member versus Surfer; OAuth/Project/resource authority | Shared operating contract | Any SignalSurf resource work |
+| Task-relevant Memory recall, automatic durable save/correction and private/shared audience boundaries | Shared operating contract | Each new SignalSurf task and useful durable context updates |
+| Pre-authentication interview, secure setup and accepted initial outcome | Onboarding | Start or resume member setup |
 | Exact IDs/context, approval binding, exact retries/reconciliation and actual result states | Shared operating contract | Any SignalSurf resource work |
 | No writeback versus same-objective reply versus new material Thread | Shared operating contract | Considering result routing; routine work remains here |
 | Native File deletion, restore/backing-Record semantics and deletion continuation | Native File lifecycle reference | Explicit whole-File deletion or uncertain result |
@@ -40,9 +42,11 @@ Run `node evals/check.mjs` for current values; count shared contract/freshness a
 every conditionally required file once. These are document bytes and
 whitespace-delimited words, not model token or latency measurements.
 
-Representative complete paths after separating domain branches:
+The following measurements are the 0.7.16 quality candidate snapshot, before the
+0.8.0 shared Memory contract. Run the command above for the current candidate;
+these historical values do not describe the added onboarding/Memory guidance.
 
-| Scenario | Baseline bytes | Current bytes | Baseline words | Current words |
+| Scenario | Baseline bytes | 0.7.16 bytes | Baseline words | 0.7.16 words |
 | --- | ---: | ---: | ---: | ---: |
 | Ordinary Records, direct | 28,278 | 14,847 | 3,938 | 1,958 |
 | Keyword search, direct | 27,913 | 18,695 | 3,879 | 2,497 |

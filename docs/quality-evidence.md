@@ -2,6 +2,15 @@
 
 This record separates portable checks, bounded model reasoning and host installation. It does not claim new hosted capabilities, OAuth, Workspace access or provider outcomes.
 
+## Onboarding integration candidate
+
+The 0.8.0 source candidate adds a fifteenth Onboarding entrypoint and shared
+automatic Memory recall/save guidance. The 0.7.16 model, installation and reading
+measurements below retain their exact snapshots; they do not establish behavior
+for this added guidance. Current package checks and two additional routing
+fixtures cover its portable structure. Hosted onboarding and cross-host Memory
+verification are separate from public package/model proof.
+
 ## Portable candidate
 
 The Skill trial candidate is public commit `60a03143a3b26f0b2597df1281a3d5006732ba31`, plugin tree `caf3f1bd06d9ce853978390e0207427aa2f95260`, version `0.7.16`. Later release-tool/catalog/evidence changes preserve that plugin tree. Before guidance is public commit `79e795db1d76597fadb8863d89019d099c1437fb`.
