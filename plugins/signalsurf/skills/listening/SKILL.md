@@ -9,6 +9,8 @@ Before every request using this Skill, follow [version check and automatic updat
 
 Read the [shared operating contract](../signalsurf/references/operating-contract.md) unless already loaded; a focused Skill uses the same context, actor, confirmation and result rules.
 
+For Engagers from posts already published through owned Content, use [Content](../content/SKILL.md) and its Engage List procedure. That route can target a People List directly; do not create a Listening merely to collect from owned Content.
+
 A Listening is a durable monitor. For a one-off keyword post search or unread temporary search results, use [Signals](../signals/SKILL.md). Creating a Listening is not a prerequisite for LinkedIn post research; choose this procedure when the user wants continuing collection or work on an existing Listening.
 
 When writing, reviewing or rewriting copy, read [Writing](../writing/SKILL.md) and only the matching purpose/channel references. Use the native procedure below to read, save or send; a writing request does not expand permissions.
