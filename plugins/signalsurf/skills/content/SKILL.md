@@ -13,7 +13,7 @@ When writing, reviewing or rewriting copy, read [Writing](../writing/SKILL.md) a
 
 Business work uses a selected Project with Content enabled in File Access. Personal sends/schedules follow the same Messages gate. Pure Workspace reads may omit Project; reads within an explicit Project check its selection. Inspect current approvals and actual account/resource permissions before effects.
 
-1. Read publishable accounts, current posts, settings, or analytics with `content_query`; never invent a connected handle or schedule slot.
+1. Read publishable accounts, current posts, settings, or analytics with `content_query`; never invent a connected handle or schedule slot. For published-post identity, links or Engagers from owned posts, follow [publication identity and Engage Lists](references/engage-list.md).
 2. Use `content_manage` for drafts, edits, unscheduling, deletion, settings, and explicit audience capture. Keep drafts reviewable before publication.
 3. Publishing is externally visible. Use `content_publish` only when requested and after its confirmation boundary; never retry an ambiguous publish automatically.
 4. Adapt copy to the actual account/platform while preserving the user's voice and saved targeting.
