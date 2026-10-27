@@ -63,3 +63,30 @@ Each process is one supplied-guidance batch whose rows were instructed to be ind
 The single [compatibility matrix](compatibility.md) owns supported-route evidence and its gaps. Claude Code's published 0.7.15 HTTPS path installed in a disposable user configuration with Git unavailable; an intentionally wrong archive SHA-256 was rejected before installation. Disable/enable also passed. Candidate upgrade/fresh-install/removal results belong to the release receipt when executed. Host OAuth and a Workspace read were not executed.
 
 The optional npm CLI is versioned separately. Published 0.3.1 was installed and checked offline, but fails eight of 89 current synthetic regressions. The corrected 0.3.2 candidate tarball passes 89 regressions and 12 offline subprocess cases on Node 22.13.0. Preparing it does not publish it; consult the registry and its release receipt before assuming availability. No real CLI OAuth or product calls were performed.
+
+## Later integration reconciliation — 2026-10-27
+
+The earlier sections retain their 2026-10-22 candidates, results and exclusions.
+Later delivery included hosted onboarding,
+[public Agent #10](https://github.com/Signalsurf-ai/signalsurf-agent/pull/10) and
+[v0.8.0](https://github.com/Signalsurf-ai/signalsurf-agent/releases/tag/v0.8.0).
+The [compatibility matrix](compatibility.md#evidence-record) now separately records
+the 2026-10-23 native-SDK production OAuth/Memory/App acceptance and the
+2026-10-27 ChatGPT-connected host's read-only schema recovery, Memory recall and direct People Record reads.
+
+Production Memory save, correction, fresh-process read/recall, App readback,
+exact-operation replay, confirmed forget and OAuth revocation were observed in
+the bounded SDK acceptance. This supersedes an interpretation that all integration
+proof stopped at package checks or synthetic reasoning. It does not retroactively
+broaden the earlier model trials, establish arbitrary-host transport reliability,
+prove Cursor's existing-Records-to-drafts journey, or verify installation/reload
+of candidate 0.8.2. The SDK acceptance recorded notification/write timeouts and
+used a consistent `mcp-method` hint; the member was already onboarding-complete.
+No provider connection or Campaign delivery is claimed.
+
+The remaining workflow boundary is host-specific discovery/recovery and direct
+task completion. Keep source checks, immutable package publication, installation,
+loaded guidance and actual tool execution as separate evidence. In particular,
+the working `invoke_capability` schema recovery must be discoverable to hosts
+retaining the older `find_capabilities` signature; a current source schema alone
+does not prove that those hosts can express its newer fields.

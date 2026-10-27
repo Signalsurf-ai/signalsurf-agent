@@ -69,7 +69,7 @@ for (const skill of SKILLS) {
   })
 }
 
-for (const skill of ["signalsurf", "content", "campaigns", "conversations", "listening"]) {
+for (const skill of ["signalsurf", "records", "content", "campaigns", "conversations", "listening"]) {
   test(`keeps Writing reachable for ${skill} copy work`, t => {
     const root = fixture(t)
     editSkill(root, skill, text => removeLink(text, "../writing/SKILL.md"))

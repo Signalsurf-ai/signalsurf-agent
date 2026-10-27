@@ -15,6 +15,7 @@ Records hold durable identity-resolved CRM facts; [Sheets](../sheets/SKILL.md) h
 
 Read only the branch matching the request:
 
+- Personalized drafts from existing Records: read the exact requested Records, then use [Writing](../writing/SKILL.md) to compose in this host. Stop at the requested draft; no Campaign, sender connection or Enrich is needed merely to write from stored facts.
 - Lookup-based completion of existing fields: [native Enrich](../signalsurf/references/enrichment.md) owns exact Record/List/Sheet selection, bindings, approvals and readback. A List grant never becomes generic Record or collection-wide authority.
 - Stored changes, provenance or communication history: [history and communications](references/history.md).
 - Requested collection/schema, List process-field or List view changes: [schema and views](references/schema-and-views.md).

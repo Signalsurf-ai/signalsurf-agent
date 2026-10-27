@@ -33,6 +33,8 @@ result and remaining gap. Keep these columns distinct:
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | Claude Code 2.1.308 / plugin 0.7.15, 2026-10-22 America/Los_Angeles | CLI help and linked official docs | Published SHA-256 ZIP; intentionally wrong hash rejected before install | Passed HTTPS catalog install in isolated user config with Git unavailable | Candidate upgrade recorded separately | Disable/enable passed; final removal recorded separately | Not executed | Not executed |
 | Claude Code 2.1.308 / plugin 0.7.16, 2026-10-22 America/Los_Angeles | Same host contract; immutable raw HTTPS catalog | Anonymous release downloads match prepared bytes; all installed files, 14 Skills, references, MIT notice and one MCP registration match candidate `50190c4` | Passed with Git unavailable in isolated user config | Main-catalog upgrade and conversation reload pending activation at this snapshot; subsequent receipts belong to the linked release notes | Uninstall with `--keep-data` passed; unrelated fixtures and synthetic local data preserved | Not executed | Not executed |
+| Raw remote MCP / native SDK, 2026-10-23 UTC; SDK version not specified in this summary | Streamable HTTP/OAuth; final SDK path used a consistent `mcp-method` hint | Maintainer acceptance followed the hosted onboarding delivery, [Agent #10](https://github.com/Signalsurf-ai/signalsurf-agent/pull/10) and [v0.8.0](https://github.com/Signalsurf-ai/signalsurf-agent/releases/tag/v0.8.0); this is not a plugin-install test | Not applicable: raw MCP installs no Skills | Not applicable: no plugin reload tested | OAuth revoked and local tokens removed; no plugin removal claimed | Real Google sign-in, SDK PKCE/state, consent and token exchange completed | Intended identity/context read; automatic Memory save/correction, fresh-process read/recall and App readback passed; see limits below |
+| ChatGPT-connected MCP host, 2026-10-27 UTC; host version not specified in this summary | Existing OAuth connection; older cached `find_capabilities` signature | Read-only live recovery check; no plugin installation or version claim | Not executed | Not executed | Not executed | Existing connection reused; sign-in not retested | `invoke_capability` retrieved an exact capability/action schema, then direct Memory recall and direct People Record list/get succeeded |
 
 [0.7.16 release notes](https://github.com/Signalsurf-ai/signalsurf-agent/releases/tag/v0.7.16)
 retain the immutable candidate identity and any later main-activation/lifecycle
@@ -44,6 +46,28 @@ Mark an inapplicable cell with a reason, such as â€œraw MCP installs no Skillsâ€
 release notes or linked public test artifacts, using synthetic examples only.
 Reuse unchanged receipts when their host, package content, scope and inputs still
 apply; rerun checks invalidated by a candidate. Do not maintain a second matrix.
+
+### Later integration evidence and limits
+
+The 2026-10-23 maintainer acceptance supplements the earlier package-only rows;
+it does not turn their unexecuted OAuth cells into passes. Automatic Memory upsert
+committed without a save confirmation, correction was read in a fresh SDK process,
+and canonical and visible App reads matched. Exact-operation retries replayed the
+original receipts. Confirmed forget removed the fixture from subsequent full
+reads, semantic recall and the loaded App UI; OAuth revocation completed cleanup.
+
+The tested member was already onboarding-complete. Some SDK notifications and
+initial writes timed out; committed writes were reconciled by their stable
+operation IDs. The final SDK transport used `mcp-method`; production CLI login and
+stable arbitrary-host transport were not established. No provider account was
+connected or Campaign activated/sent. This evidence does not establish a pristine
+first-member production bootstrap or a Cursor/Claude/Codex plugin installation.
+
+The 2026-10-27 check proves the existing cached-host recovery route and read-only
+Memory recall and direct People Record list/get in the stated ChatGPT connection. It does not establish Cursor's
+existing-Records-to-drafts workflow or installation/reload of candidate 0.8.2.
+Source, release and host observations retain their separate dates and scope; the
+linked PRs/releases identify components rather than serving as raw execution logs.
 
 ## Capability changes
 
