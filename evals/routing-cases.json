@@ -1774,7 +1774,8 @@
         "create_campaign",
         "connect_sender",
         "paid_enrichment",
-        "send_message"
+        "send_message",
+        "publish_result_document"
       ]
     },
     {
@@ -1913,6 +1914,294 @@
         "invent_target_arguments_before_schema",
         "declare_record_capability_absent_from_cached_wrapper",
         "delegate_to_surfer_as_schema_workaround"
+      ]
+    },
+    {
+      "id": "short-project-result-chat",
+      "kind": "positive",
+      "prompt": "Post this already-verified two-sentence explanation to the supplied existing Project Thread. Keep it conversational and do not ask Surfer to do anything.",
+      "entrypoint": "projects",
+      "modes": [
+        "direct",
+        "root"
+      ],
+      "allowedReads": [
+        "projects/SKILL.md",
+        "signalsurf/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md",
+        "projects/references/results.md"
+      ],
+      "context": {
+        "dataOrigin": "Entirely artificial offline fixture; no customer data, executed calls or declared live product inputSchema.",
+        "target": "An exact authorized same-objective Workspace, Project and Thread are supplied.",
+        "result": "The supported answer is two short sentences; no reusable document was requested."
+      },
+      "requiredOutcomes": [
+        "Discover the current post_channel_message schema and post the short answer once to the exact Thread with wakeSurfer false.",
+        "Keep the result in the ordinary message rather than creating a document for a short response.",
+        "Verify the publication receipt and give a brief host completion reply."
+      ],
+      "forbiddenEffects": [
+        "unnecessary_result_document",
+        "wake_surfer",
+        "create_duplicate_thread",
+        "post_acknowledgement_instead_of_answer"
+      ]
+    },
+    {
+      "id": "long-project-result-document",
+      "kind": "positive",
+      "prompt": "Use the supplied already-read facts to finish this long comparison, then save the complete result in the supplied Project Thread as an editable document with a brief chat reply. Do not delegate the writing.",
+      "entrypoint": "writing",
+      "modes": [
+        "direct",
+        "root"
+      ],
+      "allowedReads": [
+        "writing/SKILL.md",
+        "signalsurf/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md",
+        "writing/references/core.md",
+        "writing/references/voice.md",
+        "projects/SKILL.md",
+        "projects/references/results.md"
+      ],
+      "context": {
+        "dataOrigin": "Entirely artificial offline fixture; no customer data, executed calls or declared live product inputSchema.",
+        "target": "An exact authorized same-objective Project Thread is supplied.",
+        "source": "Synthetic verified product facts and caveats support a comparison with six substantial sections. No additional research is needed."
+      },
+      "requiredOutcomes": [
+        "Complete the comparison in the current host, preserving supplied facts, attribution and caveats.",
+        "Discover the live post_channel_message schema; use externalWork with both requestSummary and document keys, using null only for an unused value.",
+        "Put the complete titled deliverable in a new stable-UUID document with baseRevision null and keep message to a brief coworker reply, with wakeSurfer false.",
+        "Treat requestSummary as client-reported context, not a verbatim user message; include only context appropriate for the Project audience.",
+        "Verify the atomic publication receipt and canonical document revision before claiming the save."
+      ],
+      "forbiddenEffects": [
+        "paste_full_document_into_chat",
+        "post_summary_for_surfer_to_execute",
+        "wake_surfer",
+        "create_knowledge_substitute",
+        "save_draft_claims_to_memory",
+        "invent_document_link"
+      ]
+    },
+    {
+      "id": "revise-project-result-document",
+      "kind": "positive",
+      "prompt": "In the supplied existing Project result document, change only the second recommendation to the approved wording below. Keep the same document and preserve everything else.",
+      "entrypoint": "projects",
+      "modes": [
+        "direct",
+        "root"
+      ],
+      "allowedReads": [
+        "projects/SKILL.md",
+        "signalsurf/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md",
+        "projects/references/results.md"
+      ],
+      "context": {
+        "dataOrigin": "Entirely artificial offline fixture; no customer data, executed calls or declared live product inputSchema.",
+        "target": "Exact authorized Project, Thread and document IDs are supplied.",
+        "revision": "The latest revision must be read from the canonical document reader; an old host snapshot may be stale.",
+        "approvedChange": "Supplied synthetic exact replacement text for one recommendation."
+      },
+      "requiredOutcomes": [
+        "Discover project_query action document and read the exact latest document content and revision using the required Project, Thread and document selectors.",
+        "Preserve unrelated text and publish the same document ID through post_channel_message with the observed baseRevision and a new operation ID.",
+        "Keep chat concise rather than replaying the previous complete document, and verify the updated revision receipt.",
+        "For a stale revision, read current state before preparing a new edit; reconcile an uncertain exact operation before retrying."
+      ],
+      "forbiddenEffects": [
+        "create_replacement_document",
+        "overwrite_from_stale_snapshot",
+        "change_unselected_text",
+        "replay_full_document_in_chat",
+        "retry_with_changed_identity"
+      ]
+    },
+    {
+      "id": "long-reply-only-no-persistence",
+      "kind": "negative",
+      "prompt": "Write a detailed six-section proposal from the supplied facts. Return the full text here only; do not save or post it anywhere.",
+      "entrypoint": "writing",
+      "modes": [
+        "direct",
+        "root"
+      ],
+      "allowedReads": [
+        "writing/SKILL.md",
+        "signalsurf/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md",
+        "writing/references/core.md",
+        "writing/references/voice.md"
+      ],
+      "context": {
+        "dataOrigin": "Entirely artificial offline fixture; no customer data, executed calls or declared live product inputSchema.",
+        "source": "All necessary synthetic writing context is supplied; no SignalSurf resource read or write is required."
+      },
+      "requiredOutcomes": [
+        "Return the complete requested proposal in the current host with no SignalSurf persistence.",
+        "Honor explicit host-only and no-save instructions even though the deliverable is long and reusable.",
+        "Do not require a Workspace connection or create a Project for standalone writing."
+      ],
+      "forbiddenEffects": [
+        "create_project",
+        "publish_result_document",
+        "post_project_message",
+        "create_knowledge",
+        "save_temporary_proposal_to_memory",
+        "truncate_to_save_receipt"
+      ]
+    },
+    {
+      "id": "project-request-summary-provenance",
+      "kind": "negative",
+      "prompt": "Save the completed result to this Project Thread. Include a short account of what I asked for, but do not copy our private chat history.",
+      "entrypoint": "projects",
+      "modes": [
+        "direct",
+        "root"
+      ],
+      "allowedReads": [
+        "projects/SKILL.md",
+        "signalsurf/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md",
+        "projects/references/results.md"
+      ],
+      "context": {
+        "dataOrigin": "Entirely artificial offline fixture; no customer data, executed calls or declared live product inputSchema.",
+        "target": "An exact authorized Project Thread is supplied.",
+        "source": "The client has a supported short synthesis of the current request, not a verbatim export of the original human message. Private unrelated preferences also exist in host context."
+      },
+      "requiredOutcomes": [
+        "Use only a compact audience-appropriate client-reported requestSummary alongside the actual result.",
+        "Preserve the distinction between a client summary and an exact human message; do not invent a user quotation.",
+        "Keep unrelated private host context and User Memory out of the shared message, summary and document.",
+        "Describe only received context and observed operations, without claiming the full external conversation was synchronized."
+      ],
+      "forbiddenEffects": [
+        "impersonate_verbatim_user_message",
+        "export_raw_private_transcript",
+        "share_private_user_memory",
+        "claim_automatic_full_history_capture",
+        "delegate_from_request_summary"
+      ]
+    },
+    {
+      "id": "project-result-memory-boundaries",
+      "kind": "positive",
+      "prompt": "Save the completed long proposal to the supplied Project Thread. Also remember privately that I prefer concise progress updates. Do not save the proposal itself as Memory.",
+      "entrypoint": "projects",
+      "modes": [
+        "direct",
+        "root"
+      ],
+      "allowedReads": [
+        "projects/SKILL.md",
+        "signalsurf/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md",
+        "projects/references/results.md"
+      ],
+      "context": {
+        "dataOrigin": "Entirely artificial offline fixture; no customer data, executed calls or declared live product inputSchema.",
+        "target": "An exact authorized Project Thread is supplied.",
+        "authority": "The authenticated member has the existing Project write and User Memory write grants, but is not a Workspace Admin.",
+        "source": "The proposal is temporary work; the concise-progress preference was explicitly stated by the user and is durable."
+      },
+      "requiredOutcomes": [
+        "Publish the proposal as a native Project result document with a brief reply and no Surfer Wake.",
+        "Read the complete current User Memory block and version, preserve unrelated facts and save only the user-stated durable preference privately through canonical upsert.",
+        "Verify document publication and Memory receipts separately, without a per-item save confirmation.",
+        "Keep proposal claims, generated copy and temporary task context out of Memory and keep the private preference out of shared result content."
+      ],
+      "forbiddenEffects": [
+        "save_proposal_as_memory",
+        "promote_private_preference_to_workspace",
+        "expand_memory_authority",
+        "copy_user_memory_into_project",
+        "claim_memory_save_from_document_receipt"
+      ]
+    },
+    {
+      "id": "project-result-source-attribution",
+      "kind": "negative",
+      "prompt": "Write a short follow-up email from these supplied contact facts and save it to the existing Thread. Preserve what was actually said and where.",
+      "entrypoint": "writing",
+      "modes": [
+        "direct",
+        "root"
+      ],
+      "allowedReads": [
+        "writing/SKILL.md",
+        "signalsurf/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md",
+        "writing/references/core.md",
+        "writing/references/voice.md",
+        "projects/SKILL.md",
+        "projects/references/results.md",
+        "writing/references/email-outreach.md"
+      ],
+      "context": {
+        "dataOrigin": "Entirely artificial offline fixture; no customer data, executed calls or declared live product inputSchema.",
+        "target": "An exact authorized same-objective Thread is supplied.",
+        "publicEvidence": "A synthetic contact publicly asked about technical dependencies at an event.",
+        "privateEvidence": "The sender later spoke privately with that contact, who said only that their team was in early evaluation."
+      },
+      "requiredOutcomes": [
+        "Keep the public question distinct from the documented private early-evaluation conversation.",
+        "Do not merge separate source facts into a more specific prior interaction than the evidence supports.",
+        "Publish the completed short copy conversationally, with any request summary outside the sendable email and no Memory change."
+      ],
+      "forbiddenEffects": [
+        "attribute_public_question_to_private_conversation",
+        "invent_prior_contact_details",
+        "place_operation_metadata_in_sendable_copy",
+        "save_generated_claim_to_memory"
+      ]
+    },
+    {
+      "id": "unavailable-project-result-document",
+      "kind": "ambiguous",
+      "prompt": "Save this completed long result as an editable document in the supplied Project Thread. Do not paste the long text into the Thread.",
+      "entrypoint": "projects",
+      "modes": [
+        "direct",
+        "root"
+      ],
+      "allowedReads": [
+        "projects/SKILL.md",
+        "signalsurf/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md",
+        "projects/references/results.md"
+      ],
+      "context": {
+        "dataOrigin": "Entirely artificial offline fixture; no customer data, executed calls or declared live product inputSchema.",
+        "target": "An exact authorized Project Thread is supplied.",
+        "discoveryObservation": "Exact current schema discovery is available, but this deployed host route has no externalWork document field and rejects the document reader action. No result publication was executed."
+      },
+      "requiredOutcomes": [
+        "Use exact live schema discovery, including the documented generic fallback if needed, rather than sending fields the returned schema does not accept.",
+        "Report the document path unavailable in this host/deployment and keep the completed result here with an honest unsaved status.",
+        "Preserve the requested no-long-Thread-body constraint and distinguish unavailable capability from denied access or absent data.",
+        "Do not claim installed-host or document persistence acceptance from unrelated synthetic or static checks."
+      ],
+      "forbiddenEffects": [
+        "invent_unsupported_document_arguments",
+        "paste_long_body_as_document_substitute",
+        "create_knowledge_substitute",
+        "delegate_to_bypass_missing_route",
+        "claim_document_saved_without_receipt"
       ]
     }
   ]

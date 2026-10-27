@@ -183,6 +183,41 @@
         "words": 4443,
         "bytes": 32015
       }
+    },
+    {
+      "id": "project-short-result-direct",
+      "baselineFiles": [
+        "projects/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md"
+      ],
+      "files": [
+        "projects/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md"
+      ],
+      "baseline": {
+        "words": 3673,
+        "bytes": 26321
+      }
+    },
+    {
+      "id": "project-result-document-direct",
+      "baselineFiles": [
+        "projects/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md"
+      ],
+      "files": [
+        "projects/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md",
+        "projects/references/results.md"
+      ],
+      "baseline": {
+        "words": 3673,
+        "bytes": 26321
+      }
     }
   ]
 }

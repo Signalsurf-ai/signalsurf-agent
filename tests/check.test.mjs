@@ -85,6 +85,12 @@ for (const reference of ["core", "voice", "email-outreach", "follow-up", "email-
   })
 }
 
+test("keeps external result presentation reachable from Projects", t => {
+  const root = fixture(t)
+  editSkill(root, "projects", text => removeLink(text, "references/results.md"))
+  assert.match(check(root).join("\n"), /Projects Skill must route external result presentation/)
+})
+
 for (const [name, edit] of [
   ["missing unified reader", text => text.replaceAll("`conversations_query`", "the historical reader")],
   ["legacy Inbox reader", text => `${text}\nUse \`inbox_query\` for history.\n`],
