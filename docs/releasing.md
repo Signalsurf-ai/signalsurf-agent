@@ -1,141 +1,192 @@
 # Release the portable Agent package
 
-This repository owns the portable package and its release preparation. Hosted MCP
-deployment, CLI npm publication, marketplace listing approval and each host's
-installed cache have separate lifecycles. This procedure does not deploy them.
-GitHub Releases is the changelog; describe the concrete changes and actual proof
-there. Do not publish private source mappings, customer records or full test logs.
+This repository releases the complete SignalSurf Agent plugin. Hosted MCP,
+optional npm CLI publication, marketplace approval and host caches have separate
+lifecycles. A plugin release does not deploy or verify those components.
 
-Use Node.js 22.13 or newer and `npm test`. The checks need no dependencies,
-credentials, private source or hosted services. Public CI runs the same command
-on Node 22 and 24. Host/OAuth/model acceptance is recorded separately in the
-shared [compatibility matrix](compatibility.md). Keep applicable evidence and
-rerun checks only when their inputs or claimed environment changed.
+GitHub Releases is the changelog. Each public release has one stable version,
+one immutable set of downloadable bytes and user-facing notes explaining what
+changed and how to update. Use Node.js 22.13 or newer and `npm test`; no dependency
+installation or credentials are needed for package checks.
 
-## Versions and immutable identities
+## Choose the version and describe the change
 
-- Update all four plugin manifests together. A patch fixes compatible guidance,
-  packaging or tooling; a minor adds compatible procedures/capabilities; a major
-  changes or removes an advertised package interface or installation contract.
-  Before 1.0, a breaking change still needs explicit migration notes and a minor
-  bump. The updater accepts stable numeric versions only.
-- A new distributable plugin tree requires a new version. Never move a published
-  tag, replace an existing asset, or reuse a version for different plugin bytes.
-  Repair a bad successful release with a forward patch.
-- Every release binds a full public candidate SHA, its plugin Git tree, version,
-  tag, ZIP, HTTPS catalog, checksums and `release.json` receipt. A merge commit may
-  have a different SHA while retaining the reviewed plugin tree; verify the tree
-  and catalog after the merge. A checksum verifies content integrity and does not
-  independently authenticate a publisher.
-- Maintainers approve the candidate through the normal PR/review process.
-  Publishing additionally requires authorization covering the repository and
-  version. The `--authorize` flag records that scope; it does not grant it.
+Compare with the last publicly distributed package, including the active plugin
+on `main`, existing public tags and downloadable releases. A GitHub draft is not
+public, but merging its plugin into `main` already distributes it through the
+updater. Never treat an unpublished GitHub Release as proof that its version has
+not reached users.
+
+- Use `0.MINOR.PATCH` before 1.0. Compatible fixes to guidance or packaging use a
+  patch; compatible new procedures or capabilities use a minor. A breaking
+  advertised interface or installation change requires migration notes and a
+  minor bump before 1.0. Reset patch to zero for a new minor series.
+- Unpublished candidate corrections retain the planned version. Identify each
+  candidate by its full commit SHA and use a new preparation directory. A
+  reviewed candidate changing is not itself another customer release.
+- Once a version is publicly distributed, keep its tag and bytes fixed. Repair
+  it with a forward release. Do not fill historical numbering gaps with obsolete
+  drafts or downgrade an active version to make the history look sequential.
+- Update all four plugin manifests together. Maintainer tooling and documentation
+  outside the plugin do not need a plugin version bump or another release.
+- The manifest version is `X.Y.Z`; both the Git tag and Release display title are
+  exactly `vX.Y.Z`. Feature themes belong in the notes, not in a different title.
+  The updater currently accepts only stable numeric versions.
+
+Prepare reviewed UTF-8 release notes outside the checkout. Cover the cumulative
+changes since the previous public release, including changes that reached `main`
+without a completed GitHub Release. Explain changes to actual supported behavior;
+keep package checks, host installation, loaded conversations, OAuth and hosted
+product execution as separate observations.
+
+A useful notes file has this shape:
+
+```markdown
+A short explanation of what users gain from this release.
+
+## Changes
+
+- Concrete improvements and fixes, with relevant public PR links.
+
+## Updating
+
+Use your app's supported plugin update or marketplace sync, then start a new
+conversation. See the repository's Getting Started guide for host-specific steps.
+
+## Compatibility and validation
+
+State requirements, breaking changes and actual validation. Say which host,
+OAuth or provider checks were not performed when relevant to the change.
+```
+
+Do not include private source mappings, customer records, machine paths, internal
+approval history or full test logs. The release tool appends the exact candidate,
+plugin tree and archive hash in a folded Artifacts section; those details should
+not replace the user-facing notes. The notes are presentation metadata, outside
+the immutable package assets.
 
 ## Prepare one committed candidate
 
-Work on a release branch. Update manifests, notices, Skills and tests, then run
-`npm test` and commit. Use an output directory outside the checkout. The tool
-reads Git objects at the requested SHA; ignored or uncommitted files cannot enter
-an artifact. It validates the exported public snapshot before building.
+Work on a release branch. Complete the changes, run `npm test` and commit. The
+release tool reads committed Git objects; ignored or uncommitted files cannot
+enter the package. Keep generated output outside the checkout.
 
 ```sh
-node scripts/release.mjs prepare --candidate <full-candidate-A-SHA> --out <new-preparation-directory-A>
+node scripts/release.mjs prepare --candidate <full-candidate-A-SHA> --out <new-directory-A>
 ```
 
-This creates a deterministic ZIP rooted at the independently installed plugin,
-with its complete MIT notice, plus `marketplace.json`, `SHA256SUMS` and
-`release.json`. ZIP ordering, timestamps and file modes are fixed. Running it
-again for the same output only verifies matching bytes; it never overwrites them.
+The output contains a deterministic complete-plugin ZIP with its MIT notice,
+`marketplace.json`, `SHA256SUMS` and `release.json`. Ordering, timestamps and
+modes are fixed. Existing output is verified, never overwritten.
 
-Copy the generated `marketplace.json` to
-`.claude-plugin/https-marketplace.json`, review it, run `npm test` again, and commit
-the catalog as candidate B. Confirm candidate A and B have the same plugin tree:
+Copy the generated catalog to `.claude-plugin/https-marketplace.json`, review it,
+run `npm test` and commit candidate B. This catalog-only change does not change
+the plugin tree. Rebuild and verify the final candidate:
 
 ```sh
 git rev-parse <full-candidate-A-SHA>:plugins/signalsurf
 git rev-parse <full-candidate-B-SHA>:plugins/signalsurf
-node scripts/release.mjs prepare --candidate <full-candidate-B-SHA> --out <new-preparation-directory-B>
-node scripts/release.mjs verify --candidate <full-candidate-B-SHA> --dir <preparation-directory-B>
+node scripts/release.mjs prepare --candidate <full-candidate-B-SHA> --out <new-directory-B>
+node scripts/release.mjs verify --candidate <full-candidate-B-SHA> --dir <directory-B>
 ```
 
-Both tree values and the regenerated catalog must agree. Use candidate B and its
-new receipt for publication; never relabel A's receipt. Candidate A is for
-preparation only: `stage` and `activate` compare its committed HTTPS catalog with
-the generated `marketplace.json` byte for byte and reject a stale URL, hash or
-other catalog difference before any remote operation. Include public PR checks,
-required maintainer review, runtime-compatibility evidence when advertised tool
-contracts change, and changed host-install receipts in the release decision.
-Consumers update selected references under their own integration review; a
-package release does not require synchronizing a private repository. Package
-checks do not substitute for those independently owned gates. Release tools do
-not bypass PR or branch protection.
+Both plugin trees and the regenerated catalog must agree. Publish B with its own
+receipt, not A's relabeled receipt. Staging validates the committed catalog byte
+for byte before remote operations. A stale URL or hash blocks publication.
 
-## Stage, verify and activate
+## Check readiness, stage and activate
 
-These commands use GitHub CLI with an already-authorized maintainer account.
-`inspect` only reads. `stage` and `activate` require the exact authorized candidate
-and repository/version argument; they do not push Git or merge a branch.
+Use local GitHub CLI authentication for the authorized maintainer. Before public
+activation, confirm the exact PR head, required Node 22/24 CI, resolved review
+conversations, current base and normal merge eligibility. Maintainers decide
+review and merge; a separate person's approval is not a GitHub requirement.
+Record changed host-install and advertised-tool compatibility proof separately
+in the [compatibility matrix](compatibility.md). Package tests do not replace it.
+
+Publication needs authority for the repository and version. `--authorize` records
+that scope; it does not grant it or authorize unrelated merges or deletions.
 
 ```sh
-node scripts/release.mjs inspect --candidate <full-candidate-B-SHA> --dir <preparation-directory-B>
-node scripts/release.mjs stage --candidate <full-candidate-B-SHA> --dir <preparation-directory-B> --authorize Signalsurf-ai/signalsurf-agent@v<VERSION>
-node scripts/release.mjs inspect --candidate <full-candidate-B-SHA> --dir <preparation-directory-B>
-node scripts/release.mjs activate --candidate <full-candidate-B-SHA> --dir <preparation-directory-B> --authorize Signalsurf-ai/signalsurf-agent@v<VERSION>
+node scripts/release.mjs stage --candidate <full-candidate-B-SHA> --dir <directory-B> --notes-file <reviewed-notes.md> --authorize Signalsurf-ai/signalsurf-agent@v<VERSION>
+node scripts/release.mjs activate --candidate <full-candidate-B-SHA> --dir <directory-B> --notes-file <reviewed-notes.md> --authorize Signalsurf-ai/signalsurf-agent@v<VERSION>
 ```
 
-`stage` reconciles the exact tag/release first, creates a draft only if absent,
-uploads only missing assets, and downloads every present asset to compare exact
-bytes. If GitHub's tag lookup returns 404, it searches every page of the
-authenticated release listing for that exact tag; an existing draft is resumed,
-and duplicate matches stop the operation. A 404 from tag lookup alone is not
-proof that creation failed. It refuses mismatched existing tags/assets, duplicate
-asset names and unexpected assets. It never uses `--clobber`. A draft creation
-or upload with an uncertain response ends the command without an automatic replay.
+`stage` reconciles the exact tag and release, resumes an existing matching draft,
+updates its title and reviewed notes, and uploads only missing assets. Each
+existing asset is downloaded and compared with the prepared bytes. It never
+uses `--clobber`, replaces an asset or automatically retries an uncertain write.
+An absent tag endpoint triggers a paginated release lookup; duplicate matches
+stop the operation. A 404 alone does not mean a draft is absent.
 
-`activate` requires all staged bytes to match before publishing the draft. It
-reads back the published release, full tag target and every asset. It refuses a
-version older than the active package. Existing matching publication is accepted
-without republishing. Run `inspect` after an interrupted command and reconcile the
-returned release/tag/asset identity before another invocation.
+`activate` requires complete matching staged assets and the exact reviewed title
+and notes. It publishes the draft once, then reads back the release, full tag
+identity and every asset. An already published matching version is verified
+without republishing or rewriting its metadata. Neither command pushes Git or
+merges a branch. Inspection runs inside both commands; use explicit `inspect`
+for recovery or an independent read-only check.
 
-**Publish and verify downloadable assets before merging the version/catalog into
-main.** The updater currently reads main; HTTPS installation reads the catalog on
-main. Once assets are public and verified, merge the reviewed release candidate
-through its PR. Independently read back the main plugin tree, manifest version,
-catalog URL/hash, tag and anonymously downloadable ZIP. Verify a fresh install
-with the applicable existing route receipt or an isolated host run. Record any
-unavailable host, OAuth or Workspace proof explicitly.
+## Revise an empty unpublished draft
 
-Do not merge a new current-version/catalog pointer while its download is absent.
-Publishing assets alone leaves existing main users on the prior version; merging
-the verified pointers activates the new version for those users. This ordering
-also allows a staged candidate to be reviewed before main changes.
+A correction before staging assets does not need a new patch version. Prepare
+and verify the corrected candidate and catalog in new output directories. Then
+explicitly reconcile the old draft:
 
-## Partial failures and recovery
+```sh
+node scripts/release.mjs revise --candidate <new-full-candidate-SHA> --previous-candidate <old-full-candidate-SHA> --dir <new-preparation-directory> --notes-file <reviewed-notes.md> --authorize Signalsurf-ai/signalsurf-agent@v<VERSION>
+```
 
-- Draft creation/upload failed or timed out: run `inspect`. A separate `stage`
-  invocation reads remote identity and matching bytes before filling missing
-  assets; it does not repeat successful writes. A mismatch requires investigation
-  or a new version. Do not delete/recreate uncertain releases.
-- Publication response was lost: run `inspect`. If already published and matching,
-  another `activate` invocation only verifies. Never assume that a failed client
-  response means the server rejected a write.
-- Assets published, main merge pending: keep the prior main pointers until the
-  reviewed candidate can merge. Do not publish a different tree under that version.
-- Main activation interrupted: inspect main, the PR/merge result, tag and catalog;
-  resume the existing merge only after reconciling it. The release tool deliberately
-  does not retry Git pushes or branch mutations.
-- Bad guidance successfully installed: prepare a forward patch and publish through
-  this same procedure. The updater only installs a numerically newer version, so
-  silently restoring an older main manifest does not repair affected installs.
-  Hosts with pinned or managed installations use their supported update/recovery
-  controls, then reload guidance. Preserve Workspace data and unrelated plugins.
-- Updater swap failed: existing rollback/lock recovery preserves the previous
-  installation. Follow its `recovery_required` location and the supported host
-  recovery guide; never delete another process's lock or a preserved package.
+This is permitted only for the exact same-version draft, with no tag and zero
+assets, whose previous candidate matches the supplied SHA. The version must be
+newer than active `main`; a version already distributed there cannot be reused.
+The tool reads back the new identity before ordinary staging can continue.
+Published releases, tagged candidates, nonempty drafts and unknown identities
+remain blocked. Do not discard or replace their artifacts to satisfy this path.
+Resolve such states explicitly; a failed preparation does not automatically
+justify another public version.
 
-The test suite exercises deterministic artifacts, missing notices, wrong
-candidates, stale committed catalogs, moved tags, corrupt/missing assets,
-interrupted uploads, lost draft creation/publication responses, GitHub draft
-lookup across pages and idempotent reconciliation in disposable local fixtures.
-Those fixtures do not publish a release or establish real host/OAuth compatibility.
+## Complete and verify the user update
+
+The updater and HTTPS installation catalog currently read `main`, so public
+assets must exist before their pointers merge. Do not reverse this ordering
+without first separating update discovery from the development branch.
+
+After activation, anonymously download the assets and verify the prepared bytes.
+Merge the reviewed candidate through its normal PR with the exact expected head.
+Read back `main`'s plugin tree, all four manifest versions and catalog URL/hash;
+compare them with the immutable candidate, tag and anonymously downloadable ZIP.
+The merge SHA may differ; its plugin tree and catalog must agree.
+
+A release is complete when public downloads and active `main` pointers agree.
+Publishing assets with a blocked PR is an incomplete activation, not a finished
+update. Avoid entering that state by checking merge readiness before publication.
+Verify a fresh install through the applicable route receipt or an isolated host
+run, then record the exact host version and remaining OAuth/Workspace/reload gaps.
+
+Release titles and notes may be corrected independently of package bytes. Make
+metadata-only corrections without inventing a new plugin version. Historical
+releases retain their original asset formats and verification limits.
+
+## Recover an interrupted operation
+
+```sh
+node scripts/release.mjs inspect --candidate <full-candidate-SHA> --dir <preparation-directory>
+```
+
+- After a lost creation, revision, upload or publication response, inspect the
+  actual release/tag/assets before another command. Resume only the missing
+  operation; never assume the server rejected a write because its response failed.
+- An empty-draft revision that already read back at the new exact candidate is
+  accepted on reinvocation without repeating the mutation.
+- Existing assets or a tag with different identities require investigation.
+  Preserve them; never delete/recreate an uncertain release or move a public tag.
+- If assets are public but merge is pending, keep the prior active pointers until
+  the PR can merge. If merge itself was interrupted, reconcile the PR and `main`
+  before any retry.
+- Repair bad installed guidance with a forward patch. A silent downgrade does not
+  update existing users. Preserve host data, unrelated plugins, locks and any
+  `recovery_required` installation while following host recovery controls.
+
+The release tests cover deterministic artifacts, candidate and catalog identity,
+empty-draft revisions, reviewed notes, corrupt/missing assets, interrupted writes
+and idempotent recovery in disposable fixtures. They do not publish a release or
+establish real host, OAuth, provider or hosted-MCP compatibility.

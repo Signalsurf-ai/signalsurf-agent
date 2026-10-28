@@ -28,6 +28,10 @@ plan, and organization settings; a public repository is not a directory listing.
 Then connect Signalsurf, sign in, review and approve the requested access, and
 [verify the connection](./GETTING_STARTED.md#verify-without-changing-data).
 
+See [release notes and downloads](https://github.com/Signalsurf-ai/signalsurf-agent/releases)
+for version changes, and [update your installation](./GETTING_STARTED.md#updates)
+through your app's supported controls. Start a new conversation after updating.
+
 ### Asking your AI to help
 
 Paste this into your app:
