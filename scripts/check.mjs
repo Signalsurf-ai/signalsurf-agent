@@ -158,10 +158,11 @@ export function check(root = ROOT, { catalog = true } = {}) {
     if (!text.includes("references/freshness.md")) problem(file, "missing shared freshness procedure")
     const contract = skill === "signalsurf" ? "references/operating-contract.md" : "../signalsurf/references/operating-contract.md"
     if (!text.includes(`](${contract})`)) problem(file, "Skill must link the shared operating contract; Writing applies it when accessing SignalSurf resources")
-    if (["signalsurf", "content", "campaigns", "conversations", "listening"].includes(skill) && !text.includes("](../writing/SKILL.md)")) problem(file, "Skill must route copy work to Writing")
+    if (["signalsurf", "records", "content", "campaigns", "conversations", "listening"].includes(skill) && !text.includes("](../writing/SKILL.md)")) problem(file, "Skill must route copy work to Writing")
     if (skill === "writing") for (const reference of WRITING_REFERENCES) {
       if (!text.includes(`](references/${reference}.md)`)) problem(file, `Writing Skill must route ${reference} guidance`)
     }
+    if (skill === "projects" && !text.includes("](references/results.md)")) problem(file, "Projects Skill must route external result presentation")
     if (skill === "conversations") {
       if (!text.includes("`conversations_query`") || /`(?:inbox_query|meeting_query)`/.test(text)) problem(file, "Conversations Skill must use the unified conversations_query reader")
       for (const reference of ["phone", "meeting-recorder"]) {

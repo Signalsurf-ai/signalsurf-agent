@@ -69,7 +69,7 @@ for (const skill of SKILLS) {
   })
 }
 
-for (const skill of ["signalsurf", "content", "campaigns", "conversations", "listening"]) {
+for (const skill of ["signalsurf", "records", "content", "campaigns", "conversations", "listening"]) {
   test(`keeps Writing reachable for ${skill} copy work`, t => {
     const root = fixture(t)
     editSkill(root, skill, text => removeLink(text, "../writing/SKILL.md"))
@@ -84,6 +84,12 @@ for (const reference of ["core", "voice", "email-outreach", "follow-up", "email-
     assert.match(check(root).join("\n"), new RegExp(`Writing Skill must route ${reference} guidance`))
   })
 }
+
+test("keeps external result presentation reachable from Projects", t => {
+  const root = fixture(t)
+  editSkill(root, "projects", text => removeLink(text, "references/results.md"))
+  assert.match(check(root).join("\n"), /Projects Skill must route external result presentation/)
+})
 
 for (const [name, edit] of [
   ["missing unified reader", text => text.replaceAll("`conversations_query`", "the historical reader")],

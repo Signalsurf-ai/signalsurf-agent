@@ -219,7 +219,10 @@ Install or connect the Plugin using the host instructions above, then paste:
 > Memory for the current task before product reads or writes and apply relevant
 > saved facts and preferences without asking me to initiate the read. Guide me
 > through secure Signalsurf and provider authorization links when needed, then
-> return here.
+> return here. Execute the accepted setup and tasks here with authorized product
+> tools. If I ask for results in a Project Thread, post the finished result
+> without asking Surfer to repeat the task. Delegate background work only when
+> I ask for that execution.
 > Automatically save and update useful durable context in the correct authorized
 > User, Workspace or Project Memory, without asking me to approve each save. Read
 > existing blocks first, preserve unrelated facts and verify the saved result.

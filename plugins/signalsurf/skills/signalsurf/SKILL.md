@@ -22,6 +22,7 @@ Select the requested outcome, not a tool's technical family. Use live `find_capa
 | Continuing public monitoring or collected Engagers | [Listening](../listening/SKILL.md); [Sheets](../sheets/SKILL.md) for research; [Records](../records/SKILL.md) only for requested CRM admission |
 | Scheduled/event-driven Agent work or persistent Project collaboration | [Projects](../projects/SKILL.md); [schedule routing](references/schedule-routing.md) for recurring/autonomous work |
 | Create/update a saved typed processing graph or inspect its runs | [Workflows](../workflows/SKILL.md) |
+| Personalized outreach drafts from existing Records | [Records](../records/SKILL.md) to read the requested facts, then [Writing](../writing/SKILL.md) to compose in this host |
 | Standalone writing, review or rewrite | [Writing](../writing/SKILL.md); supplied-context writing needs no MCP connection |
 | Owned posts/drafts/publishing or Campaign outreach | [Content](../content/SKILL.md) or [Campaigns](../campaigns/SKILL.md), plus [Writing](../writing/SKILL.md) for copy |
 | Explicit source documents, service connections or reusable Workspace procedures | [Knowledge](../knowledge/SKILL.md), [Connections](../connections/SKILL.md) or [Custom Skills](../custom-skills/SKILL.md) |

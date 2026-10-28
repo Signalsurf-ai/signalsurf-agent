@@ -7,7 +7,7 @@ description: Start or resume Signalsurf setup from an external AI, introduce rel
 
 Before every request using this Skill, follow [version check and automatic update](../signalsurf/references/freshness.md), then use the current guidance.
 
-Read the [shared operating contract](../signalsurf/references/operating-contract.md) unless already loaded. The external AI conducts this interview; it does not create another Surfer conversation for the same interview.
+Read the [shared operating contract](../signalsurf/references/operating-contract.md) unless already loaded. The external AI conducts this interview and executes the accepted setup and first task through product tools in this host. Use the shared operating contract to distinguish any requested result writeback from delegation; do not create another Surfer conversation to repeat the interview or perform the same interactive task.
 
 ## Start where the member is
 
@@ -37,7 +37,7 @@ Read `connection_query` before offering another account connection. For Gmail or
 
 ## Build the first outreach outcome
 
-If the member has not chosen another outcome, recommend a small Signal-based outbound or TAM mapping pilot based on their goal. Explain the path before execution: a bounded relevant audience, the chosen Email or LinkedIn sender, prepared Campaign messages, then separately approved activation and sending. Reuse an existing audience, sender or Campaign when appropriate. Select an authorized work Project only when the chosen business operation requires one, following [Projects](../projects/SKILL.md); Workspace profile and account setup do not require a fabricated Project.
+For a member who already has People Records and wants draft-only outreach, read that audience through [Records](../records/SKILL.md) and compose it with [Writing](../writing/SKILL.md), without requiring a sender or Campaign. If the member has not chosen another outcome, recommend a small Signal-based outbound or TAM mapping pilot based on their goal. Explain the path before execution: a bounded relevant audience, the chosen Email or LinkedIn sender, prepared Campaign messages, then separately approved activation and sending. Reuse an existing audience, sender or Campaign when appropriate. Select an authorized work Project only when the chosen business operation requires one, following [Projects](../projects/SKILL.md); Workspace profile and account setup do not require a fabricated Project.
 
 - For Signal-based outbound, use [Signals](../signals/SKILL.md) for a one-off investigation or [Listening](../listening/SKILL.md) / [Workflows](../workflows/SKILL.md) for requested recurring collection. Keep collected evidence and source links in their native result or Sheet. Use [Records](../records/SKILL.md) for explicit identity resolution and admission into canonical People Records, optionally grouped in a List. Raw Sheet rows are not Campaign recipients. Collection, Enrich and recurring activation retain their own scope and credit confirmations.
 - For TAM mapping, use [Signals](../signals/SKILL.md) and its lead-sourcing guidance to define a bounded Company universe, then find relevant People within that universe when outreach is intended. Preserve canonical Company relations and save the accepted People audience through [Records](../records/SKILL.md). Enrich only the selected missing fields and rows after the native preview is accepted; do not promise complete market coverage or contact availability.
