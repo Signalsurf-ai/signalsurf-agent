@@ -53,11 +53,11 @@ conversations must be resolved. Maintainers prepare releases from public commits
 using [docs/releasing.md](docs/releasing.md). Publication requires authority for
 the version and target; a green check alone does not grant it.
 
-The repository rule requires the public package check and maintainer review for
-ordinary merges. An administrator may use the documented bypass only for a
-bootstrap or urgent recovery, after recording the reason, independent review,
-checks and subsequent reconciliation in the PR. Never bypass a known failing
-integrity or authorization check.
+The repository requires the Node 22 and Node 24 public package checks, an
+up-to-date base and resolved review conversations. Maintainers own review and
+merge decisions; a second account's approval is not a required GitHub gate.
+Use the normal pull-request merge path. Never bypass a known failing integrity
+or authorization check.
 
 Product consumers may reuse selected references from a public commit. Each
 consumer owns its provenance, update review and integration checks; it cannot

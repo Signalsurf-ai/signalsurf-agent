@@ -83,6 +83,15 @@ function assertCommittedCatalog(built) {
   if (!Buffer.isBuffer(built.committedCatalog) || !built.committedCatalog.equals(built.assets.get("marketplace.json"))) throw new Error("committed HTTPS catalog does not match the generated release catalog; commit marketplace.json as .claude-plugin/https-marketplace.json and prepare the final candidate")
 }
 
+export function releasePresentation(plan, notes) {
+  if (typeof notes !== "string" || !notes.trim()) throw new Error("reviewed user-facing release notes are required")
+  return { name: plan.tag, body: `${notes.trim()}\n\n<details>\n<summary>Artifacts</summary>\n\n- Candidate: \`${plan.candidate}\`\n- Plugin tree: \`${plan.plugin_tree}\`\n- Archive SHA-256: \`${plan.assets[`signalsurf-${plan.version}.zip`].sha256}\`\n\n</details>\n` }
+}
+
+function assertPresentation(release, presentation) {
+  if (release.name !== presentation.name || release.body !== presentation.body) throw new Error("draft release title or notes differ from the reviewed release notes; stage the matching presentation before activation")
+}
+
 export async function inspect({ built, remote, complete = false }) {
   const state = await remote.read(built.plan)
   assertRemote(built.plan, state, { complete })
@@ -99,18 +108,25 @@ export async function inspect({ built, remote, complete = false }) {
   return state
 }
 
-export async function stage({ built, remote, authorization }) {
+export async function stage({ built, remote, authorization, notes }) {
   if (authorization !== `${REPO}@${built.plan.tag}`) throw new Error("explicit repository@tag authorization is required")
   assertCommittedCatalog(built)
+  const presentation = releasePresentation(built.plan, notes)
   let state = await inspect({ built, remote })
   assertForwardVersion(built.plan, state)
   if (!state.release) {
-    // Never replay a mutation after an uncertain response. A new invocation reads by identity first.
-    await remote.create(built.plan)
+    await remote.create(built.plan, presentation)
     state = await inspect({ built, remote })
     if (!state.release?.draft) throw new Error("draft release creation did not read back")
   }
   if (!state.release.draft) return inspect({ built, remote, complete: true })
+  if (state.release.name !== presentation.name || state.release.body !== presentation.body) {
+    const releaseId = state.release.id
+    await remote.update(built.plan, state.release, presentation)
+    state = await inspect({ built, remote })
+    if (!state.release?.draft || state.release.id !== releaseId) throw new Error("draft release presentation update did not read back")
+  }
+  assertPresentation(state.release, presentation)
   for (const [name, bytes] of built.assets) {
     if (!state.release.assets.some(asset => asset.name === name)) {
       await remote.upload(built.plan, name, bytes)
@@ -118,22 +134,53 @@ export async function stage({ built, remote, authorization }) {
       if (!state.release.assets.some(asset => asset.name === name)) throw new Error("upload did not read back; inspect before retrying")
     }
   }
-  // Draft tags may be created only when published; every asset must already be verified.
   for (const name of built.assets.keys()) if (!state.release.assets.some(asset => asset.name === name)) throw new Error(`missing staged asset: ${name}`)
   return state
 }
 
-export async function activate({ built, remote, authorization }) {
+export async function activate({ built, remote, authorization, notes }) {
   if (authorization !== `${REPO}@${built.plan.tag}`) throw new Error("explicit repository@tag authorization is required")
   assertCommittedCatalog(built)
+  const presentation = releasePresentation(built.plan, notes)
   const state = await inspect({ built, remote })
   assertForwardVersion(built.plan, state)
   if (!state.release) throw new Error("stage and verify the release first")
   for (const name of built.assets.keys()) if (!state.release.assets.some(asset => asset.name === name)) throw new Error(`stage missing asset first: ${name}`)
-  if (state.release.draft) await remote.publish(built.plan, state.release)
+  if (state.release.draft) {
+    assertPresentation(state.release, presentation)
+    await remote.publish(built.plan, state.release)
+  }
   const published = await inspect({ built, remote, complete: true })
   if (published.release.draft) throw new Error("publication has not read back; inspect before retrying")
   return published
+}
+
+export async function revise({ built, previousCandidate, remote, authorization, notes, root = ROOT }) {
+  if (authorization !== `${REPO}@${built.plan.tag}`) throw new Error("explicit repository@tag authorization is required")
+  assertCommittedCatalog(built)
+  const presentation = releasePresentation(built.plan, notes)
+  if (!SHA.test(previousCandidate ?? "") || previousCandidate === built.plan.candidate) throw new Error("revision requires a different explicit previous candidate SHA")
+  let previousVersion
+  try { previousVersion = JSON.parse(git(root, ["show", `${previousCandidate}:${PLUGIN}/plugin.json`])).version }
+  catch { throw new Error("previous candidate version could not be verified") }
+  if (previousVersion !== built.plan.version) throw new Error("draft revision must retain the same version")
+  const state = await remote.read(built.plan)
+  const assertRevisable = current => {
+    if (current.tag || !current.release?.draft || current.release.tag_name !== built.plan.tag || current.release.assets.length) throw new Error("revision requires an untagged empty draft for this exact version")
+    if (!versionAdvance(current.active_version, built.plan.version)) throw new Error("draft revision version must be newer than the publicly active main version")
+  }
+  assertRevisable(state)
+  if (state.release.target_commitish === built.plan.candidate) {
+    assertPresentation(state.release, presentation)
+    return inspect({ built, remote })
+  }
+  if (state.release.target_commitish !== previousCandidate) throw new Error("draft does not match the expected previous candidate")
+  await remote.update(built.plan, state.release, { ...presentation, target_commitish: built.plan.candidate })
+  const revised = await inspect({ built, remote })
+  assertRevisable(revised)
+  if (revised.release.id !== state.release.id) throw new Error("draft revision identity did not read back")
+  assertPresentation(revised.release, presentation)
+  return revised
 }
 
 export function githubRemote(directory, { execute = execFileSync } = {}) {
@@ -161,8 +208,6 @@ export function githubRemote(directory, { execute = execFileSync } = {}) {
       if (target && target.type !== "commit") throw new Error("unsupported release tag identity")
       let release = api(`repos/${REPO}/releases/tags/${plan.tag}`)
       if (!release) {
-        // GitHub can omit a draft from the tag endpoint until its tag exists.
-        // Read every authenticated listing page before deciding creation is safe.
         const pages = api(`repos/${REPO}/releases?per_page=100`, { paginate: true })
         if (!Array.isArray(pages) || !pages.every(Array.isArray)) throw new Error("release listing could not be verified; reconcile before creation")
         const matches = pages.flat().filter(value => value?.tag_name === plan.tag)
@@ -176,11 +221,11 @@ export function githubRemote(directory, { execute = execFileSync } = {}) {
       if (!bytes) throw new Error("release asset cannot be read")
       return bytes
     },
-    async create(plan) {
-      api(`repos/${REPO}/releases`, { method: "POST", input: { tag_name: plan.tag, target_commitish: plan.candidate, name: `SignalSurf Agent ${plan.tag}`, draft: true, body: `Portable Agent package ${plan.tag}.\n\nPublic candidate: ${plan.candidate}\nPlugin tree: ${plan.plugin_tree}\nArchive SHA-256: ${plan.assets[`signalsurf-${plan.version}.zip`].sha256}\n\nPackage validation, authenticated host acceptance, loaded guidance, and hosted MCP deployment are separate. See docs/compatibility.md for recorded host evidence. This release receipt establishes prepared artifact identity; it does not claim new OAuth or provider tests.` } })
+    async create(plan, presentation) {
+      api(`repos/${REPO}/releases`, { method: "POST", input: { tag_name: plan.tag, target_commitish: plan.candidate, draft: true, ...presentation } })
     },
+    async update(_plan, release, changes) { api(`repos/${REPO}/releases/${release.id}`, { method: "PATCH", input: changes }) },
     async upload(plan, name, bytes) {
-      // Upload the bytes already verified in memory, not a possibly edited prepared file.
       const temporary = mkdtempSync(path.join(tmpdir(), "signalsurf-upload-"))
       const file = path.join(temporary, name)
       writeFileSync(file, bytes, { flag: "wx" })
@@ -195,11 +240,11 @@ export function githubRemote(directory, { execute = execFileSync } = {}) {
 async function main() {
   const [command, ...args] = process.argv.slice(2), options = {}
   if (["--help", "help"].includes(command)) {
-    console.log("prepare --candidate SHA --out DIR\nverify|inspect --dir DIR [--candidate SHA]\nstage|activate --dir DIR --candidate SHA --authorize Signalsurf-ai/signalsurf-agent@vVERSION")
+    console.log("prepare --candidate SHA --out DIR\nverify|inspect --dir DIR [--candidate SHA]\nstage|activate --dir DIR --candidate SHA --notes-file FILE --authorize Signalsurf-ai/signalsurf-agent@vVERSION\nrevise --dir DIR --candidate SHA --previous-candidate SHA --notes-file FILE --authorize Signalsurf-ai/signalsurf-agent@vVERSION")
     return
   }
   for (let index = 0; index < args.length; index += 2) {
-    if (!/^--(?:candidate|out|dir|authorize)$/.test(args[index]) || !args[index + 1] || args[index + 1].startsWith("--")) throw new Error("invalid release argument")
+    if (!/^--(?:candidate|previous-candidate|out|dir|authorize|notes-file)$/.test(args[index]) || !args[index + 1] || args[index + 1].startsWith("--")) throw new Error("invalid release argument")
     const name = args[index].slice(2)
     if (name in options) throw new Error("duplicate release argument")
     options[name] = args[index + 1]
@@ -208,12 +253,16 @@ async function main() {
     if (!options.candidate || !options.out) throw new Error("prepare requires --candidate <full SHA> --out <new directory>")
     console.log(JSON.stringify(prepare({ candidate: options.candidate, out: path.resolve(options.out) }), null, 2)); return
   }
-  if (!["verify", "inspect", "stage", "activate"].includes(command) || !options.dir) throw new Error("Use prepare --candidate SHA --out DIR, or verify|inspect|stage|activate --dir DIR [--candidate SHA] [--authorize repository@tag]")
-  if (["stage", "activate"].includes(command) && !options.candidate) throw new Error("mutations require --candidate <the authorized full SHA>")
+  if (!["verify", "inspect", "stage", "activate", "revise"].includes(command) || !options.dir) throw new Error("Use prepare --candidate SHA --out DIR, or verify|inspect|stage|activate|revise --dir DIR [--candidate SHA] [--notes-file FILE] [--authorize repository@tag]")
+  const mutation = ["stage", "activate", "revise"].includes(command)
+  if (mutation && !options.candidate) throw new Error("mutations require --candidate <the authorized full SHA>")
+  if (mutation && !options["notes-file"]) throw new Error("mutations require --notes-file <reviewed user-facing release notes>")
+  if (command === "revise" && !options["previous-candidate"]) throw new Error("revise requires --previous-candidate <the exact prior draft SHA>")
   const directory = path.resolve(options.dir), built = verify({ directory, candidate: options.candidate })
   if (command === "verify") { console.log(JSON.stringify(built.plan, null, 2)); return }
   const remote = githubRemote(directory)
-  const state = command === "inspect" ? await inspect({ built, remote }) : command === "stage" ? await stage({ built, remote, authorization: options.authorize }) : await activate({ built, remote, authorization: options.authorize })
+  const changes = { built, remote, authorization: options.authorize, notes: mutation ? readFileSync(path.resolve(options["notes-file"]), "utf8") : undefined }
+  const state = command === "inspect" ? await inspect({ built, remote }) : command === "stage" ? await stage(changes) : command === "revise" ? await revise({ ...changes, previousCandidate: options["previous-candidate"] }) : await activate(changes)
   console.log(JSON.stringify({ version: built.plan.version, candidate: built.plan.candidate, tag: state.tag, release_id: state.release?.id, draft: state.release?.draft, assets: state.release?.assets.map(asset => asset.name) }, null, 2))
 }
 

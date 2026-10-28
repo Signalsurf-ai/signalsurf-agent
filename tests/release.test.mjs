@@ -5,7 +5,7 @@ import { tmpdir } from "node:os"
 import path from "node:path"
 import test from "node:test"
 import { ROOT, versionIssues } from "../scripts/check.mjs"
-import { activate, assertRemote, build, githubRemote, inspect, prepare, REPO, stage, verify } from "../scripts/release.mjs"
+import { activate, assertRemote, build, githubRemote, inspect, prepare, releasePresentation, REPO, revise, stage, verify } from "../scripts/release.mjs"
 import { crc32, zip } from "../scripts/zip.mjs"
 
 function repository(t) {
@@ -28,15 +28,34 @@ function releaseCandidate(t) {
 }
 
 function fake(built) {
-  const state = { active_version: "0.0.0", tag: null, release: null }, bytes = new Map(), writes = []
+  const state = { active_version: "0.0.0", tag: null, release: null }, bytes = new Map(), writes = [], notes = "## Changes\n\nImprove the portable Agent guidance.\n"
   const remote = {
     async read() { return structuredClone(state) },
     async download(_plan, asset) { return bytes.get(asset.name) },
-    async create(plan) { writes.push("create"); state.release = { id: 1, tag_name: plan.tag, target_commitish: plan.candidate, draft: true, assets: [] } },
+    async create(plan, presentation) { writes.push("create"); state.release = { id: 1, tag_name: plan.tag, target_commitish: plan.candidate, draft: true, assets: [], ...presentation } },
+    async update(_plan, release, changes) { assert.equal(release.id, state.release.id); writes.push("update"); Object.assign(state.release, changes) },
     async upload(_plan, name, value) { writes.push(`upload:${name}`); bytes.set(name, value); state.release.assets.push({ id: state.release.assets.length + 1, name, size: value.length }) },
     async publish(plan) { writes.push("publish"); state.tag = plan.candidate; state.release.draft = false },
   }
-  return { state, bytes, writes, remote, authorization: `${REPO}@${built.plan.tag}` }
+  return { state, bytes, writes, remote, notes, authorization: `${REPO}@${built.plan.tag}` }
+}
+
+function revisedCandidate(t) {
+  const f = releaseCandidate(t), previousCandidate = f.candidate, previousBuilt = build(previousCandidate, f.root)
+  const file = path.join(f.root, "plugins/signalsurf/README.md")
+  writeFileSync(file, `${readFileSync(file, "utf8")}\nCompatible unpublished candidate correction.\n`)
+  f.git("add", "."); f.git("-c", "user.name=Package Fixture", "-c", "user.email=fixture@example.com", "commit", "-qm", "Correct unpublished candidate")
+  let candidate = f.git("rev-parse", "HEAD")
+  writeFileSync(path.join(f.root, ".claude-plugin/https-marketplace.json"), build(candidate, f.root).assets.get("marketplace.json"))
+  f.git("add", "."); f.git("-c", "user.name=Package Fixture", "-c", "user.email=fixture@example.com", "commit", "-qm", "Bind corrected catalog")
+  candidate = f.git("rev-parse", "HEAD")
+  return { ...f, candidate, previousCandidate, previousBuilt, built: build(candidate, f.root) }
+}
+
+function revisionRemote(f) {
+  const r = fake(f.built)
+  r.state.release = { id: 1, tag_name: f.built.plan.tag, target_commitish: f.previousCandidate, draft: true, assets: [], ...releasePresentation(f.previousBuilt.plan, r.notes) }
+  return r
 }
 
 function githubFixture(built, { published = false, duplicate = false } = {}) {
@@ -44,7 +63,7 @@ function githubFixture(built, { published = false, duplicate = false } = {}) {
   r.state.tag = published ? built.plan.candidate : null
   r.state.release = { id: 1, tag_name: built.plan.tag, target_commitish: built.plan.candidate, draft: !published, assets: [] }
   const notFound = () => { throw Object.assign(new Error("Not Found"), { stderr: Buffer.from("gh: Not Found (HTTP 404)") }) }
-  const execute = (command, args) => {
+  const execute = (command, args, options) => {
     assert.equal(command, "gh"); calls.push([...args])
     if (args[0] === "release") {
       assert.deepEqual(args.slice(0, 3), ["release", "upload", built.plan.tag])
@@ -56,6 +75,10 @@ function githubFixture(built, { published = false, duplicate = false } = {}) {
     }
     assert.equal(args[0], "api")
     const method = args[2], endpoint = args[3]
+    if (method === "PATCH" && endpoint === `${prefix}/releases/1`) {
+      r.writes.push("update"); Object.assign(r.state.release, JSON.parse(options.input))
+      return Buffer.from(JSON.stringify(r.state.release))
+    }
     if (method !== "GET") { r.writes.push(method); throw new Error("unexpected GitHub mutation") }
     let value
     if (endpoint === `${prefix}/contents/plugins/signalsurf/plugin.json?ref=main`) value = { content: Buffer.from(JSON.stringify({ version: r.state.active_version })).toString("base64") }
@@ -125,8 +148,156 @@ test("draft staging and activation verify exact remote bytes and are idempotent"
   assert.equal(r.writes.length, built.assets.size + 2)
 })
 
+test("reviewed release notes produce the version title without changing distributable assets", t => {
+  const f = releaseCandidate(t), built = build(f.candidate, f.root), notes = "Improve reliable document publication.\n"
+  const presentation = releasePresentation(built.plan, notes)
+  assert.equal(presentation.name, built.plan.tag)
+  assert.equal(presentation.body.startsWith(`${notes.trim()}\n\n<details>\n<summary>Artifacts</summary>\n`), true)
+  assert.equal(presentation.body.endsWith("\n</details>\n"), true)
+  assert.equal(presentation.body.includes(built.plan.candidate), true)
+  assert.equal(presentation.body.includes(built.plan.plugin_tree), true)
+  assert.equal(presentation.body.includes(built.plan.assets[`signalsurf-${built.plan.version}.zip`].sha256), true)
+  assert.deepEqual([...built.assets.keys()], [`signalsurf-${built.plan.version}.zip`, "marketplace.json", "SHA256SUMS", "release.json"])
+  assert.deepEqual(build(f.candidate, f.root).assets, built.assets)
+})
+
+test("stage and activate require nonempty reviewed notes before any mutation", async t => {
+  const f = releaseCandidate(t), built = build(f.candidate, f.root), r = fake(built)
+  for (const notes of [undefined, "", " \n\t"]) {
+    await assert.rejects(stage({ built, ...r, notes }), /reviewed user-facing release notes/)
+    await assert.rejects(activate({ built, ...r, notes }), /reviewed user-facing release notes/)
+  }
+  assert.deepEqual(r.writes, [])
+})
+
+test("activation rejects changed draft titles and notes while stage repairs only presentation", async t => {
+  const f = releaseCandidate(t), built = build(f.candidate, f.root), r = fake(built)
+  await stage({ built, ...r })
+  const writes = r.writes.length, bytes = new Map(r.bytes)
+  r.state.release.name = `SignalSurf Agent ${built.plan.tag}`
+  await assert.rejects(activate({ built, ...r }), /title or notes differ/)
+  r.state.release.name = built.plan.tag
+  r.state.release.body = "A different release summary."
+  await assert.rejects(activate({ built, ...r }), /title or notes differ/)
+  assert.equal(r.writes.length, writes)
+  await stage({ built, ...r })
+  assert.deepEqual(r.writes.slice(writes), ["update"])
+  assert.deepEqual(r.bytes, bytes)
+  await assert.rejects(activate({ built, ...r, notes: "Changed reviewed notes." }), /title or notes differ/)
+  await activate({ built, ...r })
+})
+
+test("published recovery never rewrites release presentation", async t => {
+  const f = releaseCandidate(t), built = build(f.candidate, f.root), r = fake(built)
+  await stage({ built, ...r }); await activate({ built, ...r })
+  const writes = r.writes.length
+  r.state.release.name = "Historical title"
+  r.state.release.body = "Historical release notes"
+  await stage({ built, ...r, notes: "New local notes." })
+  await activate({ built, ...r, notes: "New local notes." })
+  assert.equal(r.writes.length, writes)
+  assert.equal(r.state.release.name, "Historical title")
+  assert.equal(r.state.release.body, "Historical release notes")
+})
+
+test("an uncertain draft presentation update is read back before a separate stage resumes", async t => {
+  const f = releaseCandidate(t), built = build(f.candidate, f.root), r = fake(built)
+  await stage({ built, ...r })
+  r.state.release.name = "Previous draft title"
+  const writes = r.writes.length, update = r.remote.update
+  r.remote.update = async (...args) => { await update(...args); throw new Error("response lost") }
+  await assert.rejects(stage({ built, ...r }), /response lost/)
+  await stage({ built, ...r })
+  assert.deepEqual(r.writes.slice(writes), ["update"])
+})
+
+test("draft presentation updates must read back before uploads resume", async t => {
+  const f = releaseCandidate(t), built = build(f.candidate, f.root), r = fake(built)
+  await r.remote.create(built.plan, { name: "Previous draft title", body: "Previous notes" })
+  r.writes.length = 0
+  r.remote.update = async () => { r.writes.push("update") }
+  await assert.rejects(stage({ built, ...r }), /title or notes differ/)
+  assert.deepEqual(r.writes, ["update"])
+})
+
+test("an empty unpublished draft can move to a corrected candidate without consuming a version", async t => {
+  const f = revisedCandidate(t), r = revisionRemote(f)
+  const prior = prepare({ candidate: f.previousCandidate, out: path.join(f.directory, "prior"), root: f.root })
+  const current = prepare({ candidate: f.candidate, out: path.join(f.directory, "current"), root: f.root })
+  assert.equal(prior.version, current.version)
+  assert.notEqual(prior.plugin_tree, current.plugin_tree)
+  await revise({ built: f.built, ...r, previousCandidate: f.previousCandidate, root: f.root })
+  assert.equal(r.state.release.target_commitish, f.candidate)
+  assert.equal(r.state.release.tag_name, prior.tag)
+  assert.deepEqual(r.state.release.assets, [])
+  assert.deepEqual(r.writes, ["update"])
+  await revise({ built: f.built, ...r, previousCandidate: f.previousCandidate, root: f.root })
+  assert.deepEqual(r.writes, ["update"])
+  await stage({ built: f.built, ...r })
+  await activate({ built: f.built, ...r })
+})
+
+test("draft revision rejects distributed, staged, unexpected and active-version states", async t => {
+  const f = revisedCandidate(t)
+  const cases = [
+    ["published", r => { r.state.release.draft = false }, /untagged empty draft/],
+    ["tagged", r => { r.state.tag = f.previousCandidate }, /untagged empty draft/],
+    ["nonempty", r => { r.state.release.assets.push({ name: "release.json" }) }, /untagged empty draft/],
+    ["wrong version", r => { r.state.release.tag_name = "v0.0.1" }, /untagged empty draft/],
+    ["unexpected candidate", r => { r.state.release.target_commitish = "a".repeat(40) }, /expected previous candidate/],
+    ["same active version", r => { r.state.active_version = f.built.plan.version }, /newer than the publicly active/],
+    ["newer active version", r => { r.state.active_version = "99.0.0" }, /newer than the publicly active/],
+    ["unknown active version", r => { r.state.active_version = undefined }, /newer than the publicly active/],
+  ]
+  for (const [name, change, error] of cases) await t.test(name, async () => {
+    const r = revisionRemote(f); change(r)
+    await assert.rejects(revise({ built: f.built, ...r, previousCandidate: f.previousCandidate, root: f.root }), error)
+    assert.deepEqual(r.writes, [])
+  })
+})
+
+test("draft revision requires the prior committed candidate to have the same version", async t => {
+  const f = revisedCandidate(t), r = revisionRemote(f), previousCandidate = f.previousCandidate
+  const manifest = path.join(f.root, "plugins/signalsurf/plugin.json"), value = JSON.parse(readFileSync(manifest))
+  value.version = "1.0.0"; writeFileSync(manifest, JSON.stringify(value))
+  f.git("add", "."); f.git("-c", "user.name=Package Fixture", "-c", "user.email=fixture@example.com", "commit", "-qm", "Other draft version")
+  const differentVersion = f.git("rev-parse", "HEAD")
+  await assert.rejects(revise({ built: f.built, ...r, previousCandidate: differentVersion, root: f.root }), /retain the same version/)
+  await assert.rejects(revise({ built: f.built, ...r, previousCandidate: "HEAD", root: f.root }), /explicit previous candidate/)
+  await assert.rejects(revise({ built: f.built, ...r, previousCandidate, notes: "", root: f.root }), /reviewed user-facing/)
+  assert.deepEqual(r.writes, [])
+})
+
+test("a lost revision response is reconciled without replaying its update", async t => {
+  const f = revisedCandidate(t), r = revisionRemote(f), update = r.remote.update
+  r.remote.update = async (...args) => { await update(...args); throw new Error("response lost") }
+  await assert.rejects(revise({ built: f.built, ...r, previousCandidate: f.previousCandidate, root: f.root }), /response lost/)
+  assert.equal(r.state.release.target_commitish, f.candidate)
+  await revise({ built: f.built, ...r, previousCandidate: f.previousCandidate, root: f.root })
+  assert.deepEqual(r.writes, ["update"])
+})
+
+test("draft revision cannot report success until the new candidate reads back", async t => {
+  const f = revisedCandidate(t), r = revisionRemote(f)
+  r.remote.update = async () => { r.writes.push("update") }
+  await assert.rejects(revise({ built: f.built, ...r, previousCandidate: f.previousCandidate, root: f.root }), /identity differs/)
+  assert.deepEqual(r.writes, ["update"])
+})
+
+test("GitHub draft revision patches the exact release once with the corrected candidate and notes", async t => {
+  const f = revisedCandidate(t), r = githubFixture(f.built)
+  r.state.release.target_commitish = f.previousCandidate
+  Object.assign(r.state.release, releasePresentation(f.previousBuilt.plan, r.notes))
+  await revise({ built: f.built, ...r, previousCandidate: f.previousCandidate, root: f.root })
+  assert.equal(r.state.release.target_commitish, f.candidate)
+  assert.deepEqual(r.state.release.assets, [])
+  assert.deepEqual(r.writes, ["update"])
+  assert.deepEqual(r.calls.filter(args => args[2] === "PATCH").map(args => args[3]), [`repos/${REPO}/releases/1`])
+})
+
 test("GitHub tag 404 finds an existing draft on a later listing page and resumes without creating it", async t => {
   const f = releaseCandidate(t), built = build(f.candidate, f.root), r = githubFixture(built)
+  Object.assign(r.state.release, releasePresentation(built.plan, r.notes))
   const state = await stage({ built, ...r })
   assert.equal(state.release.id, 1)
   assert.equal(state.release.draft, true)
@@ -182,7 +353,7 @@ test("an ambiguous upload is read back before a separate invocation resumes", as
 
 test("an ambiguous draft creation is not replayed", async t => {
   const f = releaseCandidate(t), built = build(f.candidate, f.root), r = fake(built), create = r.remote.create
-  r.remote.create = async plan => { await create(plan); throw new Error("response lost") }
+  r.remote.create = async (...args) => { await create(...args); throw new Error("response lost") }
   await assert.rejects(stage({ built, ...r }), /response lost/)
   await stage({ built, ...r })
   assert.equal(r.writes.filter(value => value === "create").length, 1)
@@ -226,7 +397,6 @@ test("unrelated prepared receipt cannot be relabeled to another commit", t => {
   const receipt = JSON.parse(readFileSync(path.join(out, "release.json")))
   receipt.candidate = f.git("rev-parse", "HEAD")
   writeFileSync(path.join(out, "release.json"), JSON.stringify(receipt))
-  // Candidate identity is part of the receipt: exact requested SHA must still be supplied.
   assert.throws(() => verify({ directory: out, candidate: f.candidate, root: f.root }), /does not match/)
   assert.equal(inspect instanceof Function, true)
 })
