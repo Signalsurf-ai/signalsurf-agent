@@ -1,0 +1,7 @@
+/evals/results/
+/evals/transcripts/
+/evals/receipts/
+/evals/debug/
+*.jsonl
+*.ndjson
+*.log

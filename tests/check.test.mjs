@@ -1,4 +1,5 @@
 import assert from "node:assert/strict"
+import { spawnSync } from "node:child_process"
 import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from "node:fs"
 import { tmpdir } from "node:os"
 import path from "node:path"
@@ -49,6 +50,73 @@ for (const [name, mutate, expected] of [
     mkdirSync(path.join(root, "docs"), { recursive: true })
     mutate(root)
     assert.match(check(root).join("\n"), expected)
+  })
+}
+
+for (const file of ["evals/results/run.json", "evals/run.json", "docs/transcripts/run.json", "docs/debug/run.txt", "docs/session.jsonl", "docs/session.log", "docs/renamed-run.json"]) {
+  test(`rejects raw execution artifact ${file} without exposing its content`, t => {
+    const root = fixture(t), value = "Synthetic diagnostic payload that must stay private"
+    mkdirSync(path.dirname(path.join(root, file)), { recursive: true })
+    writeFileSync(path.join(root, file), JSON.stringify({ processEvidence: { stdout: value }, results: [] }))
+    const output = check(root).join("\n")
+    assert.match(output, /raw execution artifacts|unexpected public eval file|private execution diagnostics/)
+    assert.equal(output.includes(value), false)
+  })
+}
+
+for (const [file, mutate] of [
+  ["routing-cases.json", value => value.processEvidence = { invocation: "Synthetic private process invocation" }],
+  ["routing-cases.json", value => value.cases[0].context.processEvidence = { invocation: "Synthetic private process invocation" }],
+  ["trial-receipt.example.json", value => value.results[0].modelUsage = { costUSD: 0.42 }],
+  ["worked-examples.json", value => value.privateDiagnostic = "Synthetic private process invocation"],
+]) {
+  test(`rejects unexpected diagnostics in public fixture ${file}`, t => {
+    const root = fixture(t)
+    editJson(root, `evals/${file}`, mutate)
+    const output = check(root).join("\n")
+    assert.match(output, /unexpected diagnostic data in public synthetic fixture|private execution diagnostics/)
+    assert.equal(output.includes("Synthetic private process invocation"), false)
+  })
+}
+
+test("private receipt validation accepts diagnostics only from outside the public checkout", t => {
+  const root = fixture(t), privateRoot = mkdtempSync(path.join(tmpdir(), "signalsurf-private-trial-"))
+  t.after(() => rmSync(privateRoot, { recursive: true, force: true }))
+  const receipt = JSON.parse(readFileSync(path.join(root, "evals/trial-receipt.example.json"), "utf8"))
+  receipt.processEvidence = { stdout: "Synthetic private diagnostic content" }
+  const outside = path.join(privateRoot, "trial.json"), inside = path.join(root, "evals/trial.json")
+  for (const file of [outside, inside]) writeFileSync(file, JSON.stringify(receipt))
+  const validate = file => spawnSync(process.execPath, [path.join(root, "evals/check.mjs"), "--result", file], { encoding: "utf8" })
+  const external = validate(outside)
+  assert.equal(external.status, 0, external.stderr)
+  assert.match(external.stdout, /Validated receipt structure/)
+  const local = validate(inside)
+  assert.notEqual(local.status, 0)
+  assert.match(local.stderr, /Raw trial receipts must remain outside the public checkout/)
+  assert.equal(local.stderr.includes(receipt.processEvidence.stdout), false)
+})
+
+test("rejects a trial receipt renamed as ordinary documentation", t => {
+  const root = fixture(t)
+  writeFileSync(path.join(root, "docs/review.json"), readFileSync(path.join(root, "evals/trial-receipt.example.json")))
+  assert.match(check(root).join("\n"), /raw trial receipts belong outside/)
+})
+
+test("the public receipt example cannot be replaced with a completed run", t => {
+  const root = fixture(t)
+  editJson(root, "evals/trial-receipt.example.json", value => {
+    value.model = "synthetic-executed-model"
+    value.results[0].verdict = "pass"
+    value.results[0].response = "Synthetic completed trial response"
+  })
+  assert.match(check(root).join("\n"), /keep the public example unexecuted/)
+})
+
+for (const result of [null, { privateDiagnostic: "Synthetic private result marker" }]) {
+  test(`rejects an invalid receipt example result ${result === null ? "null" : "with extra fields"}`, t => {
+    const root = fixture(t)
+    editJson(root, "evals/trial-receipt.example.json", value => value.results = [result])
+    assert.match(check(root).join("\n"), /keep the public example unexecuted/)
   })
 }
 

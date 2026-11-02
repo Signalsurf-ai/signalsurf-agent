@@ -39,31 +39,13 @@ integration checks; their copies are not another editable source for this plugin
 Ordinary package maintenance does not require private-repository synchronization.
 Package checks do not attest a consumer's integration or deployed MCP behavior.
 
-## Measured reading paths
+## Reading paths
 
-The baseline is public commit `79e795db1d76597fadb8863d89019d099c1437fb`.
-`evals/reading-paths.json` retains exact scenario files and original counts.
-Run `node evals/check.mjs` for current values; count shared contract/freshness and
-every conditionally required file once. These are document bytes and
-whitespace-delimited words, not model token or latency measurements.
-
-The following measurements are the 0.7.16 quality candidate snapshot, before the
-0.8.0 shared Memory contract. Run the command above for the current candidate;
-these historical values do not describe the added onboarding/Memory guidance.
-
-| Scenario | Baseline bytes | 0.7.16 bytes | Baseline words | 0.7.16 words |
-| --- | ---: | ---: | ---: | ---: |
-| Ordinary Records, direct | 28,278 | 14,847 | 3,938 | 1,958 |
-| Keyword search, direct | 27,913 | 18,695 | 3,879 | 2,497 |
-| Connections, direct | 22,142 | 13,031 | 3,093 | 1,746 |
-| Exact List Enrich, direct | 28,278 | 17,989 | 3,938 | 2,401 |
-| Uncertain List deletion, including recovery example | 28,278 | 17,836 | 3,938 | 2,387 |
-| Standalone Writing, direct | 11,809 | 11,809 | 1,535 | 1,535 |
-
-The root-routed variants include the universal contract and root once; the checker
-also reports these. Standalone Writing deliberately preserves its independent
-path. Added worked examples are conditional and synthetic; their procedure
-fixtures pin documented names/actions, not live server input schemas.
+`evals/reading-paths.json` defines the public synthetic reading scenarios.
+Run `node evals/check.mjs` to measure current document bytes and words, counting
+shared guidance and each conditionally required file once. These source
+measurements do not establish model-token, cost or latency savings. Direct
+focused entry and standalone Writing retain their independent reading paths.
 
 ## Proof boundaries
 
@@ -78,4 +60,4 @@ after behavior and preserve failed/unavailable evidence. A real model run in a
 read-only agent runtime must name that runtime; do not relabel it as a Claude,
 Codex or Cursor host journey. Keep supported-host install/OAuth proof separate.
 
-Dated bounded model trials and their limitations are recorded in [quality evidence](quality-evidence.md).
+Follow the [public evidence policy](quality-evidence.md) when publishing reviewed summaries; keep raw execution records outside this repository.
