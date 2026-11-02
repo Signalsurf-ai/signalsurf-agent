@@ -8,6 +8,9 @@ in `plugins/signalsurf/skills`, not engineering or release procedures.
 
 - Keep public instructions in English and usable without private source, internal
   trackers, employee paths, credentials or customer data.
+- Keep raw eval results, transcripts, host/process diagnostics and trial receipts
+  in private storage outside this public checkout. Publish only reviewed summaries
+  and synthetic fixtures; a valid private receipt is not publication approval.
 - Preserve the plugin path `plugins/signalsurf` and supported host manifest formats.
   Keep maintainer tooling outside the shipped Skill discovery directory.
 - Preserve authorization, exact retry/reconciliation, confirmation and result-state

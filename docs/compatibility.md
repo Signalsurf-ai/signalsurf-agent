@@ -25,50 +25,25 @@ commands do not establish SignalSurf's multi-Skill package completeness.
 
 ## Evidence record
 
-For each tested route record the date and timezone, exact host/installer version,
-public commit, plugin version/digest, installed scope, command or UI path, actual
-result and remaining gap. Keep these columns distinct:
+These historical checks retain their tested versions and scope. They do not
+establish installation or live behavior for a newer package.
 
-| Route/version | Official contract | Static package | Fresh install | Update/reload | Disable/remove | OAuth | Workspace read |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| Claude Code 2.1.308 / plugin 0.7.15, 2026-10-22 America/Los_Angeles | CLI help and linked official docs | Published SHA-256 ZIP; intentionally wrong hash rejected before install | Passed HTTPS catalog install in isolated user config with Git unavailable | Candidate upgrade recorded separately | Disable/enable passed; final removal recorded separately | Not executed | Not executed |
-| Claude Code 2.1.308 / plugin 0.7.16, 2026-10-22 America/Los_Angeles | Same host contract; immutable raw HTTPS catalog | Anonymous release downloads match prepared bytes; all installed files, 14 Skills, references, MIT notice and one MCP registration match candidate `50190c4` | Passed with Git unavailable in isolated user config | Main-catalog upgrade and conversation reload pending activation at this snapshot; subsequent receipts belong to the linked release notes | Uninstall with `--keep-data` passed; unrelated fixtures and synthetic local data preserved | Not executed | Not executed |
-| Claude Code 2.1.312 / plugin 0.9.1, 2026-10-29 Asia/Taipei | CLI marketplace/install/list controls; candidate-pinned raw HTTPS catalog | All four anonymous release assets match candidate `38af1fe`; all 63 installed plugin files and 15 Skills match, with one expected HTTP MCP registration | Passed in a disposable user configuration | Installed version readback passed; upgrade and loaded-conversation behavior not executed | Not executed | Not executed | Not executed |
-| Raw remote MCP / native SDK, 2026-10-23 UTC; SDK version not specified in this summary | Streamable HTTP/OAuth; final SDK path used a consistent `mcp-method` hint | Maintainer acceptance followed the hosted onboarding delivery, [Agent #10](https://github.com/Signalsurf-ai/signalsurf-agent/pull/10) and [v0.8.0](https://github.com/Signalsurf-ai/signalsurf-agent/releases/tag/v0.8.0); this is not a plugin-install test | Not applicable: raw MCP installs no Skills | Not applicable: no plugin reload tested | OAuth revoked and local tokens removed; no plugin removal claimed | Real Google sign-in, SDK PKCE/state, consent and token exchange completed | Intended identity/context read; automatic Memory save/correction, fresh-process read/recall and App readback passed; see limits below |
-| ChatGPT-connected MCP host, 2026-10-27 UTC; host version not specified in this summary | Existing OAuth connection; older cached `find_capabilities` signature | Read-only live recovery check; no plugin installation or version claim | Not executed | Not executed | Not executed | Existing connection reused; sign-in not retested | `invoke_capability` retrieved an exact capability/action schema, then direct Memory recall and direct People Record list/get succeeded |
+| Route/version | Date and timezone | Observed result | Remaining limits |
+| --- | --- | --- | --- |
+| Claude Code 2.1.308 / plugin 0.7.15 | 2026-10-22 America/Los_Angeles | HTTPS install passed in disposable user configuration with Git unavailable; wrong archive hash rejected; disable/enable passed | Upgrade, final removal, OAuth and Workspace read not established by this check |
+| Claude Code 2.1.308 / plugin 0.7.16 | 2026-10-22 America/Los_Angeles | HTTPS fresh install passed with Git unavailable; installed files and MCP registration matched the published package; uninstall preserved synthetic local data | Update/reload, OAuth and Workspace read not established by this check |
+| Claude Code 2.1.312 / plugin 0.9.1 | 2026-10-29 Asia/Taipei | Anonymous assets and all 63 installed files matched the package; 15 Skills and one HTTP MCP registration; fresh install and version readback passed in disposable user configuration | Upgrade, loaded-conversation behavior, removal, OAuth and Workspace read not executed |
+| Raw remote MCP / native SDK | 2026-10-23 UTC | OAuth and authorized context reads passed; synthetic Memory save, correction, recall, App readback, exact-operation replay and confirmed forget were observed; authorization revoked afterward | SDK version unspecified; existing onboarded member; transport timeouts required reconciliation; no new-member bootstrap, plugin install, provider connection, Campaign delivery or arbitrary-host reliability claim |
+| ChatGPT-connected MCP host | 2026-10-27 UTC | Existing connection retrieved a current action schema, recalled Memory and read People Records | Host version unspecified; no fresh OAuth, plugin install/reload or Cursor workflow test |
 
-[0.7.16 release notes](https://github.com/Signalsurf-ai/signalsurf-agent/releases/tag/v0.7.16)
-retain the immutable candidate identity and any later main-activation/lifecycle
-receipts. A GitHub release-asset catalog URL was interpreted as a Git source by
-this host; the documented `raw.githubusercontent.com` catalog route passed.
+Use the documented raw HTTPS catalog for Claude Code. A GitHub release-asset
+catalog URL was interpreted as a Git source in the 2.1.308 check.
 
-Mark an inapplicable cell with a reason, such as “raw MCP installs no Skills” or
-“standalone writing does not access a Workspace.” Keep proof receipts in the
-release notes or linked public test artifacts, using synthetic examples only.
-Reuse unchanged receipts when their host, package content, scope and inputs still
-apply; rerun checks invalidated by a candidate. Do not maintain a second matrix.
-
-### Later integration evidence and limits
-
-The 2026-10-23 maintainer acceptance supplements the earlier package-only rows;
-it does not turn their unexecuted OAuth cells into passes. Automatic Memory upsert
-committed without a save confirmation, correction was read in a fresh SDK process,
-and canonical and visible App reads matched. Exact-operation retries replayed the
-original receipts. Confirmed forget removed the fixture from subsequent full
-reads, semantic recall and the loaded App UI; OAuth revocation completed cleanup.
-
-The tested member was already onboarding-complete. Some SDK notifications and
-initial writes timed out; committed writes were reconciled by their stable
-operation IDs. The final SDK transport used `mcp-method`; production CLI login and
-stable arbitrary-host transport were not established. No provider account was
-connected or Campaign activated/sent. This evidence does not establish a pristine
-first-member production bootstrap or a Cursor/Claude/Codex plugin installation.
-
-The 2026-10-27 check proves the existing cached-host recovery route and read-only
-Memory recall and direct People Record list/get in the stated ChatGPT connection. It does not establish Cursor's
-existing-Records-to-drafts workflow or installation/reload of candidate 0.8.2.
-Source, release and host observations retain their separate dates and scope; the
-linked PRs/releases identify components rather than serving as raw execution logs.
+Add reviewed summaries here with the date/timezone, exact tested versions,
+scope, result and remaining gaps. Raw execution records remain outside the
+public package under the [evidence policy](quality-evidence.md). Reuse proof only
+when its host, package content, scope and inputs still apply; rerun invalidated
+checks. Keep package, host lifecycle, OAuth and Workspace behavior distinct.
 
 ## Capability changes
 

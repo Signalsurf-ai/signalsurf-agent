@@ -42,10 +42,13 @@ connected accounts, customer data or normal host configuration.
    claim fails the case. Record the actual response, reads, proposed effects,
    rationale, failure and unavailable proof. Distinguish a proposed effect from
    an executed effect. Record failed before/passing after boundaries when observed.
-6. Save a receipt outside the shipped plugin using `trial-receipt.example.json`
-   as the shape. Run `node evals/check.mjs --result <receipt.json>` for structural
-   validation, then retain the review. A structurally valid receipt is not a
-   passing behavioral verdict. Do not publish private transcripts or access data.
+6. Save receipts, transcripts and process diagnostics in a private location outside
+   this public checkout, using `trial-receipt.example.json` as the shape. The
+   example stays synthetic; do not replace it with a completed trial. Run
+   `node evals/check.mjs --result <receipt.json>` for structural validation, then
+   retain the review. A structurally valid receipt is not a passing behavioral
+   verdict. Receipt validation accepts private execution metadata; it does not
+   approve that data for publication.
 
 Supported-host installation, OAuth, live schema, persisted product outcomes and
 provider delivery have separate proof. An unavailable host trial remains
@@ -61,3 +64,16 @@ each file once. The checker reports bytes and whitespace-delimited words, includ
 shared contract and freshness instructions. Model caching and tool transport can
 change actual usage; these are document measures only. A smaller root achieved by
 adding the same mandatory material behind more links is not an improvement.
+
+## Public source boundary
+
+The public eval inventory contains this guide, the static checker and contracts,
+synthetic routing cases and worked examples, capability-name fixtures, reading
+measurements and the unexecuted receipt example. `npm test` rejects other eval
+files, raw artifact paths and process diagnostics in these public JSON fixtures.
+
+Keep raw responses, transcripts, invocation settings, host configuration, usage,
+costs and execution logs in private storage outside the checkout, even when they
+contain no credential or customer data. Public evidence belongs in a reviewed
+summary containing the version, method, selected outcome and material limits.
+A public summary does not need the raw run record to be useful.

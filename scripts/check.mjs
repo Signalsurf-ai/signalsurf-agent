@@ -12,6 +12,29 @@ export const SEMVER = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/
 const REPOSITORY = "https://github.com/Signalsurf-ai/signalsurf-agent"
 const MCP = "https://mcp.signalsurf.ai/mcp"
 const ROOT_ENTRIES = new Set([".agents", ".claude-plugin", ".cursor-plugin", ".github", ".gitignore", ".gitattributes", "AGENTS.md", "CLAUDE.md", "CONTRIBUTING.md", "CODE_OF_CONDUCT.md", "GETTING_STARTED.md", "LICENSE", "NOTICE", "README.md", "SECURITY.md", "docs", "evals", "scripts", "tests", "package.json", "package-lock.json", "plugins"])
+const PUBLIC_EVAL_FILES = new Set(["README.md", "check.mjs", "contracts.mjs", "capability-fixture.json", "reading-paths.json", "routing-cases.json", "trial-receipt.example.json", "worked-examples.json"])
+const PUBLIC_EVAL_FIELDS = new Map([
+  ["capability-fixture.json", ["schemaVersion", "provenance", "capabilities"]],
+  ["reading-paths.json", ["schemaVersion", "baselineCommit", "measure", "scenarios"]],
+  ["routing-cases.json", ["schemaVersion", "baselineCommit", "scope", "cases"]],
+  ["trial-receipt.example.json", ["schemaVersion", "model", "host", "hostVersion", "snapshot", "patchDigest", "startedAt", "finishedAt", "reviewer", "executionMode", "realToolMutations", "results"]],
+  ["worked-examples.json", ["schemaVersion", "scope", "examples"]],
+])
+const PRIVATE_ARTIFACT_PATH = /(?:^|\/)(?:results|transcripts|receipts|debug|logs)(?:\/|\.(?:json|txt|log|jsonl|ndjson)$)|\.(?:log|jsonl|ndjson)$/i
+const PRIVATE_DIAGNOSTIC_FIELDS = new Set(["processEvidence", "modelUsage", "costUSD", "stdout", "stderr", "transcript", "rawTranscript", "hostSettings"])
+const hasPrivateDiagnostics = value => value !== null && typeof value === "object" && Object.entries(value).some(([key, child]) => PRIVATE_DIAGNOSTIC_FIELDS.has(key) || hasPrivateDiagnostics(child))
+const isTrialReceipt = value => value !== null && typeof value === "object" && typeof value.model === "string" && typeof value.host === "string" && Array.isArray(value.results)
+function isUnexecutedReceiptExample(value) {
+  const result = value.results[0]
+  if (!result || typeof result !== "object" || Array.isArray(result)) return false
+  const fields = ["caseId", "mode", "verdict", "readFiles", "proposedEffects", "observedEffects", "response", "rationale"]
+  return ["model", "host", "hostVersion", "patchDigest", "reviewer"].every(key => /^<[^<>]+>$/.test(value[key] ?? ""))
+    && value.realToolMutations === 0 && value.executionMode === "simulation" && value.results.length === 1
+    && Object.keys(result).every(key => fields.includes(key)) && result.verdict === "unavailable"
+    && ["readFiles", "proposedEffects", "observedEffects"].every(key => Array.isArray(result[key]) && result[key].length === 0)
+    && result.response === "Example shape only; no model response was collected."
+    && result.rationale === "No behavioral trial was run for this example receipt."
+}
 const SECRET_PATH = /(?:^|\/)(?:\.env(?:\.|$)|credentials?(?:\.|$)|id_(?:rsa|ed25519)(?:\.|$)|[^/]*\.(?:pem|p12|key)$)/i
 const SECRET_CONTENT = [/-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/, /\b(?:gh[pousr]_[A-Za-z0-9]{32,}|github_pat_[A-Za-z0-9_]{40,}|ssmcp_(?:live|rt)_[A-Za-z0-9_-]{16,})\b/, /\bsk_(?:live|test)_[A-Za-z0-9]{20,}\b/, /GOCSPX-[A-Za-z0-9_-]{20,}/, /\bwhsec_[A-Za-z0-9+/_-]{24,}={0,2}(?![A-Za-z0-9+/_=-])/, /\beyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\b/, /(?:^|\n)\s*(?:(?:env|export)\s+)?["']?(?:[A-Z0-9]+[_-])*(?:access[_-]?token|api[_-]?key|client[_-]?secret|cookie|password|private[_-]?key|refresh[_-]?token|secret|service[_-]?role[_-]?key|token|x-api-key)["']?\s*[:=]\s*["']?(?!\$\{?|<)[A-Za-z0-9+./_=-]{16,}/i]
 const PRIVATE_CONTENT = [/(?:\/Users\/|\/home\/)[A-Za-z0-9_.-]+\//, /https:\/\/(?:linear\.app\/signalsurf|github\.com\/Signalsurf-ai\/signalsurf-web)(?:\/|\b)/i]
@@ -90,6 +113,8 @@ export function check(root = ROOT, { catalog = true } = {}) {
     if (!ROOT_ENTRIES.has(file.split("/")[0])) problem(file, "unexpected repository root entry")
     if (stat.isSymbolicLink() || !stat.isFile()) { problem(file, "symlinks and special files are not distributable"); continue }
     if (SECRET_PATH.test(file)) problem(file, "secret-bearing filename")
+    if (PRIVATE_ARTIFACT_PATH.test(file)) problem(file, "raw execution artifacts belong outside the public checkout")
+    if (file.startsWith("evals/") && !PUBLIC_EVAL_FILES.has(file.slice(6))) problem(file, "unexpected public eval file; retain raw trials outside the public checkout")
     if (stat.size > (file.startsWith(`${PLUGIN}/`) ? 524288 : 2097152)) problem(file, "file exceeds package size budget")
     if (file.endsWith("/icon.png")) checkPngIcon(file, readFileSync(path.join(root, file)), problem)
     if (!/\.(?:png|jpg|jpeg|gif|webp|ico)$/i.test(file)) {
@@ -97,11 +122,22 @@ export function check(root = ROOT, { catalog = true } = {}) {
       contents.set(file, text)
       if (SECRET_CONTENT.some(pattern => pattern.test(text))) problem(file, "credential-shaped content (value redacted)")
       if (PRIVATE_CONTENT.some(pattern => pattern.test(text))) problem(file, "private source/tracking or machine path")
+      if (file.endsWith(".json")) {
+        let value
+        try { value = JSON.parse(text) } catch {}
+        if (hasPrivateDiagnostics(value)) problem(file, "private execution diagnostics are not public source (value redacted)")
+        if (isTrialReceipt(value) && (file !== "evals/trial-receipt.example.json" || !isUnexecutedReceiptExample(value))) problem(file, "raw trial receipts belong outside the public checkout; keep the public example unexecuted")
+      }
     }
     if (file.startsWith(`${PLUGIN}/`)) {
       const local = file.slice(PLUGIN.length + 1)
       if (!/^(?:LICENSE|NOTICE|README\.md|plugin\.json|mcp\.json|\.mcp\.json|\.(?:claude|codex|cursor)-plugin\/plugin\.json|scripts\/ensure-current\.mjs|assets\/icon\.png|skills\/[a-z-]+\/(?:SKILL\.md|agents\/openai\.yaml|assets\/icon\.png|references\/(?:[a-z0-9-]+\/)*[a-z0-9-]+\.md))$/.test(local)) problem(file, "unexpected plugin file")
     }
+  }
+  for (const [name, fields] of PUBLIC_EVAL_FIELDS) {
+    const file = `evals/${name}`, value = json(file)
+    if (!value) continue
+    if (Object.keys(value).some(key => !fields.includes(key))) problem(file, "unexpected diagnostic data in public synthetic fixture (value redacted)")
   }
   const versions = new Set()
   for (const name of MANIFESTS) {

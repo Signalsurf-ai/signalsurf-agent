@@ -211,28 +211,20 @@ For an already-installed older Skill, use the
 You can begin in your AI without visiting the Signalsurf dashboard first.
 Install or connect the Plugin using the host instructions above, then paste:
 
-> Help me get started with Signalsurf here. Use the onboarding Skill if
-> available and follow our conversation's language. Ask for my website and the
-> outcome I want, explain the relevant
-> capabilities, and interview me one question at a time. Reuse any saved
-> Workspace and Memory context before asking again. At each new request, recall
-> Memory for the current task before product reads or writes and apply relevant
-> saved facts and preferences without asking me to initiate the read. Guide me
-> through secure Signalsurf and provider authorization links when needed, then
-> return here. Execute the accepted setup and tasks here with authorized product
-> tools. If I ask for results in a Project Thread, post the finished result
-> without asking Surfer to repeat the task. Delegate background work only when
-> I ask for that execution.
-> Automatically save and update useful durable context in the correct authorized
-> User, Workspace or Project Memory, without asking me to approve each save. Read
-> existing blocks first, preserve unrelated facts and verify the saved result.
-> Keep private personal context and private chat history out of shared Memory.
-> Unless I choose another outcome, guide me from
-> Signal-based outbound or TAM mapping to a bounded People audience, connect
-> Email or LinkedIn, and prepare a Campaign. Obtain separate explicit approval
-> before activation or sending, and complete one accepted initial setup. Show the
-> exact confirmation before paid work, account changes or finishing onboarding.
-> Verify what was saved and connected; keep pending steps explicit.
+> Help me get started with Signalsurf here using its onboarding Skill.
+> Use our conversation's language, reuse saved context, and ask one relevant
+> question at a time about my website and goal. Guide me through secure
+> authorization when needed, then execute the accepted setup here.
+> Recall relevant Memory for each new task. Automatically save useful durable
+> facts in the correct authorized audience without per-item confirmation, reading
+> existing blocks and verifying saves. Keep private personal context and chat
+> history out of shared Memory.
+> Unless I choose another outcome, recommend a bounded audience and prepared
+> Campaign. Show the exact native confirmations before paid work, account
+> changes, onboarding completion, activation or sending. Connecting an account
+> does not authorize a send. Verify saved results and keep pending steps explicit.
+> If I ask for a Project result, post the finished work without asking Surfer to
+> repeat it. Delegate background work only when I ask for that execution.
 
 The prompt begins the conversation; your host must still support and authorize
 an MCP connection. Sign-in, Workspace consent, signup eligibility and Gmail or
@@ -246,15 +238,10 @@ does not approve sending. The AI reports the actual saved, connected, prepared,
 queued or delivered state and any remaining authorization.
 
 When switching between Claude, Codex and the App, select the same Workspace.
-Connected external agents with Memory read authority receive bounded Memory at
-initialization and refreshed `memoryContext` in successful product responses. The Skill recalls Memory for
-each new task with `memory_query` action `recall`, so older relevant facts can be
-found beyond the recent context window and applied without repeated interview
-questions. Project recall uses the exact selected authorized `projectId`; the
-App uses its native Memory context pipeline. Fresh revisions replace corrected
-or forgotten facts. The server cannot continuously poll an idle host or force
-a foreign model to use a response. Saved Memory and business resources continue
-across hosts; private host transcripts are not automatically imported.
+Authorized agents recall saved Memory for the current task; corrected or
+forgotten facts supersede old context. Saved business resources and Memory can
+continue across hosts. Private host transcripts are not automatically imported,
+and the server cannot force a host to use its responses.
 
 ## Verify without changing data
 
@@ -293,10 +280,10 @@ customer data, or session cookies.
 
 ## Reconnect or revoke
 
-Disconnect or log out of Signalsurf in your app, then reconnect and complete
-OAuth. Revoking the Signalsurf grant prevents new access tokens; already-issued
-access tokens expire within their short lifetime. Never paste tokens into chat,
-a shell command, an issue, or a support message.
+Use your app's connection controls to reconnect. See the separate
+[disconnect, uninstall and revoke steps](#disconnect-uninstall-and-revoke)
+before removing an installation or service grant. Never paste tokens into chat,
+a shell command, an issue or a support message.
 
 ## Disconnect, uninstall and revoke
 
@@ -399,10 +386,9 @@ not establish an authenticated session. Uninstall with
 `npm uninstall --global @signalsurf/cli`; handle stored credentials and service
 authorization through their respective logout/revocation controls.
 
-The published 0.3.1 package predates current source hardening for OAuth issuer
-changes and legacy credentials. Keep its configuration restricted to the official
-SignalSurf service; do not reuse stored credentials across issuers. A source test
-pass does not establish that these fixes are in the installed npm version.
+Keep CLI configuration restricted to the official SignalSurf service; do not
+reuse stored credentials across issuers. Plugin updates and source checks do not
+establish which fixes are present in an independently installed CLI version.
 
 The public [npm package](https://www.npmjs.com/package/@signalsurf/cli) and
 [compatibility record](docs/compatibility.md) identify tested versions. This
@@ -478,48 +464,33 @@ the same name takes precedence; organization policy may restrict local imports.
 
 ## Updates on use
 
-From version 0.7.1, every request using a root or focused SignalSurf Skill starts
-with a public release check. With Node.js 18+ and a writable installed plugin,
-the bundled updater automatically installs the complete newer package from one
-verified commit. The agent then reloads the root, shared and relevant focused
-guidance before continuing. Failed checks keep the installed package; source
-Git checkouts are preserved. Hosts with web reads but no writable installation
-load current guidance directly from the pinned public release and report that
-the local installation was not changed.
+Each request using a root or focused Skill checks the public guidance version.
+With Node.js 18+ and a writable installation, the bundled updater can replace
+the complete package from one verified commit. The agent reloads the relevant
+guidance before continuing. Failed checks preserve the installed package, and
+Git source checkouts are preserved. Managed hosts may load pinned public
+guidance without changing the installed package.
 
-An installation older than 0.7.1 needs one host-managed plugin update to receive
-this entry check. CLI users can use the commands above. Start a fresh chat after that initial
-update. Later per-request refreshes reload the relevant guidance in the current
-conversation; host version labels may remain cached until a new session.
-Raw MCP connections receive live tools and adapter instructions, without an
-installed plugin package to update. OAuth grants and hosted MCP deployment are
-independent of Skill updates.
+Installations older than 0.7.1 need one host-managed update to receive this check.
+Start a fresh chat after that update. A host's cached version label, installed
+files and guidance loaded in a chat are separate observations. Raw MCP has no
+installed Skill package; OAuth grants and hosted MCP deployment are independent
+of guidance updates.
 
 ### Grok Bot still loads an older Skill
 
-If reinstalling keeps returning an old version such as 0.2.2, that package
-predates the per-request freshness entrypoint. Reinstalling alone does not prove
-that the marketplace has published a newer package. The public GitHub release,
-the marketplace package, the installed manifest and the guidance already loaded
-in a chat are separate observations. Report the evidence for each; do not infer
-that Cursor's catalog is stale solely from the Bot's response.
-
-Start a fresh Grok Bot chat, attach Signalsurf with `@`, and send:
+Reinstalling does not prove a marketplace has published a newer package. Start
+a fresh Grok Bot chat, attach Signalsurf with `@`, and send:
 
 > Before using Signalsurf tools, read
 > https://raw.githubusercontent.com/Signalsurf-ai/signalsurf-agent/main/plugins/signalsurf/skills/signalsurf/references/freshness.md
-> and follow its pinned public guidance fallback. Load the root Skill, shared
-> operating contract and relevant focused guidance from the verified commit.
-> Report the public version and commit, and the installed version only if you
-> can inspect its manifest. Keep checking freshness on every Signalsurf request.
-> Loading guidance is not an installation update. Do not modify Workspace data.
+> and follow its pinned public guidance fallback. Report the public version and
+> commit, and the installed version only if its manifest is available. Loading
+> guidance is not an installation update. Do not modify Workspace data.
 
-This fallback works when the Bot can read the public web even if it cannot
-replace its managed plugin. If those reads fail, freshness remains unverified;
-the Bot must not claim it updated the installation. A local Cursor plugin
-installation does not update the cloud Bot. New MCP connections also receive
-the freshness reminder from the hosted server after that server change is
-deployed; this does not publish a new marketplace package.
+The fallback requires public web reads. If those fail, freshness remains
+unverified. A local Cursor installation does not update the cloud Bot; contact
+support when the managed package cannot be updated through the host.
 
 ## Documentation sources
 

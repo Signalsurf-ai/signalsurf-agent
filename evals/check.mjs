@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-// Structural fixtures and reading-path measurements, never a model-behavior scorer.
 import assert from 'node:assert/strict';
 import { lstatSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, realpathSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -60,7 +59,6 @@ for (const item of corpus.cases) {
 }
 for (const kind of ['positive', 'negative', 'ambiguous']) assert(corpus.cases.some(item => item.kind === kind));
 
-// These schemas are deliberately invented fixture data, never a deployed API catalog.
 const compatibilityScenarios = new Map([
   ['synthetic-schema-1', 'old-minimal-schema'],
   ['synthetic-schema-2', 'additive-optional-field'],
@@ -177,7 +175,6 @@ for (const example of examples.examples) {
   example.caseIds.forEach(id => assert(ids.has(id)));
   validateExample(example, capabilityFixture.capabilities);
 }
-// Negative envelopes prove the static boundary itself, not model compliance.
 const sample = examples.examples.find(example => example.id === 'draft-send');
 assert.throws(() => validateExample({ ...sample, claimedState: 'delivered' }, capabilityFixture.capabilities));
 const retry = examples.examples.find(example => example.id === 'exact-retry');
@@ -185,7 +182,6 @@ assert.throws(() => validateExample({ ...retry, retryOperationId: '<new-operatio
 assert.throws(() => validateExample({ ...retry, retryDispatched: true }, capabilityFixture.capabilities));
 assert.throws(() => validateExample({ ...sample, requestedStage: 'research' }, capabilityFixture.capabilities));
 
-// Model-trial receipts are declarations/evidence to review, not substring tests.
 function validateReceipt(receipt) {
   assert.equal(receipt.schemaVersion, 1);
   for (const key of ['model', 'host', 'hostVersion', 'snapshot', 'startedAt', 'finishedAt', 'reviewer']) {
@@ -242,7 +238,9 @@ try {
 const resultIndex = process.argv.indexOf('--result');
 if (resultIndex !== -1) {
   assert(process.argv[resultIndex + 1], '--result needs a JSON receipt path');
-  const receipt = JSON.parse(readFileSync(resolve(process.argv[resultIndex + 1]), 'utf8'));
+  const receiptPath = realpathSync(resolve(process.argv[resultIndex + 1]));
+  assert(!receiptPath.startsWith(root + sep), 'Raw trial receipts must remain outside the public checkout');
+  const receipt = JSON.parse(readFileSync(receiptPath, 'utf8'));
   validateReceipt(receipt);
   console.log(`Validated receipt structure: ${receipt.results.length} reviewed simulations; host/OAuth proof remains separate.`);
 }

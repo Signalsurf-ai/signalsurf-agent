@@ -45,6 +45,16 @@ acceptance. Run read-only product checks only against an authorized test account
 The updater preserves Git source checkouts; do not test replacement against your
 source directory or another user's installation.
 
+## Public evidence
+
+Keep model responses, trial receipts, transcripts, host configuration, invocation
+settings, usage, costs and execution logs in private storage outside this checkout.
+This applies even when a run uses synthetic data and contains no credential.
+Publish only reviewed summaries of the version, method, selected outcome and
+limits. The synthetic eval corpus and unexecuted receipt example remain public;
+follow [the eval guide](evals/README.md) for private trial validation. Package
+checks reject raw artifact paths and unexpected eval files or diagnostics.
+
 ## Review and release ownership
 
 The maintainers listed in [CODEOWNERS](.github/CODEOWNERS) review package changes,
