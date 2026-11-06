@@ -33,8 +33,10 @@ measurements do not establish a general task-success or cost improvement.
   the returned access information before concluding a feature is absent.
 - Use the served read/write tool names returned by discovery. Conversation
   history has separate Inbox, Phone and Meeting readers with distinct IDs.
-- Argument errors identify missing fields and supply a schema-validated example.
-  Replace example values with real returned IDs and user-authorized values.
+- Argument errors can identify missing fields and return a schema-validated
+  example when one can be generated within the response budget. Replace example
+  values with real returned IDs and user-authorized values; load the exact live
+  action schema when an example is unavailable.
 - Reconnect or refresh tools as the host requires. Update the complete SignalSurf
   plugin for revised Skills, then start a new conversation or reload guidance.
 
