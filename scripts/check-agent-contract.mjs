@@ -19,7 +19,14 @@ export function contractIndex(snapshot, source) {
     assert(index.has(served.canonical), `Unknown canonical tool ${served.canonical}`)
     assert(!index.has(name), `Duplicate served tool ${name}`)
     assert(served.actions.length > 0, `Empty served tool ${name}`)
-    for (const action of served.actions) assert(index.get(served.canonical).includes(action), `Unknown served action ${name}.${action}`)
+    const prefix = served.canonical === "sender_manage" ? "sender" : served.canonical
+    assert([`${prefix}_read`, `${prefix}_write`].includes(name), `Unexpected served name ${name}`)
+    for (const action of served.actions) {
+      const canonical = snapshot.tools.find(tool => tool.name === served.canonical).actions.find(candidate => candidate.name === action)
+      assert(canonical, `Unknown served action ${name}.${action}`)
+      const readOnly = canonical.policy.sideEffect === "none" && !canonical.policy.readOnlyWhen
+      assert.equal(name.endsWith("_read"), readOnly, `Served access disagrees with canonical policy for ${name}.${action}`)
+    }
     index.set(name, served.actions)
     partitions.set(served.canonical, [...(partitions.get(served.canonical) ?? []), ...served.actions])
   }

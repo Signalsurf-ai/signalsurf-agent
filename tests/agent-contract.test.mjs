@@ -26,6 +26,10 @@ test("served aliases cannot invent, omit or overlap canonical actions", () => {
     value => value.servedTools.workflow_templates_read.actions.push("invented_action"),
     value => value.servedTools.workflow_templates_read.actions.pop(),
     value => value.servedTools.workflow_templates_write.actions.push("search"),
+    value => {
+      value.servedTools.workflow_templates_read.actions = ["apply"]
+      value.servedTools.workflow_templates_write.actions = ["describe", "search", "get"]
+    },
   ]) {
     const changed = structuredClone(source)
     mutate(changed)
