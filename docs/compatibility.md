@@ -45,6 +45,21 @@ public package under the [evidence policy](quality-evidence.md). Reuse proof onl
 when its host, package content, scope and inputs still apply; rerun invalidated
 checks. Keep package, host lifecycle, OAuth and Workspace behavior distinct.
 
+## Guidance contract check, November 7, 2026 (Asia/Taipei)
+
+The prepared 0.9.3 guidance uses the public canonical contract snapshot pinned in
+[the source record](contracts/source.json). Its digest was recomputed and matched
+the public response's digest and ETag. Authenticated read-only capability discovery
+separately confirmed all seven read/write tool pairs and their action partitions.
+This inspected metadata only: no send, call, setting change or provider execution
+was performed. The package checks retire stale conversation/phone/sync references;
+new host installation, loaded-conversation behavior and fresh OAuth acceptance
+remain unverified for this candidate.
+
+See the [MCP interface update](mcp-interface-update.md) for bounded engineering
+measurements and their limitations. These do not qualify the synthetic task
+baseline as a model benchmark.
+
 ## Capability changes
 
 Discover current capabilities and their input schemas before product work.

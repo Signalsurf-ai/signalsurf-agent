@@ -1,76 +1,779 @@
 {
   "schemaVersion": 1,
   "provenance": {
-    "kind": "published-procedure-names",
-    "repository": "https://github.com/Signalsurf-ai/signalsurf-agent",
-    "commit": "79e795db1d76597fadb8863d89019d099c1437fb",
-    "observedAt": "2026-10-22",
-    "scope": "Capability names/actions explicitly documented in the pinned public guidance. This is not a live server inputSchema or deployment compatibility assertion."
+    "kind": "published-agent-contract",
+    "url": "https://www.signalsurf.ai/.well-known/signalsurf-agent-contract.json",
+    "snapshotDigest": "312a173fac7e1e74d701fc028b574bfb77caae4ab23d692b6c34d8f02c512ca4",
+    "observedAt": "2026-11-07",
+    "scope": "Names and actions projected from the public canonical snapshot plus separately observed served read/write partitions. Not live input validation or an execution assertion."
   },
   "capabilities": {
-    "social_get": {
-      "actions": [],
-      "source": "plugins/signalsurf/skills/signalsurf/references/research-capture.md"
+    "workspace_query": {
+      "actions": [
+        "organizations",
+        "handoff"
+      ]
     },
-    "people_search": {
-      "actions": [],
-      "source": "plugins/signalsurf/skills/signalsurf/references/lead-sourcing.md"
+    "workspace_manage": {
+      "actions": [
+        "create",
+        "provision_customer",
+        "handoff",
+        "revoke_handoff"
+      ]
+    },
+    "onboarding_query": {
+      "actions": [
+        "research_progress",
+        "status"
+      ]
+    },
+    "inbound_query": {
+      "actions": [
+        "sites",
+        "site",
+        "inquiries",
+        "inquiry",
+        "inquiry_history",
+        "review_policy",
+        "analytics",
+        "traffic_performance",
+        "analytics_drilldown",
+        "evidence_runs",
+        "usage",
+        "visibility_portfolios",
+        "visibility_runs",
+        "visibility_preflight",
+        "visibility_run",
+        "visibility_cell",
+        "visibility_report",
+        "crawler_observations",
+        "crawler_health",
+        "compare_visibility",
+        "identity_configuration",
+        "identity_assertions",
+        "identity_assertion",
+        "maintenance_jobs"
+      ]
+    },
+    "inbound_manage": {
+      "actions": [
+        "site",
+        "inquiry",
+        "next_action",
+        "review_policy",
+        "usage_policy",
+        "verify_site",
+        "purge_site",
+        "run_evidence",
+        "visibility_portfolio",
+        "visibility_run",
+        "visibility_advance",
+        "visibility_extract",
+        "visibility_adjudication",
+        "identity_review",
+        "queue_maintenance"
+      ]
+    },
+    "onboarding_manage": {
+      "actions": [
+        "complete"
+      ]
+    },
+    "onboarding_run": {
+      "actions": [
+        "research_website"
+      ]
+    },
+    "dashboard_query": {
+      "actions": [
+        "catalog",
+        "query",
+        "get"
+      ]
+    },
+    "dashboard_manage": {
+      "actions": [
+        "save"
+      ]
+    },
+    "project_query": {
+      "actions": [
+        "list",
+        "search",
+        "get",
+        "conversation",
+        "threads",
+        "members",
+        "access",
+        "document"
+      ]
+    },
+    "project_manage": {
+      "actions": [
+        "create",
+        "update",
+        "member",
+        "access",
+        "post_channel_message",
+        "post_conversation_message"
+      ]
+    },
+    "routine_query": {
+      "actions": [
+        "list"
+      ]
+    },
+    "routine_manage": {
+      "actions": [
+        "configure"
+      ]
+    },
+    "commander_query": {
+      "actions": [
+        "capabilities",
+        "delegations",
+        "inspect"
+      ]
+    },
+    "commander_manage": {
+      "actions": [
+        "update"
+      ]
+    },
+    "project_file_authority": {
+      "actions": [
+        "manage",
+        "conflicts"
+      ]
+    },
+    "table_query": {
+      "actions": [
+        "list",
+        "get"
+      ]
+    },
+    "table_manage": {
+      "actions": [
+        "import_file",
+        "create",
+        "update_metadata",
+        "update_schema",
+        "delete",
+        "restore"
+      ]
+    },
+    "table_templates": {
+      "actions": [
+        "describe",
+        "search"
+      ]
+    },
+    "table_views": {
+      "actions": [
+        "describe_types",
+        "create",
+        "update",
+        "delete",
+        "update_chart"
+      ]
+    },
+    "item_query": {
+      "actions": [
+        "aggregate",
+        "list",
+        "search",
+        "get",
+        "field_history",
+        "recent_results",
+        "inspect_saved_result",
+        "workflow_posts"
+      ]
+    },
+    "item_manage": {
+      "actions": [
+        "create",
+        "update",
+        "delete"
+      ]
+    },
+    "object_query": {
+      "actions": [
+        "list",
+        "get",
+        "import_candidates"
+      ]
+    },
+    "object_manage": {
+      "actions": [
+        "create",
+        "update_metadata",
+        "update_schema",
+        "patch_schema",
+        "apply_template"
+      ]
+    },
+    "object_templates": {
+      "actions": [
+        "describe",
+        "search"
+      ]
+    },
+    "record_query": {
+      "actions": [
+        "list",
+        "search",
+        "get",
+        "field_history",
+        "activity"
+      ]
     },
     "record_manage": {
       "actions": [
         "create",
         "update",
+        "archive",
         "select"
-      ],
-      "source": "plugins/signalsurf/skills/records/SKILL.md"
+      ]
+    },
+    "list_query": {
+      "actions": [
+        "list",
+        "trash",
+        "get",
+        "records"
+      ]
+    },
+    "list_manage": {
+      "actions": [
+        "create",
+        "update_dynamic",
+        "rename",
+        "delete",
+        "restore",
+        "purge",
+        "update_entry_schema",
+        "patch_entry_schema",
+        "view_create",
+        "view_update",
+        "view_delete",
+        "people_source"
+      ]
+    },
+    "list_membership": {
+      "actions": [
+        "add",
+        "remove",
+        "restore",
+        "update",
+        "promote_dynamic"
+      ]
     },
     "enrichment_query": {
       "actions": [
-        "list"
-      ],
-      "source": "plugins/signalsurf/skills/records/SKILL.md"
+        "diagnostics",
+        "list",
+        "wait",
+        "status"
+      ]
+    },
+    "enrichment_manage": {
+      "actions": [
+        "enable",
+        "disable"
+      ]
     },
     "enrichment_run": {
       "actions": [
         "run"
-      ],
-      "source": "plugins/signalsurf/skills/records/SKILL.md"
+      ]
+    },
+    "workflow_query": {
+      "actions": [
+        "connections",
+        "diagnostics",
+        "list",
+        "get",
+        "trash"
+      ]
+    },
+    "workflow_templates": {
+      "actions": [
+        "describe",
+        "search",
+        "get",
+        "apply"
+      ]
+    },
+    "workflow_authoring": {
+      "actions": [
+        "save_connection",
+        "manage",
+        "restore",
+        "edit_flows"
+      ]
+    },
+    "workflow_run": {
+      "actions": [
+        "run_connection",
+        "run",
+        "run_batch",
+        "run_node",
+        "list_runs",
+        "get_run",
+        "pipeline_status",
+        "action_history"
+      ]
+    },
+    "campaign_query": {
+      "actions": [
+        "diagnostics",
+        "list",
+        "get"
+      ]
+    },
+    "campaign_manage": {
+      "actions": [
+        "create",
+        "manage"
+      ]
     },
     "listening_query": {
       "actions": [
-        "post"
-      ],
-      "source": "plugins/signalsurf/skills/listening/SKILL.md"
+        "diagnostics",
+        "list",
+        "get",
+        "trash",
+        "posts",
+        "post",
+        "accounts"
+      ]
     },
-    "item_query": {
-      "actions": [],
-      "source": "plugins/signalsurf/skills/sheets/SKILL.md"
+    "listening_manage": {
+      "actions": [
+        "create",
+        "update",
+        "delete",
+        "restore",
+        "activate",
+        "import_post",
+        "engage_list"
+      ]
+    },
+    "listening_reply": {
+      "actions": [
+        "draft",
+        "send"
+      ]
+    },
+    "engagement_query": {
+      "actions": [
+        "list",
+        "get",
+        "inbox_conversation",
+        "inspect",
+        "source_quality"
+      ]
+    },
+    "engagement_manage": {
+      "actions": [
+        "autopilot",
+        "engagement_test",
+        "inbox_conversation",
+        "transition_follow_up"
+      ]
+    },
+    "outbox_query": {
+      "actions": [
+        "summary",
+        "list",
+        "get"
+      ]
+    },
+    "content_query": {
+      "actions": [
+        "diagnostics",
+        "accounts",
+        "posts",
+        "settings",
+        "analyze"
+      ]
+    },
+    "content_manage": {
+      "actions": [
+        "write",
+        "upload",
+        "unschedule",
+        "delete",
+        "settings",
+        "engage_list"
+      ]
+    },
+    "content_publish": {
+      "actions": [
+        "schedule",
+        "retry"
+      ]
+    },
+    "inbox_query": {
+      "actions": [
+        "search",
+        "get"
+      ]
+    },
+    "inbox_preferences": {
+      "actions": [
+        "get_style",
+        "manage_style"
+      ]
     },
     "message_draft": {
-      "actions": [],
-      "source": "plugins/signalsurf/skills/conversations/SKILL.md"
+      "actions": [
+        "for_contact"
+      ]
     },
     "message_send": {
-      "actions": [],
-      "source": "plugins/signalsurf/skills/conversations/SKILL.md"
+      "actions": [
+        "new_email",
+        "new_dm",
+        "reply",
+        "schedule",
+        "notification"
+      ]
     },
-    "routine_query": {
+    "phone_query": {
+      "actions": [
+        "search",
+        "get"
+      ]
+    },
+    "phone_manage": {
+      "actions": [
+        "prepare",
+        "start",
+        "end"
+      ]
+    },
+    "meeting_query": {
+      "actions": [
+        "search",
+        "get"
+      ]
+    },
+    "record_sync_preferences": {
+      "actions": [
+        "get",
+        "update"
+      ]
+    },
+    "meeting_manage": {
+      "actions": [
+        "disconnect_recorder",
+        "ensure_participant_record"
+      ]
+    },
+    "meeting_preferences": {
+      "actions": [
+        "list_calendars",
+        "get_recorder",
+        "update_recorder",
+        "manage_summary"
+      ]
+    },
+    "configured_tool_query": {
+      "actions": [
+        "list",
+        "describe",
+        "read"
+      ]
+    },
+    "connected_app_query": {
+      "actions": [
+        "list",
+        "describe",
+        "read"
+      ]
+    },
+    "connected_app_manage": {
+      "actions": [
+        "execute"
+      ]
+    },
+    "configured_tool_manage": {
+      "actions": [
+        "execute"
+      ]
+    },
+    "calendar_query": {
+      "actions": [
+        "availability",
+        "events"
+      ]
+    },
+    "calendar_manage": {
+      "actions": [
+        "create",
+        "update"
+      ]
+    },
+    "knowledge_query": {
+      "actions": [
+        "list_bases",
+        "list_documents",
+        "search",
+        "documents"
+      ]
+    },
+    "knowledge_manage": {
+      "actions": [
+        "create_base",
+        "save",
+        "document"
+      ]
+    },
+    "linkedin_query": {
+      "actions": [
+        "accounts",
+        "feed",
+        "search",
+        "user_posts",
+        "post"
+      ]
+    },
+    "linkedin_manage": {
+      "actions": [
+        "comment"
+      ]
+    },
+    "connection_query": {
+      "actions": [
+        "list",
+        "accounts",
+        "permissions",
+        "account_settings",
+        "linkedin_recent"
+      ]
+    },
+    "sender_query": {
+      "actions": [
+        "get_settings"
+      ]
+    },
+    "sender_infrastructure_query": {
+      "actions": [
+        "voice_incoming_route",
+        "plan_capacity",
+        "voice_purchase",
+        "voice_orders",
+        "voice_projects",
+        "search_domains",
+        "quote_services",
+        "setup",
+        "inspect",
+        "voice_status",
+        "voice_numbers",
+        "voice_quote",
+        "voice_setup"
+      ]
+    },
+    "sender_manage": {
+      "actions": [
+        "purchase_services",
+        "warmup_allocations",
+        "create_mailboxes",
+        "set_domain_autorenew",
+        "connect",
+        "voice_update_settings",
+        "voice_update_number",
+        "voice_cancel_rental",
+        "voice_cancel_order",
+        "update_settings"
+      ]
+    },
+    "integration_browse": {
+      "actions": [
+        "notion_targets",
+        "google_docs",
+        "google_presentations",
+        "google_spreadsheets",
+        "asana_workspaces",
+        "asana_projects"
+      ]
+    },
+    "integration_manage": {
+      "actions": [
+        "update",
+        "connection_permissions",
+        "disconnect_app",
+        "connect_account",
+        "sync_account",
+        "disconnect_account",
+        "account_settings"
+      ]
+    },
+    "skill_query": {
       "actions": [
         "list"
-      ],
-      "source": "plugins/signalsurf/skills/signalsurf/references/schedule-routing.md"
+      ]
     },
-    "routine_manage": {
+    "skill_manage": {
       "actions": [
-        "configure"
-      ],
-      "source": "plugins/signalsurf/skills/signalsurf/references/schedule-routing.md"
-    },
-    "list_manage": {
-      "actions": [
+        "create",
+        "update",
         "delete"
-      ],
-      "source": "plugins/signalsurf/skills/records/SKILL.md"
+      ]
+    },
+    "memory_query": {
+      "actions": [
+        "recall",
+        "read"
+      ]
+    },
+    "memory_manage": {
+      "actions": [
+        "upsert",
+        "forget"
+      ]
+    },
+    "people_enrich": {
+      "actions": [
+        "email",
+        "phone",
+        "linkedin",
+        "job_change"
+      ]
+    },
+    "knowledge_documents_query": {
+      "actions": [
+        "query"
+      ]
+    },
+    "knowledge_documents_manage": {
+      "actions": [
+        "write"
+      ]
+    },
+    "business_signal_search": {
+      "actions": [
+        "saved_company_technologies",
+        "company_technologies",
+        "hiring"
+      ]
+    },
+    "web_search": {
+      "actions": []
+    },
+    "web_fetch": {
+      "actions": []
+    },
+    "company_search": {
+      "actions": []
+    },
+    "people_search": {
+      "actions": []
+    },
+    "lookup_company_technologies": {
+      "actions": []
+    },
+    "search_hiring_signals": {
+      "actions": []
+    },
+    "social_search": {
+      "actions": []
+    },
+    "social_get": {
+      "actions": []
+    },
+    "table_views_read": {
+      "actions": [
+        "describe_types"
+      ]
+    },
+    "table_views_write": {
+      "actions": [
+        "create",
+        "update",
+        "delete",
+        "update_chart"
+      ]
+    },
+    "workflow_templates_read": {
+      "actions": [
+        "describe",
+        "search",
+        "get"
+      ]
+    },
+    "workflow_templates_write": {
+      "actions": [
+        "apply"
+      ]
+    },
+    "workflow_run_read": {
+      "actions": [
+        "list_runs",
+        "get_run",
+        "pipeline_status",
+        "action_history"
+      ]
+    },
+    "workflow_run_write": {
+      "actions": [
+        "run_connection",
+        "run",
+        "run_batch",
+        "run_node"
+      ]
+    },
+    "inbox_preferences_read": {
+      "actions": [
+        "get_style"
+      ]
+    },
+    "inbox_preferences_write": {
+      "actions": [
+        "manage_style"
+      ]
+    },
+    "record_sync_preferences_read": {
+      "actions": [
+        "get"
+      ]
+    },
+    "record_sync_preferences_write": {
+      "actions": [
+        "update"
+      ]
+    },
+    "meeting_preferences_read": {
+      "actions": [
+        "list_calendars",
+        "get_recorder"
+      ]
+    },
+    "meeting_preferences_write": {
+      "actions": [
+        "update_recorder",
+        "manage_summary"
+      ]
+    },
+    "sender_read": {
+      "actions": [
+        "connect"
+      ]
+    },
+    "sender_write": {
+      "actions": [
+        "purchase_services",
+        "warmup_allocations",
+        "create_mailboxes",
+        "set_domain_autorenew",
+        "voice_update_settings",
+        "voice_update_number",
+        "voice_cancel_rental",
+        "voice_cancel_order",
+        "update_settings"
+      ]
     }
   }
 }
