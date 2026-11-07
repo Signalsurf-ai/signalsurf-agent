@@ -200,7 +200,7 @@ export function check(root = ROOT, { catalog = true } = {}) {
     }
     if (skill === "projects" && !text.includes("](references/results.md)")) problem(file, "Projects Skill must route external result presentation")
     if (skill === "conversations") {
-      if (!text.includes("`conversations_query`") || /`(?:inbox_query|meeting_query)`/.test(text)) problem(file, "Conversations Skill must use the unified conversations_query reader")
+      if (!["inbox_query", "phone_query", "meeting_query"].every(name => text.includes(`\`${name}\``)) || /\bconversations_query\b/.test(text)) problem(file, "Conversations Skill must use the current source-specific readers")
       for (const reference of ["phone", "meeting-recorder"]) {
         if (!text.includes(`](references/${reference}.md)`)) problem(file, `Conversations Skill must route ${reference} guidance`)
       }

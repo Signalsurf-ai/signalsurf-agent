@@ -1,0 +1,113 @@
+{
+  "url": "https://www.signalsurf.ai/.well-known/signalsurf-agent-contract.json",
+  "observedAt": "2026-11-07",
+  "digest": "312a173fac7e1e74d701fc028b574bfb77caae4ab23d692b6c34d8f02c512ca4",
+  "scope": "Public canonical snapshot; served read/write names and action partitions separately observed through authenticated read-only capability discovery. This does not establish installed-host behavior or execution.",
+  "servedTools": {
+    "table_views_read": {
+      "canonical": "table_views",
+      "actions": [
+        "describe_types"
+      ]
+    },
+    "table_views_write": {
+      "canonical": "table_views",
+      "actions": [
+        "create",
+        "update",
+        "delete",
+        "update_chart"
+      ]
+    },
+    "workflow_templates_read": {
+      "canonical": "workflow_templates",
+      "actions": [
+        "describe",
+        "search",
+        "get"
+      ]
+    },
+    "workflow_templates_write": {
+      "canonical": "workflow_templates",
+      "actions": [
+        "apply"
+      ]
+    },
+    "workflow_run_read": {
+      "canonical": "workflow_run",
+      "actions": [
+        "list_runs",
+        "get_run",
+        "pipeline_status",
+        "action_history"
+      ]
+    },
+    "workflow_run_write": {
+      "canonical": "workflow_run",
+      "actions": [
+        "run_connection",
+        "run",
+        "run_batch",
+        "run_node"
+      ]
+    },
+    "inbox_preferences_read": {
+      "canonical": "inbox_preferences",
+      "actions": [
+        "get_style"
+      ]
+    },
+    "inbox_preferences_write": {
+      "canonical": "inbox_preferences",
+      "actions": [
+        "manage_style"
+      ]
+    },
+    "record_sync_preferences_read": {
+      "canonical": "record_sync_preferences",
+      "actions": [
+        "get"
+      ]
+    },
+    "record_sync_preferences_write": {
+      "canonical": "record_sync_preferences",
+      "actions": [
+        "update"
+      ]
+    },
+    "meeting_preferences_read": {
+      "canonical": "meeting_preferences",
+      "actions": [
+        "list_calendars",
+        "get_recorder"
+      ]
+    },
+    "meeting_preferences_write": {
+      "canonical": "meeting_preferences",
+      "actions": [
+        "update_recorder",
+        "manage_summary"
+      ]
+    },
+    "sender_read": {
+      "canonical": "sender_manage",
+      "actions": [
+        "connect"
+      ]
+    },
+    "sender_write": {
+      "canonical": "sender_manage",
+      "actions": [
+        "purchase_services",
+        "warmup_allocations",
+        "create_mailboxes",
+        "set_domain_autorenew",
+        "voice_update_settings",
+        "voice_update_number",
+        "voice_cancel_rental",
+        "voice_cancel_order",
+        "update_settings"
+      ]
+    }
+  }
+}

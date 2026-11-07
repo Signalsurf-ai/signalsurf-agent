@@ -6,11 +6,24 @@ credentials, model APIs, MCP or a host installation. Its negative envelopes reje
 queued-as-delivered, research-with-effects, a changed retry identity and an
 unreconciled retry. This proves those fixture boundaries, not agent behavior.
 
-`capability-fixture.json` pins capability/action names to the stated public guidance
-commit. It deliberately contains no invented live `inputSchema`. Worked examples
-are procedure envelopes, not copyable API arguments. A release must separately
-record which schemas/deployments were inspected; absence of that proof stays an
-explicit limitation. Do not call a real paid operation to validate an example.
+`capability-fixture.json` is a name/action projection of the pinned public
+[contract snapshot](../docs/contracts/agent-contract.json). Its
+[source record](../docs/contracts/source.json) stores the public URL, observed
+date, digest and separately observed served read/write action partitions.
+`node scripts/check-agent-contract.mjs` recomputes the snapshot digest, checks
+partition coverage, requires an exact fixture projection and scans shipped
+Markdown for retired tools, explicit dotted/singular-action references and
+unknown tool-shaped names. It does not recognize every possible prose reference
+or validate arbitrary JSON Schema inputs. Worked examples remain procedure
+envelopes, not copyable API arguments. Discover the exact live schema before
+execution; a pinned snapshot does not establish a grant or current deployment.
+
+To refresh, download the public URL with normal TLS verification, verify the
+advertised digest against SHA-256 of `JSON.stringify({version, tools, retired})`,
+review the contract changes and inspect affected served names through read-only
+capability discovery. Update the source record and regenerate the fixture from
+`capabilityProjection(contractIndex(snapshot, source))`; run `npm test` before
+review. Keep authenticated responses and Workspace identifiers outside this repo.
 
 ## Run a behavioral task trial
 

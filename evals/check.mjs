@@ -6,6 +6,7 @@ import { dirname, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validateExample } from './contracts.mjs';
 import { SKILLS } from '../scripts/check.mjs';
+import { checkAgentContract } from '../scripts/check-agent-contract.mjs';
 
 const root = realpathSync(resolve(dirname(fileURLToPath(import.meta.url)), '..'));
 const skillsRoot = resolve(root, 'plugins/signalsurf/skills');
@@ -162,8 +163,8 @@ const measured = paths.scenarios.map(scenario => {
 
 const capabilityFixture = readJson('capability-fixture.json');
 assert.equal(capabilityFixture.schemaVersion, 1);
-assert.equal(capabilityFixture.provenance.commit, corpus.baselineCommit);
-assert.equal(capabilityFixture.provenance.kind, 'published-procedure-names');
+checkAgentContract(root);
+assert.equal(capabilityFixture.provenance.kind, 'published-agent-contract');
 const examples = readJson('worked-examples.json');
 assert.equal(examples.schemaVersion, 1);
 const exampleIds = new Set();

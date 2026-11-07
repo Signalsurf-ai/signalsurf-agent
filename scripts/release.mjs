@@ -155,6 +155,53 @@ export async function activate({ built, remote, authorization, notes }) {
   return published
 }
 
+async function reviseStagedReceipt({ built, previousBuilt, remote, state, presentation, assertRevisable }) {
+  if (built.plan.plugin_tree !== previousBuilt.plan.plugin_tree) throw new Error("revision requires an untagged empty draft when plugin bytes change")
+  const packageNames = [...built.assets.keys()].filter(name => name !== "release.json")
+  for (const name of packageNames) if (!built.assets.get(name).equals(previousBuilt.assets.get(name))) throw new Error("staged revision requires unchanged package assets")
+  const releaseId = state.release.id
+  const validate = async current => {
+    assertRevisable(current)
+    if (current.release.id !== releaseId || ![previousBuilt.plan.candidate, built.plan.candidate].includes(current.release.target_commitish)) throw new Error("staged revision release identity changed")
+    const names = current.release.assets.map(asset => asset.name)
+    if (new Set(names).size !== names.length || names.some(name => !built.assets.has(name)) || packageNames.some(name => !names.includes(name))) throw new Error("staged revision requires complete unchanged package assets")
+    let oldReceipt
+    for (const asset of current.release.assets) {
+      const bytes = await remote.download(built.plan, asset)
+      if (!Buffer.isBuffer(bytes) || bytes.length !== asset.size) throw new Error(`staged asset size mismatch: ${asset.name}`)
+      if (asset.name === "release.json") {
+        if (bytes.equals(built.assets.get(asset.name))) continue
+        if (!bytes.equals(previousBuilt.assets.get(asset.name))) throw new Error("staged revision receipt does not match either known candidate")
+        oldReceipt = asset
+      } else if (!bytes.equals(built.assets.get(asset.name))) throw new Error(`staged asset mismatch: ${asset.name}`)
+    }
+    return oldReceipt
+  }
+  const oldReceipt = await validate(state)
+  if (oldReceipt) {
+    const current = await remote.read(built.plan)
+    const confirmed = await validate(current)
+    if (!confirmed || confirmed.id !== oldReceipt.id) throw new Error("staged receipt changed before removal")
+    await remote.removeAsset(built.plan, current.release, confirmed)
+    state = await remote.read(built.plan)
+    await validate(state)
+    if (state.release.assets.some(asset => asset.name === "release.json")) throw new Error("staged receipt removal did not read back")
+  }
+  if (state.release.target_commitish !== built.plan.candidate || state.release.name !== presentation.name || state.release.body !== presentation.body) {
+    await remote.update(built.plan, state.release, { ...presentation, target_commitish: built.plan.candidate })
+    state = await remote.read(built.plan)
+    await validate(state)
+  }
+  if (state.release.target_commitish !== built.plan.candidate) throw new Error("staged candidate update did not read back")
+  assertPresentation(state.release, presentation)
+  if (!state.release.assets.some(asset => asset.name === "release.json")) await remote.upload(built.plan, "release.json", built.assets.get("release.json"))
+  const revised = await inspect({ built, remote })
+  await validate(revised)
+  assertPresentation(revised.release, presentation)
+  if (!revised.release.assets.some(asset => asset.name === "release.json")) throw new Error("staged receipt upload did not read back")
+  return revised
+}
+
 export async function revise({ built, previousCandidate, remote, authorization, notes, root = ROOT }) {
   if (authorization !== `${REPO}@${built.plan.tag}`) throw new Error("explicit repository@tag authorization is required")
   assertCommittedCatalog(built)
@@ -166,10 +213,11 @@ export async function revise({ built, previousCandidate, remote, authorization, 
   if (previousVersion !== built.plan.version) throw new Error("draft revision must retain the same version")
   const state = await remote.read(built.plan)
   const assertRevisable = current => {
-    if (current.tag || !current.release?.draft || current.release.tag_name !== built.plan.tag || current.release.assets.length) throw new Error("revision requires an untagged empty draft for this exact version")
+    if (current.tag || !current.release?.draft || current.release.tag_name !== built.plan.tag) throw new Error("revision requires an untagged empty draft for this exact version")
     if (!versionAdvance(current.active_version, built.plan.version)) throw new Error("draft revision version must be newer than the publicly active main version")
   }
   assertRevisable(state)
+  if (state.release.assets.length) return reviseStagedReceipt({ built, previousBuilt: build(previousCandidate, root), remote, state, presentation, assertRevisable })
   if (state.release.target_commitish === built.plan.candidate) {
     assertPresentation(state.release, presentation)
     return inspect({ built, remote })
@@ -191,6 +239,7 @@ export function githubRemote(directory, { execute = execFileSync } = {}) {
     if (paginate) args.push("--paginate", "--slurp")
     try {
       const bytes = execute("gh", args, { input: input && JSON.stringify(input), maxBuffer: 16 * 1024 * 1024, stdio: ["pipe", "pipe", "pipe"] })
+      if (method === "DELETE" && bytes.length === 0) return null
       return binary ? bytes : JSON.parse(bytes)
     } catch (error) {
       if (method === "GET" && /HTTP 404/.test(String(error.stderr))) return null
@@ -224,7 +273,11 @@ export function githubRemote(directory, { execute = execFileSync } = {}) {
     async create(plan, presentation) {
       api(`repos/${REPO}/releases`, { method: "POST", input: { tag_name: plan.tag, target_commitish: plan.candidate, draft: true, ...presentation } })
     },
-    async update(_plan, release, changes) { api(`repos/${REPO}/releases/${release.id}`, { method: "PATCH", input: changes }) },
+    async update(plan, release, changes) { api(`repos/${REPO}/releases/${release.id}`, { method: "PATCH", input: { ...changes, tag_name: plan.tag } }) },
+    async removeAsset(plan, release, asset) {
+      if (!release.draft || release.tag_name !== plan.tag || asset.name !== "release.json") throw new Error("only a verified draft receipt can be removed")
+      api(`repos/${REPO}/releases/assets/${asset.id}`, { method: "DELETE" })
+    },
     async upload(plan, name, bytes) {
       const temporary = mkdtempSync(path.join(tmpdir(), "signalsurf-upload-"))
       const file = path.join(temporary, name)
@@ -233,7 +286,7 @@ export function githubRemote(directory, { execute = execFileSync } = {}) {
       catch { throw new Error("upload outcome is uncertain; run inspect before retrying (never use --clobber)") }
       finally { rmSync(temporary, { recursive: true, force: true }) }
     },
-    async publish(_plan, release) { api(`repos/${REPO}/releases/${release.id}`, { method: "PATCH", input: { draft: false } }) },
+    async publish(plan, release) { api(`repos/${REPO}/releases/${release.id}`, { method: "PATCH", input: { draft: false, tag_name: plan.tag, target_commitish: plan.candidate } }) },
   }
 }
 

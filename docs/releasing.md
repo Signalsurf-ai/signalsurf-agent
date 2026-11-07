@@ -125,7 +125,7 @@ without republishing or rewriting its metadata. Neither command pushes Git or
 merges a branch. Inspection runs inside both commands; use explicit `inspect`
 for recovery or an independent read-only check.
 
-## Revise an empty unpublished draft
+## Revise an unpublished draft
 
 A correction before staging assets does not need a new patch version. Prepare
 and verify the corrected candidate and catalog in new output directories. Then
@@ -135,14 +135,24 @@ explicitly reconcile the old draft:
 node scripts/release.mjs revise --candidate <new-full-candidate-SHA> --previous-candidate <old-full-candidate-SHA> --dir <new-preparation-directory> --notes-file <reviewed-notes.md> --authorize Signalsurf-ai/signalsurf-agent@v<VERSION>
 ```
 
-This is permitted only for the exact same-version draft, with no tag and zero
-assets, whose previous candidate matches the supplied SHA. The version must be
-newer than active `main`; a version already distributed there cannot be reused.
-The tool reads back the new identity before ordinary staging can continue.
-Published releases, tagged candidates, nonempty drafts and unknown identities
-remain blocked. Do not discard or replace their artifacts to satisfy this path.
-Resolve such states explicitly; a failed preparation does not automatically
-justify another public version.
+An empty draft can change its package while retaining the planned version. The
+draft must have no tag and its previous candidate must match the supplied SHA.
+The version must be newer than active `main`; an already distributed version
+cannot be reused.
+
+A staged draft can advance to a source-only correction when the plugin tree and
+all three package assets are byte-identical. The tool downloads and verifies the
+existing assets against both committed candidates, preserves the ZIP, marketplace
+and checksums, and replaces only `release.json` to bind the corrected source.
+The previous receipt remains reproducible from its explicit committed candidate.
+It reads back the same draft identity and corrected receipt before returning.
+After a lost response, reconcile actual state before resuming this exact revision;
+an already applied deletion, candidate update or receipt upload is not repeated.
+
+Published releases, tagged candidates, altered package bytes, incomplete package
+assets and unknown identities remain blocked. Do not delete a draft or replace
+its ZIP to force a revision. A preparation failure does not justify another
+public version.
 
 ## Complete and verify the user update
 

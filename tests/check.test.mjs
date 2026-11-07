@@ -160,14 +160,13 @@ test("keeps external result presentation reachable from Projects", t => {
 })
 
 for (const [name, edit] of [
-  ["missing unified reader", text => text.replaceAll("`conversations_query`", "the historical reader")],
-  ["legacy Inbox reader", text => `${text}\nUse \`inbox_query\` for history.\n`],
-  ["legacy Meeting reader", text => `${text}\nUse \`meeting_query\` for history.\n`],
+  ...["inbox_query", "phone_query", "meeting_query"].map(reader => [`missing ${reader}`, text => text.replaceAll(`\`${reader}\``, "the historical reader")]),
+  ["retired unified reader", text => `${text}\nUse \`conversations_query\` for history.\n`],
 ]) {
   test(`rejects Conversations history guidance with ${name}`, t => {
     const root = fixture(t)
     editSkill(root, "conversations", edit)
-    assert.match(check(root).join("\n"), /must use the unified conversations_query reader/)
+    assert.match(check(root).join("\n"), /must use the current source-specific readers/)
   })
 }
 

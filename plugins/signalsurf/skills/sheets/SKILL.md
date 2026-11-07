@@ -13,7 +13,7 @@ Sheets are flexible operational workspaces; they are not the durable identity-re
 
 1. Use `table_query` to resolve the Sheet and inspect its schema before row or schema work.
 2. Prefer `table_templates` before designing a common Sheet from scratch.
-3. Use `table_manage` for the container/schema, `table_views` for views/charts, and `item_query` / `item_manage` for rows, notes, and retained results.
+3. Use `table_manage` for the container/schema, `table_views_read` for supported view types and `table_views_write` for requested view/chart changes, and `item_query` / `item_manage` for rows, notes, and retained results.
 4. Preserve unknown fields and current view configuration. Read field history only for provenance or conflicts, not on every turn.
 5. A routine row edit needs no Thread. Business Sheet/row mutations carry top-level work `projectId`, independently of File placement or Surfer ownership. Preserve lease/revision conflict handling; use `project_file_authority` only for explicitly requested Project File grants, revision history or conflicts, never automatically to make context selection succeed.
 
