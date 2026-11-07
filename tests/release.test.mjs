@@ -34,6 +34,7 @@ function fake(built) {
     async download(_plan, asset) { return bytes.get(asset.name) },
     async create(plan, presentation) { writes.push("create"); state.release = { id: 1, tag_name: plan.tag, target_commitish: plan.candidate, draft: true, assets: [], ...presentation } },
     async update(_plan, release, changes) { assert.equal(release.id, state.release.id); writes.push("update"); Object.assign(state.release, changes) },
+    async removeAsset(_plan, release, asset) { assert.equal(release.id, state.release.id); writes.push(`delete:${asset.name}`); bytes.delete(asset.name); state.release.assets = state.release.assets.filter(value => value.id !== asset.id) },
     async upload(_plan, name, value) { writes.push(`upload:${name}`); bytes.set(name, value); state.release.assets.push({ id: state.release.assets.length + 1, name, size: value.length }) },
     async publish(plan) { writes.push("publish"); state.tag = plan.candidate; state.release.draft = false },
   }
@@ -58,6 +59,15 @@ function revisionRemote(f) {
   return r
 }
 
+function sourceOnlyCandidate(t) {
+  const f = releaseCandidate(t), previousCandidate = f.candidate, previousBuilt = build(previousCandidate, f.root)
+  const file = path.join(f.root, "README.md")
+  writeFileSync(file, `${readFileSync(file, "utf8")}\nSource-only candidate correction.\n`)
+  f.git("add", "."); f.git("-c", "user.name=Package Fixture", "-c", "user.email=fixture@example.com", "commit", "-qm", "Correct source presentation")
+  const candidate = f.git("rev-parse", "HEAD")
+  return { ...f, candidate, previousCandidate, previousBuilt, built: build(candidate, f.root) }
+}
+
 function githubFixture(built, { published = false, duplicate = false } = {}) {
   const r = fake(built), calls = [], prefix = `repos/${REPO}`
   r.state.tag = published ? built.plan.candidate : null
@@ -76,8 +86,17 @@ function githubFixture(built, { published = false, duplicate = false } = {}) {
     assert.equal(args[0], "api")
     const method = args[2], endpoint = args[3]
     if (method === "PATCH" && endpoint === `${prefix}/releases/1`) {
-      r.writes.push("update"); Object.assign(r.state.release, JSON.parse(options.input))
+      const changes = JSON.parse(options.input)
+      assert.equal(changes.tag_name, built.plan.tag)
+      r.writes.push("update"); Object.assign(r.state.release, changes)
       return Buffer.from(JSON.stringify(r.state.release))
+    }
+    if (method === "DELETE" && endpoint.startsWith(`${prefix}/releases/assets/`)) {
+      const asset = r.state.release.assets.find(value => String(value.id) === endpoint.split("/").at(-1))
+      assert.ok(asset)
+      r.writes.push(`delete:${asset.name}`); r.bytes.delete(asset.name)
+      r.state.release.assets = r.state.release.assets.filter(value => value.id !== asset.id)
+      return Buffer.alloc(0)
     }
     if (method !== "GET") { r.writes.push(method); throw new Error("unexpected GitHub mutation") }
     let value
@@ -235,6 +254,62 @@ test("an empty unpublished draft can move to a corrected candidate without consu
   assert.deepEqual(r.writes, ["update"])
   await stage({ built: f.built, ...r })
   await activate({ built: f.built, ...r })
+})
+
+test("a verified staged draft can refresh its source receipt without replacing package bytes", async t => {
+  const f = sourceOnlyCandidate(t), r = fake(f.previousBuilt)
+  await stage({ built: f.previousBuilt, ...r })
+  r.writes.length = 0
+  const immutable = [...r.bytes].filter(([name]) => name !== "release.json")
+  await revise({ built: f.built, ...r, previousCandidate: f.previousCandidate, root: f.root })
+  assert.equal(r.state.release.target_commitish, f.candidate)
+  assert.deepEqual(r.writes, ["delete:release.json", "update", "upload:release.json"])
+  for (const [name, bytes] of immutable) assert.deepEqual(r.bytes.get(name), bytes)
+  assert.equal(JSON.parse(r.bytes.get("release.json")).candidate, f.candidate)
+  await revise({ built: f.built, ...r, previousCandidate: f.previousCandidate, root: f.root })
+  assert.deepEqual(r.writes, ["delete:release.json", "update", "upload:release.json"])
+})
+
+test("staged receipt refresh refuses published, tagged, corrupt and changed package states", async t => {
+  const f = sourceOnlyCandidate(t)
+  for (const mutate of [
+    r => { r.state.release.draft = false },
+    r => { r.state.tag = f.previousCandidate },
+    r => { r.bytes.set("marketplace.json", Buffer.from("altered")) },
+    r => { r.bytes.set("release.json", Buffer.from("{}")) },
+    r => { r.state.release.assets.push({ id: 99, name: "unexpected", size: 1 }) },
+  ]) {
+    const r = fake(f.previousBuilt)
+    await stage({ built: f.previousBuilt, ...r }); r.writes.length = 0
+    mutate(r)
+    await assert.rejects(revise({ built: f.built, ...r, previousCandidate: f.previousCandidate, root: f.root }))
+    assert.deepEqual(r.writes, [])
+  }
+})
+
+test("staged receipt refresh reconciles lost deletion, update and upload responses", async t => {
+  const f = sourceOnlyCandidate(t)
+  for (const method of ["removeAsset", "update", "upload"]) {
+    const r = fake(f.previousBuilt)
+    await stage({ built: f.previousBuilt, ...r }); r.writes.length = 0
+    const original = r.remote[method]
+    r.remote[method] = async (...args) => { await original(...args); throw new Error("response lost") }
+    await assert.rejects(revise({ built: f.built, ...r, previousCandidate: f.previousCandidate, root: f.root }), /response lost/)
+    r.remote[method] = original
+    await revise({ built: f.built, ...r, previousCandidate: f.previousCandidate, root: f.root })
+    assert.deepEqual(r.writes, ["delete:release.json", "update", "upload:release.json"])
+    assert.equal(JSON.parse(r.bytes.get("release.json")).candidate, f.candidate)
+  }
+})
+
+test("GitHub removes only an exact draft receipt and accepts its empty deletion response", async t => {
+  const f = releaseCandidate(t), built = build(f.candidate, f.root), r = githubFixture(built)
+  r.state.release.assets = [{ id: 71, name: "release.json", size: 4 }]
+  r.bytes.set("release.json", Buffer.from("test"))
+  await r.remote.removeAsset(built.plan, r.state.release, r.state.release.assets[0])
+  assert.deepEqual(r.writes, ["delete:release.json"])
+  await assert.rejects(r.remote.removeAsset(built.plan, r.state.release, { id: 72, name: "SHA256SUMS" }), /only a verified draft receipt/)
+  assert.deepEqual(r.writes, ["delete:release.json"])
 })
 
 test("draft revision rejects distributed, staged, unexpected and active-version states", async t => {
