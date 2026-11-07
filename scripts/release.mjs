@@ -286,7 +286,7 @@ export function githubRemote(directory, { execute = execFileSync } = {}) {
       catch { throw new Error("upload outcome is uncertain; run inspect before retrying (never use --clobber)") }
       finally { rmSync(temporary, { recursive: true, force: true }) }
     },
-    async publish(_plan, release) { api(`repos/${REPO}/releases/${release.id}`, { method: "PATCH", input: { draft: false } }) },
+    async publish(plan, release) { api(`repos/${REPO}/releases/${release.id}`, { method: "PATCH", input: { draft: false, tag_name: plan.tag, target_commitish: plan.candidate } }) },
   }
 }
 

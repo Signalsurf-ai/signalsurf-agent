@@ -88,6 +88,10 @@ function githubFixture(built, { published = false, duplicate = false } = {}) {
     if (method === "PATCH" && endpoint === `${prefix}/releases/1`) {
       const changes = JSON.parse(options.input)
       assert.equal(changes.tag_name, built.plan.tag)
+      if (changes.draft === false) {
+        assert.equal(changes.target_commitish, built.plan.candidate)
+        r.state.tag = changes.target_commitish
+      }
       r.writes.push("update"); Object.assign(r.state.release, changes)
       return Buffer.from(JSON.stringify(r.state.release))
     }
@@ -310,6 +314,14 @@ test("GitHub removes only an exact draft receipt and accepts its empty deletion 
   assert.deepEqual(r.writes, ["delete:release.json"])
   await assert.rejects(r.remote.removeAsset(built.plan, r.state.release, { id: 72, name: "SHA256SUMS" }), /only a verified draft receipt/)
   assert.deepEqual(r.writes, ["delete:release.json"])
+})
+
+test("GitHub publication explicitly binds the version tag and candidate", async t => {
+  const f = releaseCandidate(t), built = build(f.candidate, f.root), r = githubFixture(built)
+  await r.remote.publish(built.plan, r.state.release)
+  assert.equal(r.state.tag, built.plan.candidate)
+  assert.equal(r.state.release.tag_name, built.plan.tag)
+  assert.equal(r.state.release.draft, false)
 })
 
 test("draft revision rejects distributed, staged, unexpected and active-version states", async t => {
