@@ -44,6 +44,8 @@ Paste this into your app:
 > unavailable listing, or unsupported feature, explain that specific blocker.
 > After I authorize the connection, verify access without changing data.
 
+For a short Claude Code installation-and-sign-in checklist that skips completed steps, use the [agent setup prompt](./GETTING_STARTED.md#claude-code-agent-setup-prompt).
+
 Reading a URL in chat does not itself install a plugin. The app must provide an
 installer and complete authorization. If your AI asks you to install Git, use
 the interface steps above or [troubleshooting](./GETTING_STARTED.md#troubleshooting).
