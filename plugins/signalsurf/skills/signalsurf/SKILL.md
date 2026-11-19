@@ -5,13 +5,14 @@ description: Route SignalSurf work when the desired outcome spans domains or is 
 
 # Working with SignalSurf
 
-Before every request using this Skill, follow [version check and automatic update](references/freshness.md). Read the [shared operating contract](references/operating-contract.md) unless already loaded; it owns member authority, context, confirmation, exact retries and result routing.
+For supplied-text writing use [Writing](../writing/SKILL.md) immediately. For requests using SignalSurf data or asking for an update, follow [version check and automatic update](references/freshness.md). Read the [shared operating contract](references/operating-contract.md) unless already loaded; it owns member authority, context, confirmation, exact retries and result routing.
 
 Select the requested outcome, not a tool's technical family. Use live `find_capabilities` for exact schemas; no Skill or Project context expands authorization. Load only the matching procedure and its conditional references. Direct focused entry remains valid.
 
 | Requested outcome | Procedure |
 | --- | --- |
 | Start or resume setup, interview the member and build an initial audience-to-Campaign outcome | [Onboarding](../onboarding/SKILL.md) |
+| Inquiries or first-touch UTM performance on the member’s own website | [Signals](../signals/SKILL.md) for first-party Inbound Sites |
 | One-off public keyword search or more rows from retained research | [Signals](../signals/SKILL.md) |
 | Known profile/posts research, with optional requested capture | [Research and capture](references/research-capture.md), then [Signals](../signals/SKILL.md); [Records](../records/SKILL.md) only for capture |
 | Company/People discovery from a source or existing Company List | [Lead sourcing](references/lead-sourcing.md), [Signals](../signals/SKILL.md), requested [Records](../records/SKILL.md) or [Sheets](../sheets/SKILL.md) destination |

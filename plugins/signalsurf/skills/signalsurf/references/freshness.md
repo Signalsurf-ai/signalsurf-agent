@@ -1,6 +1,12 @@
-# Check the installed Skill before every use
+# Check the installed Skill
 
-Canonical package: `https://github.com/Signalsurf-ai/signalsurf-agent`, branch `main`, directory `plugins/signalsurf`. Check once at the start of every user request using any SignalSurf Skill, including a focused Skill selected directly. Do not reuse a previous request's version check or treat a loaded conversation copy as current. Multiple Skill reads within that same request share its check.
+Canonical package: `https://github.com/Signalsurf-ai/signalsurf-agent`, branch `main`, directory `plugins/signalsurf`. For every request using product data or explicitly requesting an update, check once at the start, including for a focused Skill selected directly. For standalone Writing follow the supplied-text path below. Do not reuse a previous request's version check or treat a loaded conversation copy as current. Multiple Skill reads within that same request share its check.
+
+## Standalone writing with supplied text
+
+Use the bundled Writing instructions immediately. A Node host can read local status with `node "/absolute/path/to/signalsurf/scripts/ensure-current.mjs" --local-writing`. This reads the installed version and a successful version-check receipt for that installation, valid for 24 hours. It performs no network requests. If the result requests a background refresh and the host supports one, run the same command with `--check-writing-version` separately without waiting for it. This probes only the official manifest and caches a successful observation. A slow or unavailable network leaves the draft usable. A host without local commands can reuse its own successful pinned-guidance observation for the same period or use its available Writing guidance. An explicit request to update, or a switch to product work, follows the normal synchronous procedure below.
+
+## Product work and explicit updates
 
 For a host with local files and Node.js 18 or newer, resolve the plugin root from this Skill's installed path: it is the directory containing `plugin.json`, `skills` and `scripts`. Run this bundled command using its absolute path, without changing the current project's directory:
 
@@ -16,6 +22,8 @@ This command checks the latest public version on every invocation. If newer, it 
 - `source_checkout`: the directory is inside a Git checkout; automatic replacement preserves that source tree. Load current published guidance through the fallback and report that the source installation was preserved.
 - `unavailable`: keep the existing package. State that the update could not be verified; continue supported work with current live schemas and do not claim the Skill is latest. Use the fallback if web reads are available.
 - `recovery_required`: stop using the incomplete local installation. Report the returned recovery location and use the fallback; never delete the preserved previous package.
+
+If an update was interrupted and the installed directory is missing, run the recovery launcher beside that directory. For an installation named `signalsurf`, its command is `node "/absolute/path/to/.signalsurf.recover-v1.mjs"`. It restores the previous package only after verifying that the local update process has exited. After a restored result, use the installed updater again. Preserve the backup if recovery is unavailable. Installations using an older updater may need the host’s reinstall controls.
 
 ## Hosts with web reads but no writable local installation
 

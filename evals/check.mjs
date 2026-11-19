@@ -58,6 +58,7 @@ for (const item of corpus.cases) {
   nonemptyStrings(item.forbiddenEffects, `${item.id} forbiddenEffects`);
   assert(item.context && typeof item.context === 'object' && !Array.isArray(item.context));
 }
+assert.deepEqual([...new Set(corpus.cases.filter(item => item.modes.includes('direct')).map(item => item.entrypoint))].sort(), [...names].sort(), 'Each shipped Skill needs a direct-entry routing case');
 for (const kind of ['positive', 'negative', 'ambiguous']) assert(corpus.cases.some(item => item.kind === kind));
 
 const compatibilityScenarios = new Map([

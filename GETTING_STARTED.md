@@ -464,11 +464,11 @@ the same name takes precedence; organization policy may restrict local imports.
 
 ## Updates on use
 
-Each request using a root or focused Skill checks the public guidance version.
+Requests using SignalSurf data check the public guidance version. Standalone Writing uses installed guidance immediately and can refresh its 24-hour version receipt in the background.
 With Node.js 18+ and a writable installation, the bundled updater can replace
 the complete package from one verified commit. The agent reloads the relevant
 guidance before continuing. Failed checks preserve the installed package, and
-Git source checkouts are preserved. Managed hosts may load pinned public
+Git source checkouts are preserved. If an update interrupts the installation swap, run the sibling recovery launcher described in the [freshness guide](plugins/signalsurf/skills/signalsurf/references/freshness.md), then retry the installed updater. Managed hosts may load pinned public
 guidance without changing the installed package.
 
 Installations older than 0.7.1 need one host-managed update to receive this check.

@@ -737,7 +737,9 @@
         "signalsurf/references/freshness.md",
         "signalsurf/references/operating-contract.md"
       ],
-      "context": {},
+      "context": {
+        "conversationMode": "legacy_threads"
+      },
       "requiredOutcomes": [
         "Reuse the supplied exact threadId and post one compact correction.",
         "Exclude private reasoning, raw transcripts and receipts; reply in host afterward."
@@ -1835,7 +1837,8 @@
       "context": {
         "dataOrigin": "Entirely artificial offline fixture; no customer records or executed calls.",
         "target": "Exact authorized Project/Thread and Record references supplied.",
-        "observation": "After synthetic accepted handoff, the delegation is queued; no result exists."
+        "observation": "After synthetic accepted handoff, the delegation is queued; no result exists.",
+        "conversationMode": "legacy_threads"
       },
       "requiredOutcomes": [
         "Preserve the explicit background handoff: post the bounded task with wakeSurfer true, the exact target and the stored-data-only/no-send limits.",
@@ -1935,7 +1938,8 @@
       "context": {
         "dataOrigin": "Entirely artificial offline fixture; no customer data, executed calls or declared live product inputSchema.",
         "target": "An exact authorized same-objective Workspace, Project and Thread are supplied.",
-        "result": "The supported answer is two short sentences; no reusable document was requested."
+        "result": "The supported answer is two short sentences; no reusable document was requested.",
+        "conversationMode": "legacy_threads"
       },
       "requiredOutcomes": [
         "Discover the current post_channel_message schema and post the short answer once to the exact Thread with wakeSurfer false.",
@@ -2289,6 +2293,197 @@
         "retry_as_new_operation_without_reconciliation",
         "claim_forget_succeeded_without_receipt",
         "recreate_profile_from_retained_old_contents"
+      ]
+    },
+    {
+      "id": "project-persistent-new-result",
+      "kind": "positive",
+      "prompt": "Share this completed result in our Project.",
+      "entrypoint": "projects",
+      "modes": [
+        "direct",
+        "root"
+      ],
+      "allowedReads": [
+        "projects/SKILL.md",
+        "signalsurf/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md"
+      ],
+      "context": {
+        "conversationMode": "persistent",
+        "availableActions": [
+          "post_project_conversation_message"
+        ],
+        "operation": "new"
+      },
+      "requiredOutcomes": [
+        "Use the Project main conversation through the discovered project_manage post_conversation_message action without a threadId and with wakeSurfer false.",
+        "Verify the returned message before claiming publication."
+      ],
+      "forbiddenEffects": [
+        "search_legacy_threads",
+        "create_thread",
+        "wake_surfer"
+      ]
+    },
+    {
+      "id": "project-resume-after-cutover",
+      "kind": "positive",
+      "prompt": "Post my new follow-up in the same Project we used last month.",
+      "entrypoint": "projects",
+      "modes": [
+        "direct",
+        "root"
+      ],
+      "allowedReads": [
+        "projects/SKILL.md",
+        "signalsurf/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md"
+      ],
+      "context": {
+        "rememberedMode": "legacy_threads",
+        "rememberedThread": "old-thread",
+        "currentContext": {
+          "conversationMode": "persistent",
+          "availableActions": [
+            "post_project_conversation_message"
+          ]
+        }
+      },
+      "requiredOutcomes": [
+        "Refresh current context using only the Project selector.",
+        "Route this new follow-up to the main conversation without the old Thread ID."
+      ],
+      "forbiddenEffects": [
+        "post_new_occurrence_to_old_thread",
+        "claim_legacy_root_created"
+      ]
+    },
+    {
+      "id": "project-legacy-confirmed-replay",
+      "kind": "ambiguous",
+      "prompt": "Did the update I approved before migration go through? Recover the result.",
+      "entrypoint": "projects",
+      "modes": [
+        "direct",
+        "root"
+      ],
+      "allowedReads": [
+        "projects/SKILL.md",
+        "signalsurf/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md"
+      ],
+      "context": {
+        "originalAction": "post_channel_message",
+        "originalOperationId": "fixture-legacy-write",
+        "originalThreadId": "legacy-thread-fixture",
+        "originalPayload": "retained verbatim",
+        "originalOutcome": "unknown",
+        "conversationMode": "persistent"
+      },
+      "requiredOutcomes": [
+        "Reconcile the original receipt and, only if needed, replay the exact original action, operation ID, confirmation and payload.",
+        "Report the observed receipt or unresolved outcome."
+      ],
+      "forbiddenEffects": [
+        "convert_retry_to_main_conversation",
+        "change_operation_id",
+        "repeat_known_write"
+      ]
+    },
+    {
+      "id": "first-party-site-inquiries",
+      "kind": "positive",
+      "prompt": "Which first-touch UTM campaigns brought inquiries to our site last week? Just report what is available.",
+      "entrypoint": "signals",
+      "modes": [
+        "direct",
+        "root"
+      ],
+      "allowedReads": [
+        "signals/SKILL.md",
+        "signalsurf/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md"
+      ],
+      "context": {
+        "site": "selected authorized Site",
+        "access": "read",
+        "period": "last week"
+      },
+      "requiredOutcomes": [
+        "Inspect inbound_query for the chosen Site and read the requested first-touch UTM performance and inquiry evidence with current filters.",
+        "Report returned coverage and missing observations."
+      ],
+      "forbiddenEffects": [
+        "external_web_search",
+        "create_crm_record",
+        "change_policy",
+        "start_capture"
+      ]
+    },
+    {
+      "id": "first-party-confirmed-maintenance",
+      "kind": "ambiguous",
+      "prompt": "Run one bounded maintenance batch for this Site.",
+      "entrypoint": "signals",
+      "modes": [
+        "direct",
+        "root"
+      ],
+      "allowedReads": [
+        "signals/SKILL.md",
+        "signalsurf/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md"
+      ],
+      "context": {
+        "site": "current authorized Site",
+        "operation": "queue_maintenance",
+        "status": "confirmation_required",
+        "memberReply": "pending"
+      },
+      "requiredOutcomes": [
+        "Inspect current maintenance status and the live inbound_manage action queue_maintenance.",
+        "Present the bound preview and await confirmation before dispatch; distinguish accepted work from completion."
+      ],
+      "forbiddenEffects": [
+        "dispatch_unconfirmed",
+        "repeat_unknown_operation",
+        "automatic_crm_admission"
+      ]
+    },
+    {
+      "id": "sheets-direct-read",
+      "kind": "positive",
+      "prompt": "Show the next page of rows in my temporary research Sheet.",
+      "entrypoint": "sheets",
+      "modes": [
+        "direct",
+        "root"
+      ],
+      "allowedReads": [
+        "sheets/SKILL.md",
+        "signalsurf/SKILL.md",
+        "signalsurf/references/freshness.md",
+        "signalsurf/references/operating-contract.md"
+      ],
+      "context": {
+        "sheet": "selected authorized Sheet",
+        "cursor": "returned cursor",
+        "purpose": "read only"
+      },
+      "requiredOutcomes": [
+        "Resolve the Sheet and schema and use the current row reader with the retained pagination state.",
+        "Report only observed rows and remaining pagination."
+      ],
+      "forbiddenEffects": [
+        "edit_row",
+        "admit_records",
+        "rerun_research"
       ]
     }
   ]

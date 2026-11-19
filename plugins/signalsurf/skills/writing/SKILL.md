@@ -5,7 +5,7 @@ description: Write, review or rewrite grounded email, LinkedIn, X and other soci
 
 # Signalsurf Writing
 
-Before every request using this Skill, follow [version check and automatic update](../signalsurf/references/freshness.md), then use the current guidance.
+For standalone work with supplied text, use the installed guidance immediately. The [freshness procedure](../signalsurf/references/freshness.md) supports a local-only check and a background refresh. When a request needs SignalSurf data or asks for an update, follow the normal verified update procedure.
 
 Read the [shared operating contract](../signalsurf/references/operating-contract.md) before accessing Signalsurf resources unless already loaded. Writing guidance grants no data access, paid research, send or publication authority. Standalone prose with supplied context needs no Workspace or Project mutation.
 

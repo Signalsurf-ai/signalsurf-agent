@@ -28,7 +28,7 @@ not part of this plugin. Writing also supports supplied-context work without MCP
 | Agent Routine timing/events, audience and saved versus executed evidence | Schedule routing reference and Projects | Explicit recurring/autonomous work or its run state |
 | Official plugin versus deliberate Workspace custom Skills | Custom Skills | Requested reusable procedure lifecycle |
 | Grounded writing and channel/voice rules | Writing and conditional channel references | Writing/review/rewrite; supplied-context work needs no MCP |
-| Installed package freshness | Freshness reference | Once per request using an installed SignalSurf Skill |
+| Installed package freshness | Freshness reference | Once per product request or explicit update. Standalone Writing reuses a 24-hour receipt or refreshes in the background |
 
 The compact contract retains universal safeguards and points to domain procedures
 under explicit conditions. Moving text does not transfer authorization to a Skill,
