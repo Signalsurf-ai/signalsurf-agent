@@ -3,8 +3,8 @@
   "provenance": {
     "kind": "published-agent-contract",
     "url": "https://www.signalsurf.ai/.well-known/signalsurf-agent-contract.json",
-    "snapshotDigest": "312a173fac7e1e74d701fc028b574bfb77caae4ab23d692b6c34d8f02c512ca4",
-    "observedAt": "2026-11-07",
+    "snapshotDigest": "8213ba1fd3b6e7fe7dd6dc442ac3241f5f5d04a8ecc5f3ee73a10e306cb7f8d5",
+    "observedAt": "2026-11-20",
     "scope": "Names and actions projected from the public canonical snapshot plus separately observed served read/write partitions. Not live input validation or an execution assertion."
   },
   "capabilities": {
@@ -225,7 +225,8 @@
         "search",
         "get",
         "field_history",
-        "activity"
+        "activity",
+        "signals"
       ]
     },
     "record_manage": {
@@ -273,6 +274,8 @@
       "actions": [
         "diagnostics",
         "list",
+        "workflow",
+        "templates",
         "wait",
         "status"
       ]
@@ -280,12 +283,15 @@
     "enrichment_manage": {
       "actions": [
         "enable",
-        "disable"
+        "disable",
+        "apply_template"
       ]
     },
     "enrichment_run": {
       "actions": [
-        "run"
+        "run",
+        "workflow",
+        "workflow_control"
       ]
     },
     "workflow_query": {
@@ -294,7 +300,9 @@
         "diagnostics",
         "list",
         "get",
-        "trash"
+        "trash",
+        "sheet_run",
+        "sheet_runs"
       ]
     },
     "workflow_templates": {
@@ -357,7 +365,9 @@
         "restore",
         "activate",
         "import_post",
-        "engage_list"
+        "preview",
+        "engage_list",
+        "track"
       ]
     },
     "listening_reply": {
@@ -368,8 +378,6 @@
     },
     "engagement_query": {
       "actions": [
-        "list",
-        "get",
         "inbox_conversation",
         "inspect",
         "source_quality"
@@ -377,8 +385,6 @@
     },
     "engagement_manage": {
       "actions": [
-        "autopilot",
-        "engagement_test",
         "inbox_conversation",
         "transition_follow_up"
       ]
@@ -413,6 +419,13 @@
       "actions": [
         "schedule",
         "retry"
+      ]
+    },
+    "image_generate": {
+      "actions": [
+        "create",
+        "render",
+        "capture_reference"
       ]
     },
     "inbox_query": {
@@ -518,16 +531,12 @@
     },
     "knowledge_query": {
       "actions": [
-        "list_bases",
-        "list_documents",
         "search",
         "documents"
       ]
     },
     "knowledge_manage": {
       "actions": [
-        "create_base",
-        "save",
         "document"
       ]
     },
@@ -582,6 +591,8 @@
         "warmup_allocations",
         "create_mailboxes",
         "set_domain_autorenew",
+        "save_group",
+        "delete_group",
         "connect",
         "voice_update_settings",
         "voice_update_number",
@@ -595,9 +606,7 @@
         "notion_targets",
         "google_docs",
         "google_presentations",
-        "google_spreadsheets",
-        "asana_workspaces",
-        "asana_projects"
+        "google_spreadsheets"
       ]
     },
     "integration_manage": {
@@ -673,6 +682,9 @@
       "actions": []
     },
     "lookup_company_technologies": {
+      "actions": []
+    },
+    "lookup_company_intel": {
       "actions": []
     },
     "search_hiring_signals": {
@@ -768,6 +780,8 @@
         "warmup_allocations",
         "create_mailboxes",
         "set_domain_autorenew",
+        "save_group",
+        "delete_group",
         "voice_update_settings",
         "voice_update_number",
         "voice_cancel_rental",
