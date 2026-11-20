@@ -1,6 +1,7 @@
 import { createHash, randomUUID } from "node:crypto"
 import {
   existsSync,
+  linkSync,
   lstatSync,
   mkdirSync,
   mkdtempSync,
@@ -11,12 +12,15 @@ import {
   rmdirSync,
   writeFileSync,
 } from "node:fs"
-import { hostname } from "node:os"
+import { homedir, hostname } from "node:os"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 
+import { deadUpdateOwner } from "./recover-install.mjs"
+
 const REPOSITORY = "Signalsurf-ai/signalsurf-agent"
 const PREFIX = "plugins/signalsurf/"
+const RECOVERY_OWNER = ".signalsurf-recovery-owner-v1"
 const VERSION = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/
 const MANIFESTS = [
   "plugin.json",
@@ -30,6 +34,7 @@ const REQUIRED = [
   ".mcp.json",
   "mcp.json",
   "scripts/ensure-current.mjs",
+  "scripts/recover-install.mjs",
   "skills/signalsurf/SKILL.md",
   "skills/signalsurf/references/operating-contract.md",
   "skills/signalsurf/references/freshness.md",
@@ -94,6 +99,7 @@ function releaseFiles(tree) {
     const name = file.path.slice(PREFIX.length)
     if (
       !name ||
+      name === RECOVERY_OWNER ||
       name.split("/").some((part) => !part || part === "." || part === "..") ||
       /[\\\x00-\x1f\x7f]/.test(name) ||
       names.has(name) ||
@@ -113,6 +119,35 @@ function releaseFiles(tree) {
   return files
 }
 
+function recoveryFileIdentity(file) {
+  const stat = lstatSync(file, { bigint: true })
+  if (!stat.isFile() || stat.ino === 0n) throw new Error("recovery_launcher_conflict")
+  const digest = createHash("sha256").update(readFileSync(file)).digest("hex")
+  return `${stat.dev}:${stat.ino}:${digest}`
+}
+
+function prepareRecoveryLauncher(root, staging, lock, token) {
+  const source = path.join(root, "scripts/recover-install.mjs")
+  const launcher = path.join(path.dirname(root), `.${path.basename(root)}.recover-v1.mjs`)
+  const sourceIdentity = recoveryFileIdentity(source)
+  try {
+    linkSync(source, launcher)
+  } catch (error) {
+    if (error.code !== "EEXIST") throw error
+    const existing = recoveryFileIdentity(launcher)
+    if (existing !== sourceIdentity) {
+      const receipt = path.join(root, RECOVERY_OWNER)
+      if (!lstatSync(receipt, { throwIfNoEntry: false })?.isFile() ||
+          readFileSync(receipt, "utf8") !== existing) throw new Error("recovery_launcher_conflict")
+      const pending = path.join(lock, `release-${token}-launcher`)
+      linkSync(source, pending)
+      renameSync(pending, launcher)
+    }
+  }
+  // Keep ownership and the replacement installation in the same directory swap.
+  writeFileSync(path.join(staging, RECOVERY_OWNER), sourceIdentity, { flag: "wx", mode: 0o600 })
+}
+
 function removeGeneration(lock, token) {
   for (const name of readdirSync(lock)) {
     if (name === `previous-${token}` || name.startsWith(`release-${token}-`))
@@ -127,37 +162,14 @@ function removeGeneration(lock, token) {
 }
 
 function reclaimAbandonedLock(lock) {
-  if (!existsSync(lock)) return null
-  const owners = readdirSync(lock).filter((name) =>
-    /^owner-[a-zA-Z0-9-]+\.json$/.test(name)
-  )
-  if (owners.length !== 1) return null
-  let owner
-  try {
-    owner = JSON.parse(readFileSync(path.join(lock, owners[0]), "utf8"))
-  } catch {
-    return null
-  }
-  if (
-    owner.host !== hostname() ||
-    !Number.isSafeInteger(owner.pid) ||
-    owner.pid <= 0 ||
-    owners[0] !== `owner-${owner.token}.json` ||
-    !Number.isFinite(Date.parse(owner.created_at))
-  )
-    return null
-  try {
-    process.kill(owner.pid, 0)
-    return null
-  } catch (error) {
-    if (error.code !== "ESRCH") return null
-  }
+  const ownerToken = deadUpdateOwner(lock)
+  if (!ownerToken) return null
   const recovery = mkdtempSync(`${lock}.recovered-`)
-  const previous = `previous-${owner.token}`
+  const previous = `previous-${ownerToken}`
   const children = readdirSync(lock).filter(
-    (name) => name === previous || name.startsWith(`release-${owner.token}-`)
+    (name) => name === previous || name.startsWith(`release-${ownerToken}-`)
   )
-  for (const name of [...children, owners[0]]) {
+  for (const name of [...children, `owner-${ownerToken}.json`]) {
     try {
       renameSync(path.join(lock, name), path.join(recovery, name))
     } catch (error) {
@@ -201,9 +213,59 @@ function acquireLock(lock, token) {
   }
 }
 
+const pluginRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
+const writingCheckLifetime = 24 * 60 * 60 * 1000
+
+export function writingFreshness(root = pluginRoot, cacheDir = path.join(homedir(), ".cache", "signalsurf-writing")) {
+  const installedVersion = manifestVersion(readFileSync(path.join(root, "plugin.json")))
+  const key = createHash("sha256").update(path.resolve(root)).digest("hex")
+  const file = path.join(cacheDir, `${key}.json`)
+  let receipt
+  try {
+    const candidate = JSON.parse(readFileSync(file, "utf8"))
+    const age = Date.now() - Date.parse(candidate.checked_at)
+    if (
+      candidate.current_version === installedVersion &&
+      VERSION.test(candidate.latest_version) &&
+      age >= 0 && age < writingCheckLifetime
+    ) receipt = candidate
+  } catch {}
+  return {
+    local: {
+      status: "writing_ready",
+      installed_version: installedVersion,
+      latest_verified_version: receipt?.latest_version ?? null,
+      checked_at: receipt?.checked_at ?? null,
+      refresh_in_background: !receipt,
+    },
+    async refresh(fetchImpl = fetch) {
+      const result = await ensureCurrent({ root, fetchImpl, checkOnly: true })
+      if (result.status !== "version_checked") return result
+      const record = {
+        current_version: result.current_version,
+        latest_version: result.latest_version,
+        checked_at: new Date().toISOString(),
+      }
+      try {
+        mkdirSync(cacheDir, { recursive: true, mode: 0o700 })
+        const staging = mkdtempSync(path.join(cacheDir, ".check-"))
+        try {
+          const pending = path.join(staging, "receipt.json")
+          writeFileSync(pending, JSON.stringify(record), { flag: "wx", mode: 0o600 })
+          renameSync(pending, file)
+        } finally {
+          rmSync(staging, { recursive: true, force: true })
+        }
+      } catch {}
+      return { ...result, checked_at: record.checked_at }
+    },
+  }
+}
+
 export async function ensureCurrent({
-  root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), ".."),
+  root = pluginRoot,
   fetchImpl = fetch,
+  checkOnly = false,
 } = {}) {
   const token = randomUUID()
   let recoveredPrevious
@@ -255,7 +317,7 @@ export async function ensureCurrent({
   try {
     root = path.resolve(root)
     lock = path.join(path.dirname(root), `.${path.basename(root)}.update-lock`)
-    recoveredPrevious = reclaimAbandonedLock(lock)
+    if (!checkOnly) recoveredPrevious = reclaimAbandonedLock(lock)
     if (!existsSync(root) && recoveredPrevious)
       return result("recovery_required", {
         previous_installation: recoveredPrevious,
@@ -271,6 +333,7 @@ export async function ensureCurrent({
         65536
       )
     )
+    if (checkOnly) return result("version_checked")
     if (!newer(latestVersion, currentVersion)) return result("current")
     if (sourceCheckout(root)) return result("source_checkout")
     const reference = JSON.parse(
@@ -331,6 +394,7 @@ export async function ensureCurrent({
     }
     if (fingerprint(root) !== original)
       throw new Error("installation_changed_during_update")
+    prepareRecoveryLauncher(root, staging, lock, token)
     backup = path.join(lock, `previous-${token}`)
     renameSync(root, backup)
     renameSync(staging, root)
@@ -365,7 +429,12 @@ if (
   process.argv[1] &&
   path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)
 ) {
-  const result = await ensureCurrent()
+  const mode = process.argv.slice(2)
+  let result
+  if (mode.length === 0) result = await ensureCurrent()
+  else if (mode.length === 1 && mode[0] === "--local-writing") result = writingFreshness().local
+  else if (mode.length === 1 && mode[0] === "--check-writing-version") result = await writingFreshness().refresh()
+  else result = { status: "unknown_command" }
   process.stdout.write(`${JSON.stringify(result)}\n`)
-  if (!["current", "updated"].includes(result.status)) process.exitCode = 1
+  if (!["current", "updated", "writing_ready", "version_checked"].includes(result.status)) process.exitCode = 1
 }

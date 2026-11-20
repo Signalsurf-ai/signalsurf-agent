@@ -1,5 +1,6 @@
 // Characterization of the public updater; fixtures never contact hosted services.
 import assert from "node:assert/strict"
+import { spawnSync } from "node:child_process"
 import { createHash } from "node:crypto"
 import fs, { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs"
 import { syncBuiltinESMExports } from "node:module"
@@ -7,7 +8,7 @@ import { hostname, tmpdir } from "node:os"
 import path from "node:path"
 import test from "node:test"
 import { ROOT as DEFAULT_DISTRIBUTION_ROOT } from "../scripts/check.mjs"
-import { ensureCurrent } from "../plugins/signalsurf/scripts/ensure-current.mjs"
+import { ensureCurrent, writingFreshness } from "../plugins/signalsurf/scripts/ensure-current.mjs"
 function updaterFixture(
   t,
   version = "1.1.0",
@@ -653,4 +654,113 @@ test("an update without its notice is rejected before replacing the installation
  assert.equal(result.status,"unavailable")
  assert.equal(result.reason,"incomplete_release_package")
  assert.equal(JSON.parse(readFileSync(path.join(f.installed,"plugin.json"))).version,"1.0.0")
+})
+
+test("recovers through the installed sibling launcher after the updater dies between renames", t => {
+  const f = updaterFixture(t)
+  const tree = path.join(f.directory, "tree.json")
+  writeFileSync(tree, JSON.stringify({ tree: f.tree }))
+  const preload = path.join(f.directory, "interrupt.mjs")
+  writeFileSync(preload, `
+    import fs from "node:fs"
+    import path from "node:path"
+    import { syncBuiltinESMExports } from "node:module"
+    const installed = ${JSON.stringify(f.installed)}
+    const published = ${JSON.stringify(f.published)}
+    const move = fs.renameSync
+    fs.renameSync = (from, to) => {
+      move(from, to)
+      if (from === installed) process.kill(process.pid, "SIGKILL")
+    }
+    syncBuiltinESMExports()
+    globalThis.fetch = async raw => {
+      const url = new URL(raw)
+      if (url.pathname.includes("/git/ref/")) return Response.json({object:{type:"commit",sha:"a".repeat(40)}})
+      if (url.pathname.includes("/git/trees/")) return new Response(fs.readFileSync(${JSON.stringify(tree)}))
+      if (url.hostname !== "raw.githubusercontent.com") throw new Error("unexpected_request")
+      const file = decodeURIComponent(url.pathname.split("/plugins/signalsurf/")[1])
+      return new Response(fs.readFileSync(path.join(published, file)))
+    }
+  `)
+  const updater = path.join(f.installed, "scripts", "ensure-current.mjs")
+  const child = spawnSync(process.execPath, ["--import", preload, updater], { encoding: "utf8" })
+  assert.equal(child.signal, "SIGKILL", child.stderr)
+  assert.equal(existsSync(updater), false)
+  const launcher = path.join(f.directory, ".signalsurf.recover-v1.mjs")
+  const recovered = spawnSync(process.execPath, [launcher], { encoding: "utf8" })
+  assert.equal(recovered.status, 0, recovered.stderr)
+  assert.deepEqual(JSON.parse(recovered.stdout), { status: "restored", installed_version: "1.0.0" })
+  assert.equal(existsSync(updater), true)
+  for (const file of ["plugin.json", ".claude-plugin/plugin.json", ".codex-plugin/plugin.json", ".cursor-plugin/plugin.json"]) {
+    assert.equal(JSON.parse(readFileSync(path.join(f.installed, file))).version, "1.0.0")
+  }
+  assert.deepEqual(readFileSync(path.join(f.installed, "skills/writing/SKILL.md")), f.files.get("skills/writing/SKILL.md"))
+  const repeated = spawnSync(process.execPath, [launcher], { encoding: "utf8" })
+  assert.equal(JSON.parse(repeated.stdout).status, "installation_present")
+})
+
+test("updates an owned launcher after its recovery implementation changes", async t => {
+  const first = updaterFixture(t)
+  const next = updaterFixture(t, "1.2.0")
+  const script = "scripts/recover-install.mjs"
+  const changed = Buffer.concat([first.files.get(script), Buffer.from("\n// Updated recovery implementation.\n")])
+  const blob = first.tree.find(entry => entry.path === `plugins/signalsurf/${script}`)
+  first.files.set(script, changed)
+  blob.size = changed.length
+  blob.sha = createHash("sha1").update(`blob ${changed.length}\0`).update(changed).digest("hex")
+  const launcher = path.join(first.directory, ".signalsurf.recover-v1.mjs")
+  assert.equal((await ensureCurrent({ root: first.installed, fetchImpl: first.fetchImpl })).status, "updated")
+  assert.notDeepEqual(readFileSync(launcher), changed)
+  assert.equal((await ensureCurrent({ root: first.installed, fetchImpl: next.fetchImpl })).status, "updated")
+  assert.deepEqual(readFileSync(launcher), changed)
+  assert.equal(JSON.parse(readFileSync(path.join(first.installed, "plugin.json"))).version, "1.2.0")
+})
+
+test("preserves a replaced launcher even if it has the previous helper's exact bytes", async t => {
+  const first = updaterFixture(t)
+  const next = updaterFixture(t, "1.2.0")
+  const launcher = path.join(first.directory, ".signalsurf.recover-v1.mjs")
+  assert.equal((await ensureCurrent({ root: first.installed, fetchImpl: first.fetchImpl })).status, "updated")
+  const identical = path.join(first.directory, "unrelated-launcher")
+  cpSync(launcher, identical)
+  fs.renameSync(identical, launcher)
+  const identity = statSync(launcher, { bigint: true }).ino
+  assert.equal((await ensureCurrent({ root: first.installed, fetchImpl: next.fetchImpl })).reason, "recovery_launcher_conflict")
+  assert.equal(statSync(launcher, { bigint: true }).ino, identity)
+  assert.equal(JSON.parse(readFileSync(path.join(first.installed, "plugin.json"))).version, "1.1.0")
+})
+
+test("preserves a conflicting recovery launcher and the current installation", async t => {
+  const f = updaterFixture(t)
+  const launcher = path.join(f.directory, ".signalsurf.recover-v1.mjs")
+  writeFileSync(launcher, "unrelated file")
+  const result = await ensureCurrent({ root: f.installed, fetchImpl: f.fetchImpl })
+  assert.equal(result.reason, "recovery_launcher_conflict")
+  assert.equal(readFileSync(launcher, "utf8"), "unrelated file")
+  assert.equal(JSON.parse(readFileSync(path.join(f.installed, "plugin.json"))).version, "1.0.0")
+})
+
+test("local writing starts cold, warm, expired and offline without a foreground release request", async t => {
+  const f = updaterFixture(t)
+  const cache = path.join(f.directory, "cache")
+  const status = () => writingFreshness(f.installed, cache)
+  assert.equal(status().local.refresh_in_background, true)
+  assert.equal(f.calls.length, 0)
+  const observation = await status().refresh(f.fetchImpl)
+  assert.equal(observation.status, "version_checked")
+  assert.equal(f.calls.length, 1)
+  const warm = status().local
+  assert.equal(warm.refresh_in_background, false)
+  assert.equal(warm.latest_verified_version, "1.1.0")
+  assert.equal(warm.installed_version, "1.0.0")
+  assert.equal(f.calls.length, 1)
+  const [receipt] = readdirSync(cache)
+  writeFileSync(path.join(cache, receipt), JSON.stringify({ ...observation, checked_at: new Date(0).toISOString() }))
+  assert.equal(status().local.refresh_in_background, true)
+  const offline = await status().refresh(async () => { throw new Error("offline") })
+  assert.equal(offline.status, "unavailable")
+  assert.equal(status().local.status, "writing_ready")
+  assert.equal(status().local.latest_verified_version, null)
+  const checked = await ensureCurrent({ root: f.installed, fetchImpl: f.fetchImpl })
+  assert.equal(checked.status, "updated")
 })

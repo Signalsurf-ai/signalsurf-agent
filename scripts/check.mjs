@@ -131,7 +131,7 @@ export function check(root = ROOT, { catalog = true } = {}) {
     }
     if (file.startsWith(`${PLUGIN}/`)) {
       const local = file.slice(PLUGIN.length + 1)
-      if (!/^(?:LICENSE|NOTICE|README\.md|plugin\.json|mcp\.json|\.mcp\.json|\.(?:claude|codex|cursor)-plugin\/plugin\.json|scripts\/ensure-current\.mjs|assets\/icon\.png|skills\/[a-z-]+\/(?:SKILL\.md|agents\/openai\.yaml|assets\/icon\.png|references\/(?:[a-z0-9-]+\/)*[a-z0-9-]+\.md))$/.test(local)) problem(file, "unexpected plugin file")
+      if (!/^(?:LICENSE|NOTICE|README\.md|plugin\.json|mcp\.json|\.mcp\.json|\.(?:claude|codex|cursor)-plugin\/plugin\.json|scripts\/(?:ensure-current|recover-install)\.mjs|assets\/icon\.png|skills\/[a-z-]+\/(?:SKILL\.md|agents\/openai\.yaml|assets\/icon\.png|references\/(?:[a-z0-9-]+\/)*[a-z0-9-]+\.md))$/.test(local)) problem(file, "unexpected plugin file")
     }
   }
   for (const [name, fields] of PUBLIC_EVAL_FIELDS) {

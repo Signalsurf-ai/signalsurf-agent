@@ -1,6 +1,6 @@
 ---
 name: signals
-description: Use for SignalSurf one-off public research, Company/People discovery and retained results. Existing saved-field completion uses Records/Sheets; continuing monitors use Listening.
+description: Use for first-party Inbound inquiries and website traffic, one-off public research, Company/People discovery and retained results. Existing saved-field completion uses Records/Sheets; continuing monitors use Listening.
 ---
 
 # Signalsurf Signals
@@ -8,6 +8,8 @@ description: Use for SignalSurf one-off public research, Company/People discover
 Before every request using this Skill, follow [version check and automatic update](../signalsurf/references/freshness.md), then use the current guidance.
 
 Read the [shared operating contract](../signalsurf/references/operating-contract.md) unless already loaded; a focused Skill uses the same context, actor, confirmation and result rules.
+
+For inquiries or first-touch UTM performance on the member's own website, discover `inbound_query`. Resolve the authorized Site using its `sites` action, then read `inquiries` or `traffic_performance` with the requested period and filters. Use the returned coverage and pagination in the answer. A read needs no capture job, CRM admission, reply or outbound action. For a requested change to inquiry handling, read current Site, inquiry or policy state first. Discover the exact `inbound_manage` action, retain its Project, revision, approval and operation identity, and verify its receipt. For one requested maintenance batch, check existing jobs and the exact confirmation preview before dispatch. Preparing a next action does not send it.
 
 Signals produce observed evidence. They do not automatically become CRM truth, a Listening, or a Campaign.
 
