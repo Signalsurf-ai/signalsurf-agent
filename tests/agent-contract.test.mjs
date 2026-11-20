@@ -60,6 +60,12 @@ test("product drift identifies contract, version and historical gaps independent
   assert.deepEqual(compareProduct({ ...base, productVersion: "9.0.0" }).differences, ["product-version-changed"])
   assert.deepEqual(compareProduct({ ...base, productVersion: null }).differences, ["upstream-version-unreported"])
   assert.deepEqual(compareProduct({ ...base, pin: { ...source, productVersion: undefined } }).differences, ["plugin-has-no-product-version"])
+  const unbound = compareProduct({ ...base, pin: null, pinnedSnapshot: null })
+  assert.deepEqual(unbound.differences, ["plugin-predates-contract-pin"])
+  assert.equal(unbound.plugin.commit, plugin.commit)
+  assert.equal(unbound.pinnedProduct.digest, null)
+  assert.equal(unbound.changedTools, null)
+  assert.throws(() => compareProduct({ ...base, pin: null }), /Incomplete pinned product contract/)
   const changed = structuredClone(snapshot)
   changed.tools[0].description += " New policy."
   assert.throws(() => compareProduct({ ...base, snapshot: changed }), /digest mismatch/)

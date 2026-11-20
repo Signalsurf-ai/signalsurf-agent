@@ -8,10 +8,16 @@ import { ROOT, SEMVER } from "./check.mjs"
 import { contractDigest, contractIndex, CONTRACT_URL } from "./check-agent-contract.mjs"
 
 export function compareProduct({ plugin, pin, pinnedSnapshot, snapshot, productVersion }) {
-  contractIndex(pinnedSnapshot, pin)
   const digest = contractDigest(snapshot)
   assert(SEMVER.test(plugin.version), "Invalid plugin version")
   if (productVersion !== null) assert(SEMVER.test(productVersion), "Invalid product version")
+  assert.equal(pin === null, pinnedSnapshot === null, "Incomplete pinned product contract")
+  if (pin === null) return {
+    status: "review-required", differences: ["plugin-predates-contract-pin", ...(productVersion === null ? ["upstream-version-unreported"] : [])],
+    plugin, pinnedProduct: { version: null, digest: null }, upstream: { version: productVersion, digest },
+    changedTools: null, retiredChanged: null,
+  }
+  contractIndex(pinnedSnapshot, pin)
   if (pin.productVersion !== undefined) assert(SEMVER.test(pin.productVersion), "Invalid pinned product version")
   const before = new Map(pinnedSnapshot.tools.map(tool => [tool.name, tool]))
   const after = new Map(snapshot.tools.map(tool => [tool.name, tool]))
@@ -40,7 +46,9 @@ async function main() {
   const git = args => execFileSync("git", ["-C", ROOT, ...args], { encoding: "utf8", maxBuffer: 16 * 1024 * 1024 })
   const commit = git(["rev-parse", "--verify", "--end-of-options", `${values["plugin-ref"]}^{commit}`]).trim()
   const json = path => JSON.parse(git(["show", `${commit}:${path}`]))
-  const pin = json("docs/contracts/source.json")
+  const paths = git(["ls-tree", "--name-only", "-r", commit, "--", "docs/contracts/source.json", "docs/contracts/agent-contract.json"]).trim().split("\n")
+  const pin = paths.includes("docs/contracts/source.json") ? json("docs/contracts/source.json") : null
+  const pinnedSnapshot = paths.includes("docs/contracts/agent-contract.json") ? json("docs/contracts/agent-contract.json") : null
   let snapshot, productVersion
   if (values.contract) {
     snapshot = JSON.parse(readFileSync(values.contract, "utf8"))
@@ -53,7 +61,7 @@ async function main() {
   }
   const report = compareProduct({
     plugin: { version: json("plugins/signalsurf/plugin.json").version, commit },
-    pin, pinnedSnapshot: json("docs/contracts/agent-contract.json"), snapshot, productVersion,
+    pin, pinnedSnapshot, snapshot, productVersion,
   })
   console.log(JSON.stringify(report, null, 2))
   return report.differences.length ? 2 : 0
