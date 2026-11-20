@@ -180,6 +180,8 @@ test("reviewed release notes produce the version title without changing distribu
   assert.equal(presentation.body.includes(built.plan.candidate), true)
   assert.equal(presentation.body.includes(built.plan.plugin_tree), true)
   assert.equal(presentation.body.includes(built.plan.assets[`signalsurf-${built.plan.version}.zip`].sha256), true)
+  const pin = JSON.parse(readFileSync(path.join(ROOT, "docs/contracts/source.json"), "utf8"))
+  assert.deepEqual(JSON.parse(built.assets.get("release.json")).product, {version:pin.productVersion, contractDigest:pin.digest, contractUrl:pin.url})
   assert.deepEqual([...built.assets.keys()], [`signalsurf-${built.plan.version}.zip`, "marketplace.json", "SHA256SUMS", "release.json"])
   assert.deepEqual(build(f.candidate, f.root).assets, built.assets)
 })

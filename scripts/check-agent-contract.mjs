@@ -3,14 +3,24 @@ import { createHash } from "node:crypto"
 import { readFileSync } from "node:fs"
 import { resolve } from "node:path"
 import { fileURLToPath } from "node:url"
-import { ROOT, walk } from "./check.mjs"
+import { ROOT, SEMVER, walk } from "./check.mjs"
 
 const SEARCH_FILTER_FIELDS = new Set(["contact_query", "participant_query"])
 
-export function contractIndex(snapshot, source) {
+export const CONTRACT_URL = "https://www.signalsurf.ai/.well-known/signalsurf-agent-contract.json"
+
+export function contractDigest(snapshot) {
   assert.equal(snapshot.version, 1)
   const digest = createHash("sha256").update(JSON.stringify({ version: snapshot.version, tools: snapshot.tools, retired: snapshot.retired })).digest("hex")
   assert.equal(snapshot.digest, digest, "Public snapshot digest mismatch")
+  assert(Array.isArray(snapshot.tools) && snapshot.tools.length > 0, "Missing canonical tools")
+  assert(snapshot.retired && typeof snapshot.retired === "object" && !Array.isArray(snapshot.retired), "Missing retired tools")
+  return digest
+}
+
+export function contractIndex(snapshot, source) {
+  const digest = contractDigest(snapshot)
+  assert.equal(source.url, CONTRACT_URL, "Unexpected product contract URL")
   assert.equal(source.digest, digest, "Pinned source digest mismatch")
   const index = new Map(snapshot.tools.map(tool => [tool.name, (tool.actions ?? []).map(action => action.name)]))
   assert.equal(index.size, snapshot.tools.length, "Duplicate canonical tool")
@@ -65,6 +75,7 @@ export function checkAgentContract(root = ROOT) {
   const read = file => JSON.parse(readFileSync(resolve(root, file), "utf8"))
   const snapshot = read("docs/contracts/agent-contract.json")
   const source = read("docs/contracts/source.json")
+  assert(SEMVER.test(source.productVersion), "Missing or invalid pinned product version")
   const index = contractIndex(snapshot, source)
   const fixture = read("evals/capability-fixture.json")
   assert.equal(fixture.provenance.kind, "published-agent-contract")
