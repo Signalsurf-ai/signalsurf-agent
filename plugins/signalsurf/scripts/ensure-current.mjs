@@ -20,6 +20,7 @@ import { deadUpdateOwner } from "./recover-install.mjs"
 
 const REPOSITORY = "Signalsurf-ai/signalsurf-agent"
 const PREFIX = "plugins/signalsurf/"
+const RECOVERY_OWNER = ".signalsurf-recovery-owner-v1"
 const VERSION = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/
 const MANIFESTS = [
   "plugin.json",
@@ -98,6 +99,7 @@ function releaseFiles(tree) {
     const name = file.path.slice(PREFIX.length)
     if (
       !name ||
+      name === RECOVERY_OWNER ||
       name.split("/").some((part) => !part || part === "." || part === "..") ||
       /[\\\x00-\x1f\x7f]/.test(name) ||
       names.has(name) ||
@@ -115,6 +117,35 @@ function releaseFiles(tree) {
   if (totalSize > 8388608 || REQUIRED.some((name) => !names.has(name)))
     throw new Error("incomplete_release_package")
   return files
+}
+
+function recoveryFileIdentity(file) {
+  const stat = lstatSync(file, { bigint: true })
+  if (!stat.isFile() || stat.ino === 0n) throw new Error("recovery_launcher_conflict")
+  const digest = createHash("sha256").update(readFileSync(file)).digest("hex")
+  return `${stat.dev}:${stat.ino}:${digest}`
+}
+
+function prepareRecoveryLauncher(root, staging, lock, token) {
+  const source = path.join(root, "scripts/recover-install.mjs")
+  const launcher = path.join(path.dirname(root), `.${path.basename(root)}.recover-v1.mjs`)
+  const sourceIdentity = recoveryFileIdentity(source)
+  try {
+    linkSync(source, launcher)
+  } catch (error) {
+    if (error.code !== "EEXIST") throw error
+    const existing = recoveryFileIdentity(launcher)
+    if (existing !== sourceIdentity) {
+      const receipt = path.join(root, RECOVERY_OWNER)
+      if (!lstatSync(receipt, { throwIfNoEntry: false })?.isFile() ||
+          readFileSync(receipt, "utf8") !== existing) throw new Error("recovery_launcher_conflict")
+      const pending = path.join(lock, `release-${token}-launcher`)
+      linkSync(source, pending)
+      renameSync(pending, launcher)
+    }
+  }
+  // Keep ownership and the replacement installation in the same directory swap.
+  writeFileSync(path.join(staging, RECOVERY_OWNER), sourceIdentity, { flag: "wx", mode: 0o600 })
 }
 
 function removeGeneration(lock, token) {
@@ -363,15 +394,7 @@ export async function ensureCurrent({
     }
     if (fingerprint(root) !== original)
       throw new Error("installation_changed_during_update")
-    const recoveryScript = path.join(root, "scripts/recover-install.mjs")
-    const launcher = path.join(path.dirname(root), `.${path.basename(root)}.recover-v1.mjs`)
-    try {
-      linkSync(recoveryScript, launcher)
-    } catch (error) {
-      if (error.code !== "EEXIST") throw error
-      if (!lstatSync(launcher).isFile() || !readFileSync(launcher).equals(readFileSync(recoveryScript)))
-        throw new Error("recovery_launcher_conflict")
-    }
+    prepareRecoveryLauncher(root, staging, lock, token)
     backup = path.join(lock, `previous-${token}`)
     renameSync(root, backup)
     renameSync(staging, root)

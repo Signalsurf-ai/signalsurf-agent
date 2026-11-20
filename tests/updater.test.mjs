@@ -699,6 +699,37 @@ test("recovers through the installed sibling launcher after the updater dies bet
   assert.equal(JSON.parse(repeated.stdout).status, "installation_present")
 })
 
+test("updates an owned launcher after its recovery implementation changes", async t => {
+  const first = updaterFixture(t)
+  const next = updaterFixture(t, "1.2.0")
+  const script = "scripts/recover-install.mjs"
+  const changed = Buffer.concat([first.files.get(script), Buffer.from("\n// Updated recovery implementation.\n")])
+  const blob = first.tree.find(entry => entry.path === `plugins/signalsurf/${script}`)
+  first.files.set(script, changed)
+  blob.size = changed.length
+  blob.sha = createHash("sha1").update(`blob ${changed.length}\0`).update(changed).digest("hex")
+  const launcher = path.join(first.directory, ".signalsurf.recover-v1.mjs")
+  assert.equal((await ensureCurrent({ root: first.installed, fetchImpl: first.fetchImpl })).status, "updated")
+  assert.notDeepEqual(readFileSync(launcher), changed)
+  assert.equal((await ensureCurrent({ root: first.installed, fetchImpl: next.fetchImpl })).status, "updated")
+  assert.deepEqual(readFileSync(launcher), changed)
+  assert.equal(JSON.parse(readFileSync(path.join(first.installed, "plugin.json"))).version, "1.2.0")
+})
+
+test("preserves a replaced launcher even if it has the previous helper's exact bytes", async t => {
+  const first = updaterFixture(t)
+  const next = updaterFixture(t, "1.2.0")
+  const launcher = path.join(first.directory, ".signalsurf.recover-v1.mjs")
+  assert.equal((await ensureCurrent({ root: first.installed, fetchImpl: first.fetchImpl })).status, "updated")
+  const identical = path.join(first.directory, "unrelated-launcher")
+  cpSync(launcher, identical)
+  fs.renameSync(identical, launcher)
+  const identity = statSync(launcher, { bigint: true }).ino
+  assert.equal((await ensureCurrent({ root: first.installed, fetchImpl: next.fetchImpl })).reason, "recovery_launcher_conflict")
+  assert.equal(statSync(launcher, { bigint: true }).ino, identity)
+  assert.equal(JSON.parse(readFileSync(path.join(first.installed, "plugin.json"))).version, "1.1.0")
+})
+
 test("preserves a conflicting recovery launcher and the current installation", async t => {
   const f = updaterFixture(t)
   const launcher = path.join(f.directory, ".signalsurf.recover-v1.mjs")
