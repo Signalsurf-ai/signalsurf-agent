@@ -45,6 +45,16 @@ public package under the [evidence policy](quality-evidence.md). Reuse proof onl
 when its host, package content, scope and inputs still apply; rerun invalidated
 checks. Keep package, host lifecycle, OAuth and Workspace behavior distinct.
 
+## Trace the product dependency
+
+Each new plugin release records its reviewed product version, canonical MCP contract SHA-256 and contract URL under `product` in its downloadable `release.json`. The receipt also identifies the plugin version, commit and archive hash. Older receipts retain their original format. Client and product versions advance independently. Continuous deployments can change a contract within a product version.
+
+Use `npm run check:upstream` to compare the committed plugin baseline with the hosted service, or add `-- --plugin-ref vX.Y.Z` to inspect a distributed tag. A daily read-only CI check and a manual workflow use the same command. Package tests remain offline. The JSON report lists changed canonical tools and retired-entry drift. Exit 0 means the declared version and contract digest match, 2 requests review, and 1 means the comparison could not be completed. A missing version header is reported explicitly. Releases from before the first contract pin report their plugin identity and an unknown product baseline. A partial or invalid pin fails validation.
+
+Maintainers can check an unpublished product candidate with `node scripts/check-upstream.mjs --plugin-ref HEAD --contract /path/to/exported-contract.json --product-version X.Y.Z`. Take both inputs from the same product candidate. The checked-in `docs/contracts/source.json` pins the reviewed product version and digest. Its initial product version comes from the product candidate that matched the publicly observed snapshot. This baseline identifies a contract within the rolling product version.
+
+For drift, compare the affected actions, inputs, confirmation and readback semantics with the customer Skills and evals. Check served tool splits with live discovery when they change. A matching digest still needs a separate review for changes in behavior, permission requirements or host packaging. If existing guidance works, record the evidence and refresh the maintainer pin and fixture as needed. If a Skill changes, update its examples and release the plugin according to the package version policy. For an older installed release, look up its immutable receipt before deciding whether an update is necessary.
+
 ## Capability changes
 
 Discover current capabilities and their input schemas before product work.

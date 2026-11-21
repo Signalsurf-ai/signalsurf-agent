@@ -19,6 +19,7 @@ in `plugins/signalsurf/skills`, not engineering or release procedures.
   authoritative owner; keep direct focused entry usable.
 - Run `npm test` before handoff. Tests and fixtures must work from a public clone
   without credentials or hosted services. Record host/OAuth/model proof separately.
+- For customer capability changes or release handoff, compare the plugin pin with the upstream product using [the compatibility procedure](docs/compatibility.md#trace-the-product-dependency). Record affected Skills and served actions, including behavior changes with the same digest.
 - Releases use one explicit committed candidate, immutable versioned artifacts and
   reconciled public identities. Follow `docs/releasing.md`; publishing requires
   authorization for the target release.

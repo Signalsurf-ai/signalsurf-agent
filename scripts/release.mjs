@@ -5,6 +5,7 @@ import { tmpdir } from "node:os"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 import { check, ROOT, PLUGIN, SEMVER, versionAdvance } from "./check.mjs"
+import { checkAgentContract } from "./check-agent-contract.mjs"
 import { zip } from "./zip.mjs"
 
 export const REPO = "Signalsurf-ai/signalsurf-agent"
@@ -21,6 +22,7 @@ export function build(candidate, root = ROOT) {
     return { mode: match[1], sha: match[2], name: match[3], bytes: git(root, ["cat-file", "blob", match[2]]) }
   })
   const snapshot = mkdtempSync(path.join(tmpdir(), "signalsurf-release-check-"))
+  let product
   try {
     for (const file of tree) {
       const target = path.join(snapshot, file.name)
@@ -29,13 +31,21 @@ export function build(candidate, root = ROOT) {
     }
     const issues = check(snapshot, { catalog: false })
     if (issues.length) throw new Error(`candidate validation failed:\n${issues.join("\n")}`)
+    const sourcePath = path.join(snapshot, "docs/contracts/source.json")
+    if (existsSync(sourcePath)) {
+      const source = JSON.parse(readFileSync(sourcePath, "utf8"))
+      if (Object.hasOwn(source, "productVersion")) {
+        const { digest } = checkAgentContract(snapshot)
+        product = { version: source.productVersion, contractDigest: digest, contractUrl: source.url }
+      }
+    }
   } finally { rmSync(snapshot, { recursive: true, force: true }) }
   const plugin = tree.filter(file => file.name.startsWith(`${PLUGIN}/`)).map(file => ({ ...file, name: file.name.slice(PLUGIN.length + 1) }))
   const version = JSON.parse(plugin.find(file => file.name === "plugin.json").bytes).version
   const tag = `v${version}`, archiveName = `signalsurf-${version}.zip`, archive = zip(plugin)
   const marketplace = jsonBytes({ name: "signalsurf", owner: { name: "Signalsurf" }, metadata: { description: "Access Signalsurf from Claude" }, plugins: [{ name: "signalsurf", source: { source: "archive", url: `https://github.com/${REPO}/releases/download/${tag}/${archiveName}`, sha256: digest(archive) }, description: "Access your Signalsurf workspace, Projects, and product tools from Claude." }] })
   const assets = new Map([[archiveName, archive], ["marketplace.json", marketplace], ["SHA256SUMS", Buffer.from(`${digest(archive)}  ${archiveName}\n`)]])
-  const plan = { format: 1, repository: REPO, version, tag, candidate, plugin_tree: git(root, ["rev-parse", `${candidate}:${PLUGIN}`]).toString().trim(), assets: Object.fromEntries([...assets].map(([name, bytes]) => [name, { sha256: digest(bytes), size: bytes.length }])) }
+  const plan = { format: 1, repository: REPO, version, tag, candidate, ...(product ? { product } : {}), plugin_tree: git(root, ["rev-parse", `${candidate}:${PLUGIN}`]).toString().trim(), assets: Object.fromEntries([...assets].map(([name, bytes]) => [name, { sha256: digest(bytes), size: bytes.length }])) }
   assets.set("release.json", jsonBytes(plan))
   return { plan, assets, committedCatalog: tree.find(file => file.name === ".claude-plugin/https-marketplace.json")?.bytes }
 }
@@ -109,6 +119,7 @@ export async function inspect({ built, remote, complete = false }) {
 }
 
 export async function stage({ built, remote, authorization, notes }) {
+  if (!built.plan.product) throw new Error("Record the reviewed product version and contract before publishing a plugin candidate")
   if (authorization !== `${REPO}@${built.plan.tag}`) throw new Error("explicit repository@tag authorization is required")
   assertCommittedCatalog(built)
   const presentation = releasePresentation(built.plan, notes)
@@ -139,6 +150,7 @@ export async function stage({ built, remote, authorization, notes }) {
 }
 
 export async function activate({ built, remote, authorization, notes }) {
+  if (!built.plan.product) throw new Error("Record the reviewed product version and contract before publishing a plugin candidate")
   if (authorization !== `${REPO}@${built.plan.tag}`) throw new Error("explicit repository@tag authorization is required")
   assertCommittedCatalog(built)
   const presentation = releasePresentation(built.plan, notes)
@@ -203,6 +215,7 @@ async function reviseStagedReceipt({ built, previousBuilt, remote, state, presen
 }
 
 export async function revise({ built, previousCandidate, remote, authorization, notes, root = ROOT }) {
+  if (!built.plan.product) throw new Error("Record the reviewed product version and contract before publishing a plugin candidate")
   if (authorization !== `${REPO}@${built.plan.tag}`) throw new Error("explicit repository@tag authorization is required")
   assertCommittedCatalog(built)
   const presentation = releasePresentation(built.plan, notes)

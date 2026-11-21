@@ -65,6 +65,10 @@ plugin tree and archive hash in a folded Artifacts section; those details should
 not replace the user-facing notes. The notes are presentation metadata, outside
 the immutable package assets.
 
+## Verify the product binding
+
+Follow [Trace the product dependency](compatibility.md#trace-the-product-dependency) for each candidate. Compare the active service with the last distributed plugin and the release candidate. Retain the comparison and disposition in the release evidence. A planned upstream change can be prepared against its exported contract; before advertising it as available, check the deployed service and the relevant served action. The product version and contract digest in `docs/contracts/source.json` become part of the immutable release receipt. Guidance-only updates can share a product baseline. A reviewed product change can keep the installed plugin when its guidance and behavior remain compatible.
+
 ## Prepare one committed candidate
 
 Work on a release branch. Complete the changes, run `npm test` and commit. The
