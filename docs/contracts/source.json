@@ -1,8 +1,8 @@
 {
   "url": "https://www.signalsurf.ai/.well-known/signalsurf-agent-contract.json",
   "productVersion": "0.6.0",
-  "observedAt": "2026-11-20",
-  "digest": "8213ba1fd3b6e7fe7dd6dc442ac3241f5f5d04a8ecc5f3ee73a10e306cb7f8d5",
+  "observedAt": "2026-11-22",
+  "digest": "3c64402e1cc8a721aa695bd4e7010ce4c2ac85bd77641e9cf9abcca8e48864e1",
   "scope": "Public canonical snapshot; served read/write names and action partitions separately observed through authenticated read-only capability discovery. This does not establish installed-host behavior or execution.",
   "servedTools": {
     "table_views_read": {

@@ -53,15 +53,19 @@ export function capabilityProjection(index) {
 
 export function guidanceIssues(text, index, snapshot, source) {
   const issues = []
-  const tokens = new Set(text.match(/\b[a-z][a-z0-9]*(?:_[a-z0-9]+)*\b/g) ?? [])
+  const normalized = text.replace(/[`"']/g, "")
+  const actionPattern = /\b([a-z][a-z0-9_]+)(?:\.([a-z][a-z0-9_]+)|\s+action\s+([a-z][a-z0-9_]+))\b/g
+  const references = [...normalized.matchAll(actionPattern)]
+  const toolReferences = normalized.replace(actionPattern, (reference, tool, dotted, named) =>
+    index.get(tool)?.includes(dotted ?? named) ? tool : reference)
+  const tokens = new Set(toolReferences.match(/\b[a-z][a-z0-9]*(?:_[a-z0-9]+)*\b/g) ?? [])
   const splitCanonicals = new Set(Object.values(source.servedTools).map(tool => tool.canonical))
   for (const token of tokens) {
     if (Object.hasOwn(snapshot.retired, token)) issues.push(`Retired tool ${token}`)
     else if (splitCanonicals.has(token)) issues.push(`Use a served read/write tool instead of ${token}`)
     else if (!SEARCH_FILTER_FIELDS.has(token) && /_(?:query|manage|read|write|run|templates|views|preferences)$/.test(token) && !index.has(token)) issues.push(`Unknown tool-shaped reference ${token}`)
   }
-  const normalized = text.replace(/[`"']/g, "")
-  for (const match of normalized.matchAll(/\b([a-z][a-z0-9_]+)(?:\.([a-z][a-z0-9_]+)|\s+action\s+([a-z][a-z0-9_]+))\b/g)) {
+  for (const match of references) {
     const [, tool, dotted, named] = match
     if (!index.has(tool)) continue
     const action = dotted ?? named

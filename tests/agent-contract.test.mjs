@@ -74,3 +74,16 @@ test("product drift identifies contract, version and historical gaps independent
   assert.deepEqual(report.differences, ["contract-changed"])
   assert.deepEqual(report.changedTools, [changed.tools[0].name])
 })
+
+test("qualified run actions are not mistaken for tools and do not hide unqualified references", () => {
+  const index = contractIndex(snapshot, source)
+  for (const text of [
+    "Use `workflow_query` action `sheet_run`.",
+    "Use workflow_query.sheet_run.",
+  ]) assert.deepEqual(guidanceIssues(text, index, snapshot, source), [])
+  for (const text of [
+    "Use `workflow_query` action `invented_run`.",
+    "Use `sheet_run`.",
+    "Use workflow_query.sheet_run, then call `sheet_run`.",
+  ]) assert(guidanceIssues(text, index, snapshot, source).length > 0, text)
+})
