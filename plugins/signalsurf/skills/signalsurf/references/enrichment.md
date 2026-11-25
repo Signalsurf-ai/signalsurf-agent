@@ -19,7 +19,7 @@ For a worked exact-List example or an uncertain result, read [exact-List example
 1. Resolve the destination Sheet and work Project. For Listening, follow the Engagers route to the collected people’s Sheet. Read its schema, saved view filters and `enrichment_query` action `workflow` for step IDs, inputs, outputs and conditions.
 2. Preview `enrichment_query` action `templates` for that Sheet. The Listening qualification template screens the headline, retrieves a structured LinkedIn profile, resolves the current employer, researches company evidence and scores ICP. Inspect each proposed step. Use `enrichment_manage` action `apply_template` for requested setup and read back the graph. Created steps are manual. Existing or skipped steps have individual reasons.
 3. To repair a legacy step, reuse its field key if views or downstream conditions depend on it. Set explicit `inputFields` and `runCondition` with `enrichment_manage` action `enable`. Preserve its instruction and trigger unless the requested change affects them. A LinkedIn profile recipe can keep work history and current positions in one object and map supported outputs to compatible fields. If the template reports a missing Workspace ICP, use agreed criteria for this Sheet when configuring custom steps, or ask for the intended rubric. Verify the replacement before disabling an obsolete writer or removing a requested output field.
-4. For a requested batch, use `enrichment_run` action `workflow` with the actual Sheet, a request ID and one selection: exact row IDs or pending rows. Cap a sample with `sampleSize` and select step IDs when needed. Follow the returned credit quote and confirmation for that selection. Keep qualified results in the Sheet until the user selects people or companies for promotion.
+4. For a requested batch, use `enrichment_run` action `workflow` with the actual Sheet, a request ID and one selection: exact row IDs or pending rows. Cap a sample with `sampleSize` and select step IDs when needed. Follow the returned credit quote and confirmation for that selection. The run follows its configured steps. An Audience link step may save verified identities and linked current roles before ICP. The Worksheet retains the score.
 5. Read `workflow_query` action `sheet_runs` for history, then `workflow_query` action `sheet_run` with its returned `runId` for recorded outcomes. Use `issueStepId` for one step's failed or skipped cells, or `entryIds` for exact rows; do not combine them. Follow `nextCursor` while the response is truncated. These reads do not advance execution. Verify written cells, skips and errors before reporting completion.
 6. For a requested run control, use `enrichment_run` action `workflow_control`, carrying the work Project, an operation ID and `input` with that same `runId` and the requested action. Read the run afterward to verify the resulting state. Preserve the original selection and credit authority; a new selection or changed quote needs its own confirmation.
 
@@ -34,3 +34,35 @@ For example, when the user requests a five-row sample of a larger selected batch
 
 
 For contact steps, inspect the saved recipe and live schema. A profile lookup can feed separate work email and phone steps when each has the required identity inputs. Keep their providers and outputs independent. An ordered waterfall tries eligible providers in the configured order. A waterfall containing one provider keeps its saved mode. For adaptive routing, preserve the saved routing policy and provider list when editing unrelated settings; the list is the fallback order. Read the actual attempt records before saying a provider ran. When the live `enrichment_manage` action `enable` advertises a name-only edit using `stepName`, send the field identifiers and the requested display name alone. Use `null` only for a requested reset supported by that schema. Read the saved name back; preserve the field key, bindings and enabled state. If the live schema lacks this option, report that limitation.
+
+### Link Audience records during a Listening Worksheet run
+
+Inspect the target Sheet's workflow and the live templates. When available,
+use the `listening_audience` template for headline screening, LinkedIn profile
+completion, Audience linking, and profile-only ICP. Existing Sheets can
+configure an `audience_link` recipe on an object output column with the saved
+LinkedIn Profile as input. Make the following ICP step depend on that output.
+
+Run it through `enrichment_run` action `workflow` with Sheet, People and
+Companies write access. Follow the exact selection and quote. A configured link
+step writes People and Companies with paired current roles and costs zero
+credits. The headline, profile, and scoring steps retain their own charges.
+Read the run output and open the linked Person and Company records.
+
+### Save staged LinkedIn profiles to Records
+
+When the user explicitly asks to save staged profiles, resolve the canonical
+People collection and inspect the live `record_manage` action `create`.
+If its source supports `profileField`, provide the selected work `projectId`,
+the People `objectId`, and `source: { tableId, rowIds, profileField }`.
+Use the exact LinkedIn Profile output field key and batches of up to 100 known
+Sheet row IDs. This requires access to the Sheet and write access to both
+People and Companies.
+
+The server preserves the source row, resolves each Person, and stores the
+title and Company pair for each current role. A Company without sufficient
+identity stays unlinked. Report saved and skipped rows and unresolved roles
+from the result. No Enrich call, ICP verdict or List membership is required
+for this save. For requested segmentation, use the saved People IDs in a
+separate List operation. If the live schema lacks `profileField`, report that
+multiple-employer saving is unavailable in that deployment.
