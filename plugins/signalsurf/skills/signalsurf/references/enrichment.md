@@ -38,16 +38,24 @@ For contact steps, inspect the saved recipe and live schema. A profile lookup ca
 ### Link Audience records during a Listening Worksheet run
 
 Inspect the target Sheet's workflow and the live templates. When available,
-use the `listening_audience` template for headline screening, LinkedIn profile
+use `listening_audience` as the default Listening Worksheet workflow template
+for headline screening, LinkedIn profile
 completion, Audience linking, and profile-only ICP. Existing Sheets can
 configure an `audience_link` recipe on an object output column with the saved
-LinkedIn Profile as input. Make the following ICP step depend on that output.
+LinkedIn Profile as input. If the live recipe advertises `personField`, map
+Linked Person to a Sheet Record reference column targeting workspace People.
+If it advertises `companiesField`, map Linked Companies to a separate writable
+Object column. Keep Current Roles as the primary object output for the same
+Audience step and make the following ICP step depend on it.
 
 Run it through `enrichment_run` action `workflow` with Sheet, People and
 Companies write access. Follow the exact selection and quote. A configured link
 step writes People and Companies with paired current roles and costs zero
 credits. The headline, profile, and scoring steps retain their own charges.
-Read the run output and open the linked Person and Company records.
+Read back the Sheet values. Check that Linked Person opens the People record,
+Linked Companies contains distinct Company references, and Current Roles pairs
+each job title with its employer name. Older recipes may expose fewer output
+columns, and may label Current Roles as Current Companies.
 
 ### Save staged LinkedIn profiles to Records
 
