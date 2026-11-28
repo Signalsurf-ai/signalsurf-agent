@@ -89,6 +89,22 @@ reports that `signalsurf` is already registered from another source, stop and
 contact support before switching it. Do not remove an existing marketplace as
 a routine repair: removal can uninstall plugins and delete their local data.
 
+### Claude Code agent setup prompt
+
+Paste this into Claude Code when you want installation and connection setup, without starting a business onboarding interview:
+
+```text
+Install the SignalSurf plugin for Claude Code and help me sign in. Skip completed steps and tell me what you changed.
+
+- Inspect the current Claude Code installation and existing plugin/marketplace state first. Use the HTTPS marketplace at https://raw.githubusercontent.com/Signalsurf-ai/signalsurf-agent/main/.claude-plugin/https-marketplace.json and install signalsurf@signalsurf with the supported claude plugin commands when those facilities are available. Do not install Git, Node.js or a separate SignalSurf CLI to complete plugin setup. If claude is missing from PATH on macOS, inspect the available Claude Desktop executable before concluding it is unavailable; do not download another copy merely to repair PATH.
+- Preserve an existing marketplace's source, scope and unrelated settings. If the registered signalsurf source conflicts with the HTTPS source, report it instead of removing the marketplace or uninstalling plugins. Enable auto-update only for the signalsurf marketplace through the supported host controls; do not force updates globally.
+- Reuse a working SignalSurf connection. If authentication is needed, use the host's actual MCP authorization facilities, or guide me to /mcp and the SignalSurf connection. I will approve sign-in and Workspace access securely in the browser. Do not ask for passwords or tokens, and do not claim that opening an authorization link completed sign-in.
+- Verify access without changing data: call get_workspace_context and find_capabilities, identify the authenticated Agent and authorized Workspaces, and report any remaining permission or deployment gap. Do not create a Workspace, Project or other resource, connect a provider, or run paid work just to verify setup.
+- Finish with installed/already present, marketplace update state, connection verification and anything still waiting for my secure approval. If the host cannot perform installation, give the exact error and the supported /plugin interface steps from this guide.
+```
+
+Use the [onboarding prompt](#start-setup-in-your-ai) separately when you want to configure a business outcome. Installing the plugin, completing OAuth and verifying the intended Workspace are distinct steps.
+
 ### Temporary connection while the ZIP release is unavailable
 
 An agent with Claude Code shell access can run:
